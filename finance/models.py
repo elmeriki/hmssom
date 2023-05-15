@@ -5,7 +5,7 @@ from hospital.models import *
 
 # Create your models here.
 class Paymentcategory(models.Model):
-    Hospital = models.ForeignKey(User,on_delete=models.CASCADE)
+    Hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name='hospital_name')
     category = models.CharField(max_length=200,default=0,null=True,blank=True)
     dec =  models.TextField(null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
