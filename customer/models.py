@@ -4,8 +4,8 @@ from hospital.models import *
 
 # Create your models here.
 class Appointment(models.Model):
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    dr = models.ForeignKey(User,on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_appointment_name")
+    dr = models.ForeignKey(User,on_delete=models.CASCADE,related_name="dr_who_is_alocated")
     visitdsc =  models.TextField(null=True,blank=True)
     date = models.DateField()
     remark =  models.TextField(null=True,blank=True)
@@ -19,9 +19,9 @@ class Appointment(models.Model):
     
 # Create your models here.
 class Prescription(models.Model):
-    Hospital = models.ForeignKey(User,on_delete=models.CASCADE)
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    dr = models.ForeignKey(User,on_delete=models.CASCADE)
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_prescription")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_prescription")
+    dr = models.ForeignKey(User,on_delete=models.CASCADE,related_name="dr_who_prescribe")
     history =  models.TextField(null=True,blank=True)
     date = models.DateField()
     note =  models.TextField(null=True,blank=True)
@@ -32,8 +32,8 @@ class Prescription(models.Model):
 
 # Create your models here.
 class Medication(models.Model):
-    customer = models.ForeignKey(User,on_delete=models.CASCADE)
-    prescription = models.ForeignKey(Prescription,on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_medication")
+    prescription = models.ForeignKey(Prescription,on_delete=models.CASCADE,related_name="prescription_medication_for_patient")
     name =  models.TextField(null=True,blank=True)
     dosage = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
