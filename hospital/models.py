@@ -18,8 +18,8 @@ class Hospital(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-class Departments(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_department")
+class Department(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_departments")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     desc =  models.CharField(max_length=200,blank=True,null=True,default="None")
     date = models.DateField()
@@ -29,12 +29,12 @@ class Departments(models.Model):
 # Create your models here.
 class Humanresource(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_human_resource")
-    category = models.ForeignKey(Departments,on_delete=models.CASCADE,related_name="human_resource_categories")
+    category = models.ForeignKey(Department,on_delete=models.CASCADE,related_name="human_resource_categories")
     employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    adress =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    address =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,7 +42,7 @@ class Humanresource(models.Model):
     
 
 class Patient(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admited")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admitted")
     patientid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -53,15 +53,11 @@ class Patient(models.Model):
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-
-    
-    
 
 class Labtest(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_lab_test")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_lab_test")
-    dr = models.ForeignKey(User,on_delete=models.CASCADE)
+    dr = models.ForeignKey(User,on_delete=models.CASCADE, related_name="dr_lab_test")
     testname =  models.CharField(max_length=200,blank=True,null=True,default="None")
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     paymenttype =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -85,14 +81,14 @@ class Bedcategory(models.Model):
 class Notice(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    noticfor =  models.ForeignKey(Departments,on_delete=models.CASCADE)
+    noticfor =  models.ForeignKey(Department,on_delete=models.CASCADE, related_name="department_notice")
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     
 class Leavetypes(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leaves")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leave")
     types = models.CharField(max_length=200,default=0,null=True,blank=True)
     duration = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -100,7 +96,7 @@ class Leavetypes(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
 class Leave(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leaves_list")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leave_list")
     staff = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_staffs")
     typeofleave =  models.ForeignKey(Leavetypes,on_delete=models.CASCADE)
     date = models.DateField()
@@ -133,8 +129,8 @@ class Childbirth(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
 class Deadthrecord(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_was_giving_birth")
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_who_dies")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_was_birthed")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_who_died")
     dod = models.DateField()
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     remark =  models.TextField(null=True,blank=True,default="N/A")
