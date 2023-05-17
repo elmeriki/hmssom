@@ -26,4 +26,4 @@ from django.db.models import Sum
 
 
 def welcomeView(request):
-    return HttpResponse("Ok is working OK")
+    return render(request,'hospital/dashboard.html',context={})
