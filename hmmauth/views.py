@@ -26,4 +26,12 @@ from django.db.models import Sum
 
 
 def welcomeView(request):
-    return render(request,'hospital/dashboard.html',context={})
+    return render(request,'hospital/login.html',context={})
+
+
+def hospital_loginView(request):
+    return render(request,'hospital/login.html')
+    
+
+def register_loginView(request):
+    return render(request,'hospital/register.html')

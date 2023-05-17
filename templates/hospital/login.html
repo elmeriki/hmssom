@@ -1,0 +1,57 @@
+{% extends "hospital/menu_without.html" %}
+{% block title %} Login | HMS  {% endblock %}
+{% load static %}
+{% block content %}
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <h4 class="text-center mb-4">
+                                        <a href="/" class="brand-logo">
+                                            <img class="logo-abbr" src="{% static 'assets/images/logo.png' %}" alt="">
+                                            <img class="logo-compact" src="{% static 'assets/images/logo-text.png' %}" alt="">
+                                        </a>
+                                    </h4>
+                                    <form action="#" method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label class="mb-1"><strong>Email</strong></label>
+                                            <input type="email" class="form-control" placeholder="Enter username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="mb-1"><strong>Password</strong></label>
+                                            <input type="password" class="form-control" placeholder="Enter Password" >
+                                        </div>
+                                        <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                            <div class="form-group">
+                                               <div class="custom-control custom-checkbox ml-1">
+													<input type="checkbox" class="custom-control-input" id="basic_checkbox_1">
+													<label class="custom-control-label" for="basic_checkbox_1">Remember my preference</label>
+												</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <a href="page-forgot-password.html">Forgot Password?</a>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                        </div>
+                                    </form>
+                                    <div class="new-account mt-3">
+                                        <p>Get a Software For Your Hospital? <a class="text-primary" href="/register_hospital">Sign up</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

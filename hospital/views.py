@@ -27,3 +27,4 @@ from django.db.models import Sum
 def patient_listView(request):
     return render(request,'hospital/patient_list.html')
     
+
