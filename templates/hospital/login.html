@@ -17,15 +17,15 @@
                                             <img class="logo-compact" src="{% static 'assets/images/logo-text.png' %}" alt="">
                                         </a>
                                     </h4>
-                                    <form action="#" method="POST">
+                                    <form action="/hospital_login_" method="POST">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" class="form-control" placeholder="Enter username">
+                                            <input type="email" class="form-control" name="username" placeholder="Enter username">
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" placeholder="Enter Password" >
+                                            <input type="password" class="form-control" name="password" placeholder="Enter Password" >
                                         </div>
                                         <div class="form-row d-flex justify-content-between mt-4 mb-2">
                                             <div class="form-group">
@@ -45,7 +45,21 @@
                                     <div class="new-account mt-3">
                                         <p>Get a Software For Your Hospital? <a class="text-primary" href="/register_hospital">Sign up</a></p>
                                     </div>
+                                    
                                 </div>
+                                {% if messages %}
+                                {% for message in messages %}
+                                <div class="card-body">
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                                        <strong>Hi</strong> {{message}}
+                                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -53,5 +67,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}

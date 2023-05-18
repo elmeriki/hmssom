@@ -141,12 +141,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 # SESSION_TIMEOUT_REDIRECT = '/userlogin'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST = 'mail.example.com'
-EMAIL_HOST_USER ='no_reply@example.com'
-EMAIL_HOST_PASSWORD ='******'
+EMAIL_HOST = 'mail.savemoregroup.com'
+EMAIL_HOST_USER ='no_reply@savemoregroup.com'
+EMAIL_HOST_PASSWORD ='Fifa@2020'
 
 TIME_ZONE = 'Africa/Harare'
 USE_TZ =True

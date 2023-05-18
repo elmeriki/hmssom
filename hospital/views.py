@@ -28,3 +28,7 @@ def patient_listView(request):
     return render(request,'hospital/patient_list.html')
     
 
+@login_required(login_url='/')  
+def hospital_dashboardView(request):
+    return render(request,'hospital/dashboard.html')
+    

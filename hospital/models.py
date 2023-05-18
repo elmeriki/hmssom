@@ -5,40 +5,38 @@ from hmmauth.models import *
 class Hospital(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_names")
     hospitalid =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    pname =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    email =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    province =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    country =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    address =  models.CharField(max_length=200,blank=True,null=True,default="None")
     package =  models.CharField(max_length=200,blank=True,null=True,default="None")
     desc=models.TextField(null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+class Department(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_departments")
+    name =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    desc=  models.TextField(null=True,blank=True)
+    date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
 # Create your models here.
 class Doctor(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="doctor_belogs_to_hospital_names")
-    Customer = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_doctor_name")
-    pname =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_belogs_to_hospital_names")
+    user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_doctor_name")
+    department = models.ForeignKey(Department,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_department")
+    name =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    field =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
     address =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    qualification =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    desc=models.TextField(null=True,blank=True)
+    signature = models.ImageField(null=True, upload_to="doctors_signature/",)
+    picture = models.ImageField(null=True, upload_to="doctors_pictures/",)
+    profile=  models.TextField(null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     
-class Department(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_departments")
-    name =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    desc =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    date = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 # Create your models here.
 class Humanresource(models.Model):
