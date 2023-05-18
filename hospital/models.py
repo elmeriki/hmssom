@@ -5,7 +5,6 @@ from hmmauth.models import *
 class Hospital(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_names")
     hospitalid =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    doctor = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     pname =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -17,6 +16,21 @@ class Hospital(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+# Create your models here.
+class Doctor(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="doctor_belogs_to_hospital_names")
+    Customer = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_doctor_name")
+    pname =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    email =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    address =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    qualification =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    desc=models.TextField(null=True,blank=True)
+    status = models.CharField(max_length=200,default=0,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     
 class Department(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_departments")
