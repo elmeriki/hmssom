@@ -121,7 +121,7 @@ def create_hospital_accountView(request):
         number = request.POST['number']
         package = request.POST['package']
         remarks = request.POST['remarks']
-        hospital_name = request.POST['country']
+        country = request.POST['country']
         
         if User.objects.filter(email=email).exists():
             messages.info(request,'Email has been used already.')
@@ -133,7 +133,7 @@ def create_hospital_accountView(request):
          
         hospotalid = random_id(length=8,character_set=string.digits)
         autopassword_generator = random_id(length=7)
-        create_new_hospital_account = User.objects.create_user(username=email,first_name=hospital_name,last_name=hospital_name,password=autopassword_generator,is_hospital=True,email=email,address=address,number=number,customerid=hospotalid,is_activation=True)
+        create_new_hospital_account = User.objects.create_user(username=email,first_name=hospital_name,last_name=hospital_name,password=autopassword_generator,is_hospital=True,email=email,address=address,number=number,country=country,customerid=hospotalid,is_activation=True)
         if create_new_hospital_account:
             create_new_hospital_account.save()
             save_hospital_details=Hospital(hospital=create_new_hospital_account,hospitalid=hospotalid,package=package,desc=remarks)
