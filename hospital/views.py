@@ -45,6 +45,7 @@ def departmentView(request):
         }
         return render(request,'hospital/department.html',context=data)
     
+    
 @login_required(login_url='/')  
 def add_departmentView(request):
     return render(request,'hospital/add_department.html')
@@ -67,3 +68,21 @@ def save_add_departmentView(request):
             return redirect('/department')
     else:
        return redirect('/department')
+
+
+@login_required(login_url='/')  
+def department_updateView(request, id):
+   
+    return render(request,'hospital/department_detail.html')
+
+
+#@login_required(login_url='/')  
+def doctor_listView(request):
+    # if request.user.is_authenticated and request.user.is_dr:
+    #     username=request.user.username
+    #     dr_instance=User.objects.get(username=username)
+    #     hospital_dr =Doctor.objects.filter(dr=dr_instance)
+    #     data = {
+    #     'hospital_dr':hospital_dr
+    #     }
+        return render(request,'hospital/doctor_list.html')
