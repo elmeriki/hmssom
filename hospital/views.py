@@ -31,4 +31,15 @@ def patient_listView(request):
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
     return render(request,'hospital/dashboard.html')
-    
+
+
+def department_createView(request):
+    return render(request,'hospital/department_form.html')  
+
+
+def department_listView(request):
+    return render(request,'hospital/department_list.html')
+
+
+def department_detailView(request):
+    return render(request,'hospital/department_detail.html')
