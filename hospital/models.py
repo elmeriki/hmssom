@@ -15,7 +15,6 @@ class Department(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_departments")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     desc=  models.TextField(null=True,blank=True)
-    date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

@@ -32,3 +32,38 @@ def patient_listView(request):
 def hospital_dashboardView(request):
     return render(request,'hospital/dashboard.html')
     
+
+
+@login_required(login_url='/')  
+def departmentView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        hospital_department =Department.objects.filter(hospital=hospital_instance)
+        data = {
+        'hospital_department':hospital_department
+        }
+        return render(request,'hospital/department.html',context=data)
+    
+@login_required(login_url='/')  
+def add_departmentView(request):
+    return render(request,'hospital/add_department.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def save_add_departmentView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        department_name = request.POST['departmentname']
+        department_decs = request.POST['departmentdec']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        create_Department =Department(hospital=hospital_instance,name=department_name,desc=department_decs)
+        if create_Department:
+            create_Department.save()
+            messages.info(request,'Department Created successfully')
+            return redirect('/department')
+        else:
+            return redirect('/department')
+    else:
+       return redirect('/department')
