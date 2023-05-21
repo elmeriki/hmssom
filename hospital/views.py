@@ -163,6 +163,44 @@ def create_doctorView(request):
         save_doctors_details.save()
         messages.info(request,'Doctors Profile created successfully')
         return render(request,'hospital/add_doctor.html',{})
+    
+
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_patientView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        title = request.POST['title']
+        name = request.POST['name']
+        nok = request.POST['nok']
+        non = request.POST['non']
+        number = request.POST['phone']        
+        paymenttype = request.POST['paymenttype']
+        patientid = random_id(length=9,character_set=string.digits)
+        
+        create_new_patient_account=User.objects.create_user(username=username,first_name=name,last_name=name,address=address,password=password,is_patient=True,email=email,number=number,customerid=patientid)
+        create_new_patient_account.save()
+            
+        save_patient_details=Patient(user=create_new_patient_account,hospital=hospital_instance,title=title,name=name,nok=nok,non=non,phone=number,paymenttype=paymenttype)
+        save_patient_details.save()
+        messages.info(request,'Patient Profile created successfully')
+        return render(request,'hospital/add_patient.html',{})
+    
+
+@login_required(login_url='/')  
+def add_patientView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        # get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
+        # data = {
+        #     'get_all_hospital_department_list':get_all_hospital_department_list
+        # }
+        return render(request,'hospital/add_patient.html')
+    
         
 def patient_listView(request):
     return render(request,'hospital/patient_list.html')

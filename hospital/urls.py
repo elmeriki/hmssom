@@ -18,6 +18,12 @@ urlpatterns = [
     path('doctor_list', views.doctor_listView, name='doctor_listView'),
     path('create_doctor', views.create_doctorView, name='create_doctorView'),
 
+    
+    path('add_patient', views.add_patientView, name='dd_patientView'),
     path('patient_list', views.patient_listView, name='patient_listView'),
+    path('create_patient', views.create_patientView, name='create_patientView'),
+
 
 ]
+
+

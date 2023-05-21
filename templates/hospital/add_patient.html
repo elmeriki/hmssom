@@ -1,0 +1,65 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+<div class="container-fluid">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">Add Patient</h4>
+                {% endif %}            
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="/create_patient" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="title" placeholder="Patient Title" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="name" placeholder="Patient Full Names" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" class="form-control" name="phone" placeholder="Patient Cell Phone" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="nok" placeholder="Next Of Kin" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" class="form-control" name="non" placeholder="Next Of Kin Phone" required>
+                            </div>
+                           
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="paymenttype" placeholder="Payment Type" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="email" class="form-control" name="email" placeholder="Patient Email" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="password" class="form-control" name="password" placeholder="Patient Password" required>
+                            </div>
+                            
+                
+                        </div>
+                            
+                        <button type="submit" class="btn btn-primary">Save</button>
+
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
