@@ -16,7 +16,8 @@ urlpatterns = [
     
     path('add_doctor', views.add_doctorView, name='add_doctorView'),
     path('doctor_list', views.doctor_listView, name='doctor_listView'),
-    
+    path('create_doctor', views.create_doctorView, name='create_doctorView'),
+
     path('patient_list', views.patient_listView, name='patient_listView'),
 
 ]

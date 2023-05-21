@@ -24,7 +24,6 @@ class Doctor(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_doctor_name")
     department = models.ForeignKey(Department,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_department")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    field =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
     address =  models.CharField(max_length=200,blank=True,null=True,default="None")

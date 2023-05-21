@@ -36,21 +36,31 @@
 							</tr>
 						</thead>
 						<tbody>
+							{% for eachall_doctors_list in all_doctors_list %}
 							<tr>
-								<td>919182020</td>
-								<td>Dr. John Joe</td>
-								<td>john@gmail.com</td>
-								<td><span class="font-w500">+12 4124 5125</span></td>
-								<td>Cardio</td>
+								<td>{{eachall_doctors_list.user.customerid}}</td>
+								<td>Dr. {{eachall_doctors_list.name}}</td>
+								<td>{{eachall_doctors_list.email}}</td>
+								<td><span class="font-w500">{{eachall_doctors_list.phone}}</span></td>
+								<td>{{eachall_doctors_list.department.name}}</td>
 								<td>
 									<a href="#" class="btn btn-primary light btn-rounded btn-sm text-nowrap">5
 										Appointment</a>
 								</td>
+								<td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{eachall_doctors_list.picture.url}}">
+								</div>
+								</td>
 								<td><span class="font-w500">text</span></td>
-								<td><span class="font-w500">text</span></td>
+								{% if eachall_doctors_list.status == 1 %}
 								<td><span class="font-w500">Avaliable</span></td>
-
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
 							</tr>
+							{% endfor %}
 
 						</tbody>
 					</table>

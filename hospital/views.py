@@ -21,7 +21,9 @@ from django.views.generic import View
 from hmmauth.models import *
 from customer.models import *
 from django.db.models import Sum
-
+from random_id import random_id
+import string 
+import threading
 
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
@@ -103,7 +105,13 @@ def delete_departmentView(request, departmentid):
 @login_required(login_url='/')  
 def doctor_listView(request):
     if request.user.is_authenticated and request.user.is_hospital:
-        return render(request,'hospital/doctor_list.html')
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_doctors_list =Doctor.objects.filter(hospital=hospital_instance)
+        data = {
+            'all_doctors_list':all_doctors_list
+        }
+        return render(request,'hospital/doctor_list.html',context=data)
     
     
 @login_required(login_url='/')  
@@ -116,6 +124,45 @@ def add_doctorView(request):
             'get_all_hospital_department_list':get_all_hospital_department_list
         }
         return render(request,'hospital/add_doctor.html',context=data)
+        
+def patient_listView(request):
+    return render(request,'hospital/patient_list.html')
+
+
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_doctorView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        if len(request.FILES) != 0:
+            picture=request.FILES['picture']
+            signature=request.FILES['signature']
+            picturefilesize=picture.size
+            signaturefilesize=signature.size
+            if picturefilesize > 2621440 and signaturefilesize > 2621440:
+                messages.info(request,"The Dr Picture and Signature is Biger Than 2MB")
+                return redirect('/add_doctor')
+        if User.objects.filter(email=request.POST['email']).exists():
+            messages.info(request,"The Email address is used already")
+            return redirect('/add_doctor')
+        name = request.POST['name']
+        email = request.POST['email']
+        number = request.POST['phone']
+        address = request.POST['address']
+        password = request.POST['password']
+        departmentid = request.POST['department']
+        message_about_dr = request.POST['message_about_dr']
+        doctorsid = random_id(length=9,character_set=string.digits)
+        department_instance = Department.objects.get(id=departmentid)
+        create_new_doctors_account=User.objects.create_user(username=email,first_name=name,last_name=name,password=password,is_dr=True,email=email,address=address,number=number,customerid=doctorsid)
+        create_new_doctors_account.save()
+            
+        save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,profile=message_about_dr)
+        save_doctors_details.save()
+        messages.info(request,'Doctors Profile created successfully')
+        return render(request,'hospital/add_doctor.html',{})
         
 def patient_listView(request):
     return render(request,'hospital/patient_list.html')

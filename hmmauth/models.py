@@ -15,7 +15,7 @@ class User(AbstractUser):
     city =  models.CharField(max_length=200,blank=True,null=True,default="None")
     number =  models.CharField(max_length=200,blank=True,null=True,default="None")
     def __str__(self):
-        return self.hname
+        return self.username
     
     class Meta(AbstractUser.Meta):
        swappable = 'AUTH_USER_MODEL'
