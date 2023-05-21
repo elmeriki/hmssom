@@ -32,6 +32,14 @@
     <div class="dashboard_bar">
         Patient Department
     </div>
+    {% elif "/humanresource_list" in request.path %}
+    <div class="dashboard_bar">
+        Employee Department
+    </div>
+    {% elif "/add_humanresource" in request.path %}
+    <div class="dashboard_bar">
+        Employee Department
+    </div>
     {% else %}
     <div class="dashboard_bar">
         Dashboard
