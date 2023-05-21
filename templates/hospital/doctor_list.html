@@ -30,8 +30,8 @@
 								<th>Doctor Phone</th>
 								<th>Department</th>
 								<th>Appointment</th>
-								<th>Profile</th>
-								<th>Picture</th>
+								<th>Profile Picture</th>
+								<th>Signature</th>
 								<th>Status</th>
 							</tr>
 						</thead>
@@ -53,7 +53,12 @@
 								<img alt="image" width="50" src="{{eachall_doctors_list.picture.url}}">
 								</div>
 								</td>
-								<td><span class="font-w500">text</span></td>
+								<td>
+									<div class="timeline-panel">
+									<div class="media mr-2"> 
+									<img alt="image" width="50" src="{{eachall_doctors_list.signature.url}}">
+									</div>
+									</td>
 								{% if eachall_doctors_list.status == 1 %}
 								<td><span class="font-w500">Avaliable</span></td>
 								{% else %}

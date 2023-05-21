@@ -172,8 +172,6 @@ def create_doctorView(request):
         return render(request,'hospital/add_doctor.html',{})
     
 
-
-
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_patientView(request):
@@ -216,15 +214,26 @@ def patient_listView(request):
 def create_humanresourceView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
         username=request.user.username
+        if len(request.FILES) != 0:
+            picture=request.FILES['picture']
+            signature=request.FILES['signature']
+            picturefilesize=picture.size
+            signaturefilesize=signature.size
+            if picturefilesize > 2621440 and signaturefilesize > 2621440:
+                messages.info(request,"The Employee Picture and Signature is Biger Than 2MB")
+                return redirect('/add_humanresource')
+        if User.objects.filter(email=request.POST['email']).exists():
+            messages.info(request,"The Email address is used already")
+            return redirect('/add_humanresource')
         hospital_instance=User.objects.get(username=username)
         title = request.POST['title']
         name = request.POST['name']
         email = request.POST['email']
         address = request.POST['address']
         number = request.POST['phone']        
-        id = random_id(length=9,character_set=string.digits)
+        employeeid = random_id(length=10,character_set=string.digits)
     
-        save_humanresource_details=Humanresource(hospital=hospital_instance, id=id,title=title,name=name,email=email,address=address,phone=number)
+        save_humanresource_details=Humanresource(hospital=hospital_instance, employeeid=employeeid,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
         save_humanresource_details.save()
         messages.info(request,'Employee Profile created successfully')
         return redirect('/add_human_resource')
@@ -242,6 +251,6 @@ def humanresource_listView(request):
         hospital_instance=User.objects.get(username=username)
         list_all_humanresource=Humanresource.objects.filter(hospital=hospital_instance)
         hr_data = {
-            'list_all_humanresource':list_all_humanresource
+            'list_all_humanresource':list_all_humanresource 
         }
         return render(request,'hospital/human_resource_list.html',context=hr_data)
