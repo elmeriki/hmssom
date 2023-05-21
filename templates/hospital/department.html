@@ -25,14 +25,6 @@
                     <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="checkbox text-right align-self-center">
-                                        <div class="custom-control custom-checkbox ">
-                                            <input type="checkbox" class="custom-control-input" id="checkAll" required="">
-                                            <label class="custom-control-label" for="checkAll"></label>
-                                        </div>
-                                    </div>
-                                </th>
                                 <th>Department ID</th>
                                 <th>Department Name </th>
                                 <th>Department Desc</th>
@@ -43,14 +35,6 @@
                         <tbody>
                             {% for hospital_department in hospital_department %}
                             <tr>
-                                <td>
-                                    <div class="checkbox text-right align-self-center">
-                                        <div class="custom-control custom-checkbox ">
-                                            <input type="checkbox" class="custom-control-input" id="customCheckBox1" required="">
-                                            <label class="custom-control-label" for="customCheckBox1"></label>
-                                        </div>
-                                    </div>
-                                </td>
                                 <td>{{hospital_department.id}}</td>
                                 <td>{{hospital_department.name}}</td>
                                 <td>{{hospital_department.desc}}</td>

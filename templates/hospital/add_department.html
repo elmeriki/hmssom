@@ -2,15 +2,11 @@
 {% block title %} Hospital Department |   {% endblock %}
 {% load static %}
 {% block content %}
-<br><br><br><br><br><br><br>
-<div class="container">
+<br><br><br>
+<div class="content-body">
     <div class="col-xl-12 col-lg-12">
         <div class="card">
             <div class="card-header">
-                <a href="/" class="brand-logo">
-                    <img class="logo-abbr" src="{% static 'assets/images/logo.png' %}" alt="">
-                    <img class="logo-compact" src="{% static 'assets/images/logo-text.png' %}" alt="">
-                </a>
                 <h4 class="">Add Hospital Department</h4>
             </div>
             <div class="card-body">
@@ -49,6 +45,7 @@
 {% else %}
 
 {% endif %}
+</div>
 
 
 {% endblock %}
