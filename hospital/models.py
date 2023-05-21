@@ -39,14 +39,15 @@ class Doctor(models.Model):
 # Create your models here.
 class Humanresource(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_human_resource")
-    category = models.ForeignKey(Department,on_delete=models.CASCADE,related_name="human_resource_categories")
+    category = models.CharField(max_length=200,blank=True,null=True,default="None")
     employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
     address =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    date = models.DateField()
+    signature = models.ImageField(null=True, upload_to="employee_signature/",)
+    picture = models.ImageField(null=True, upload_to="employee_pictures/",)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
