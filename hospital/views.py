@@ -23,11 +23,6 @@ from customer.models import *
 from django.db.models import Sum
 
 
-
-def patient_listView(request):
-    return render(request,'hospital/patient_list.html')
-    
-
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
     return render(request,'hospital/dashboard.html')
@@ -68,21 +63,45 @@ def save_add_departmentView(request):
             return redirect('/department')
     else:
        return redirect('/department')
+    
 
 
 @login_required(login_url='/')  
-def department_updateView(request, id):
-   
-    return render(request,'hospital/department_detail.html')
+def edit_departmentView(request, pk):
+    if request.user.is_authenticated and request.user.is_hospital:
+        #fetching data of particular id
+        get_data = Department.objects.get(id=pk)
+        return render(request,'hospital/edit_department.html', {'department_data': get_data})
+
+
+@login_required(login_url='/')  
+def update_departmentView(request, pk):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        #updating  data of particular id
+        update_data = Department.objects.get(id=pk)
+        update_data.name = request.POST['departmentname']
+        update_data.desc = request.POST['departmentdec']
+        #query save method
+        update_data.save()
+        #render to department page
+        return redirect('/department')
+
+
+@login_required(login_url='/')  
+def delete_departmentView(request, pk):
+    if request.user.is_authenticated and request.user.is_hospital:
+        #delete  data of particular id
+        del_data = Department.objects.get(id=pk)
+        #query delete method
+        del_data.delete()
+        return redirect('/department')
+
+
 
 
 #@login_required(login_url='/')  
 def doctor_listView(request):
-    # if request.user.is_authenticated and request.user.is_dr:
-    #     username=request.user.username
-    #     dr_instance=User.objects.get(username=username)
-    #     hospital_dr =Doctor.objects.filter(dr=dr_instance)
-    #     data = {
-    #     'hospital_dr':hospital_dr
-    #     }
         return render(request,'hospital/doctor_list.html')
+        
+def patient_listView(request):
+    return render(request,'hospital/patient_list.html')
