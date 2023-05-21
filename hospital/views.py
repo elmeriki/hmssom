@@ -209,3 +209,39 @@ def patient_listView(request):
             'list_all_patient':list_all_patient
         }
         return render(request,'hospital/patient_list.html',context=data)
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_humanresourceView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        title = request.POST['title']
+        name = request.POST['name']
+        email = request.POST['email']
+        address = request.POST['address']
+        number = request.POST['phone']        
+        id = random_id(length=9,character_set=string.digits)
+    
+        save_humanresource_details=Humanresource(hospital=hospital_instance, id=id,title=title,name=name,email=email,address=address,phone=number)
+        save_humanresource_details.save()
+        messages.info(request,'Employee Profile created successfully')
+        return redirect('/add_human_resource')
+
+   
+@login_required(login_url='/')  
+def add_humanresourceView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_human_resource.html')
+    
+    
+def humanresource_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        list_all_humanresource=Humanresource.objects.filter(hospital=hospital_instance)
+        hr_data = {
+            'list_all_humanresource':list_all_humanresource
+        }
+        return render(request,'hospital/human_resource_list.html',context=hr_data)

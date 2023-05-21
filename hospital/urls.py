@@ -13,7 +13,6 @@ urlpatterns = [
     path('delete_department/<str:departmentid>', views.delete_departmentView, name='delete_departmentView'),
     
     
-    
     path('add_doctor', views.add_doctorView, name='add_doctorView'),
     path('doctor_list', views.doctor_listView, name='doctor_listView'),
     path('create_doctor', views.create_doctorView, name='create_doctorView'),
@@ -22,6 +21,14 @@ urlpatterns = [
     path('add_patient', views.add_patientView, name='dd_patientView'),
     path('patient_list', views.patient_listView, name='patient_listView'),
     path('create_patient', views.create_patientView, name='create_patientView'),
+
+
+    path('add_humanresource', views.add_humanresourceView, name='add_humanresourceView'),
+    path('create_humanresource', views.create_humanresourceView, name='create_humanresourceView'),
+    path('humanresource_list', views.humanresource_listView, name='humanresource_listView'),
+
+
+
 
 
 ]

@@ -1,0 +1,57 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+			<div class="mr-auto d-lg-block">
+				<a href="/add_human_resource" class="btn btn-primary btn-rounded">+ Add New</a>
+			</div>
+			<div class="input-group search-area ml-auto d-inline-flex mr-2">
+				<input type="text" class="form-control" placeholder="Search here">
+				<div class="input-group-append">
+					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="table-responsive">
+					<table id="example5" class="table shadow-hover  table-bordered mb-4 dataTablesCard fs-14">
+						<thead>
+							<tr>
+								<th>Employee ID</th>
+                                <th>Employee Title</th>
+								<th>Employee Fullname</th>
+								<th>Employee Email</th>
+								<th>Employee Address</th>
+								<th>Employee Phone</th>
+								<th>Last Seen</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for list_all_humanresource in list_all_humanresource %}
+							<tr>
+								<td>{{list_all_humanresource.id}}</td>
+								<td>{{list_all_humanresource.title}} {{list_all_patient.name}}</td>
+								<td>{{llist_all_humanresource.email}}</td>
+								<td>{{list_all_humanresource.non}}</td>
+                                <td>{{list_all_humanresource.address}}</td>
+                                <td><span class="font-w500">{{list_all_humanresource.phone}}</span></td>
+								<td><span class="font-w500">{{list_all_humanresource.created_at | timesince }} ago</span></td>
+							</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
