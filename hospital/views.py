@@ -97,8 +97,18 @@ def delete_departmentView(request, departmentid):
         delete_department = Department.objects.get(id=departmentid)
         delete_department.delete()
         return redirect('/department')
+    
 
-
+@login_required(login_url='/')  
+def doctorView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        hospital_doctor =Doctor.objects.filter(hospital=hospital_instance)
+        data = {
+        'hospital_doctor':hospital_doctor
+        }
+        return render(request,'hospital/doctor.html',context=data)
 
 
 #@login_required(login_url='/')  
