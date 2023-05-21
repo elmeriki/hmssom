@@ -48,7 +48,6 @@ class Humanresource(models.Model):
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     signature = models.ImageField(null=True, upload_to="employee_signature/",)
     picture = models.ImageField(null=True, upload_to="employee_pictures/",)
-    profile=  models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
