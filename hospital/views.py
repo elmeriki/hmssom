@@ -23,11 +23,6 @@ from customer.models import *
 from django.db.models import Sum
 
 
-
-def patient_listView(request):
-    return render(request,'hospital/patient_list.html')
-    
-
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
     return render(request,'hospital/dashboard.html')
@@ -44,6 +39,7 @@ def departmentView(request):
         'hospital_department':hospital_department
         }
         return render(request,'hospital/department.html',context=data)
+    
     
 @login_required(login_url='/')  
 def add_departmentView(request):
@@ -62,8 +58,52 @@ def save_add_departmentView(request):
         if create_Department:
             create_Department.save()
             messages.info(request,'Department Created successfully')
-            return redirect('/department')
+            return redirect('/add_department')
         else:
             return redirect('/department')
     else:
        return redirect('/department')
+    
+
+
+@login_required(login_url='/')  
+def edit_departmentView(request,departmentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_department_instance = Department.objects.get(id=departmentid)
+        data = {
+        'department':get_department_instance.name,
+        'deaprtmentdesc':get_department_instance.desc,
+        'departmentid':get_department_instance.id,
+        'departmentid':departmentid
+        }
+        return render(request,'hospital/edit_department.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_departmentView(request,departmentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        departmentname=request.POST['departmentname']
+        departmentdec=request.POST['departmentdec']
+        Department.objects.filter(pk=departmentid).update(name=departmentname)
+        Department.objects.filter(pk=departmentid).update(desc=departmentdec)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_department/{departmentid}')
+
+
+@login_required(login_url='/')  
+def delete_departmentView(request, departmentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_department = Department.objects.get(id=departmentid)
+        delete_department.delete()
+        return redirect('/department')
+
+
+
+
+#@login_required(login_url='/')  
+def doctor_listView(request):
+        return render(request,'hospital/doctor_list.html')
+        
+def patient_listView(request):
+    return render(request,'hospital/patient_list.html')
