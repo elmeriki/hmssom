@@ -3,25 +3,7 @@
     <div class="header-content">
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
-                <div class="header-left">
-                    {% if "/hospital_dashboard" in request.path %}
-                    <div class="dashboard_bar">
-                        Dashboard
-                    </div>
-                    {% elif "/department" in request.path %}
-                    <div class="dashboard_bar">
-                        Hopital Department
-                    </div>
-                    {% elif "/add_department" in request.path %}
-                    <div class="dashboard_bar">
-                        Hopital Department
-                    </div>
-                    {% else %}
-                    <div class="dashboard_bar">
-                        Dashboard
-                    </div>
-                    {% endif %}
-                </div>
+                {% include 'hospital/dashboard_display.html' %}
 
                 <ul class="navbar-nav header-right">
                     <li class="nav-item dropdown notification_dropdown">

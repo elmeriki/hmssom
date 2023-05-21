@@ -99,21 +99,23 @@ def delete_departmentView(request, departmentid):
         return redirect('/department')
     
 
+
 @login_required(login_url='/')  
-def doctorView(request):
+def doctor_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/doctor_list.html')
+    
+    
+@login_required(login_url='/')  
+def add_doctorView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        hospital_doctor =Doctor.objects.filter(hospital=hospital_instance)
+        get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
         data = {
-        'hospital_doctor':hospital_doctor
+            'get_all_hospital_department_list':get_all_hospital_department_list
         }
-        return render(request,'hospital/doctor.html',context=data)
-
-
-#@login_required(login_url='/')  
-def doctor_listView(request):
-        return render(request,'hospital/doctor_list.html')
+        return render(request,'hospital/add_doctor.html',context=data)
         
 def patient_listView(request):
     return render(request,'hospital/patient_list.html')

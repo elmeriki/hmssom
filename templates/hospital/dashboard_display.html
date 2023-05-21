@@ -1,0 +1,32 @@
+{% load static %}
+<div class="header-left">
+    {% if "/hospital_dashboard" in request.path %}
+    <div class="dashboard_bar">
+        Dashboard
+    </div>
+    {% elif "/department" in request.path %}
+    <div class="dashboard_bar">
+        Hopital Department
+    </div>
+    {% elif "/add_department" in request.path %}
+    <div class="dashboard_bar">
+        Hopital Department
+    </div>
+    {% elif "/edit_department" in request.path %}
+    <div class="dashboard_bar">
+        Hopital Department
+    </div>
+    {% elif "/doctor_list" in request.path %}
+    <div class="dashboard_bar">
+        Doctors Department
+    </div>
+    {% elif "/add_doctor" in request.path %}
+    <div class="dashboard_bar">
+        Doctors Department
+    </div>
+    {% else %}
+    <div class="dashboard_bar">
+        Dashboard
+    </div>
+    {% endif %}
+</div>
