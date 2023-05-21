@@ -60,7 +60,6 @@ class Patient(models.Model):
     non =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     paymenttype =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

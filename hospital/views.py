@@ -27,7 +27,14 @@ import threading
 
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
-    return render(request,'hospital/dashboard.html')
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+        'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
+        'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count()
+        }
+        return render(request,'hospital/dashboard.html',context=data)
     
 
 
@@ -174,33 +181,31 @@ def create_patientView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         title = request.POST['title']
-        name = request.POST['name']
+        patientname = request.POST['patientname']
         nok = request.POST['nok']
         non = request.POST['non']
         number = request.POST['phone']        
         paymenttype = request.POST['paymenttype']
         patientid = random_id(length=9,character_set=string.digits)
-        
-        create_new_patient_account=User.objects.create_user(username=username,first_name=name,last_name=name,address=address,password=password,is_patient=True,email=email,number=number,customerid=patientid)
-        create_new_patient_account.save()
-            
-        save_patient_details=Patient(user=create_new_patient_account,hospital=hospital_instance,title=title,name=name,nok=nok,non=non,phone=number,paymenttype=paymenttype)
+    
+        save_patient_details=Patient(hospital=hospital_instance,patientid=patientid,title=title,name=patientname,nok=nok,non=non,phone=number,paymenttype=paymenttype)
         save_patient_details.save()
         messages.info(request,'Patient Profile created successfully')
-        return render(request,'hospital/add_patient.html',{})
+        return redirect('/add_patient')
     
 
 @login_required(login_url='/')  
 def add_patientView(request):
     if request.user.is_authenticated and request.user.is_hospital:
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        # get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
-        # data = {
-        #     'get_all_hospital_department_list':get_all_hospital_department_list
-        # }
         return render(request,'hospital/add_patient.html')
     
         
 def patient_listView(request):
-    return render(request,'hospital/patient_list.html')
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        list_all_patient =Patient.objects.filter(hospital=hospital_instance)
+        data = {
+            'list_all_patient':list_all_patient
+        }
+        return render(request,'hospital/patient_list.html',context=data)

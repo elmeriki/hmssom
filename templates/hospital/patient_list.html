@@ -28,33 +28,21 @@
 								<th>Fullname</th>
 								<th>Patient Phone</th>
 								<th>Next of kin</th>
-						
+								<th>Next of kin Number</th>
 								<th>Payment Type</th>
-								<th>Status</th>
+								<th>Date</th>
 							</tr>
 						</thead>
 						<tbody>
-							{% for eachall_patients_list in all_patient_list %}
+							{% for list_all_patient in list_all_patient %}
 							<tr>
-								<td>{{eachall_patients_list.user.customerid}}</td>
-								<td>{{eachall_patient_list.name}}</td>
-								<td><span class="font-w500">{{eachall_patient_list.phone}}</span></td>
-								<td>{{eachall_patient_list.nok}}</td>
-                               
-                                <td>{{eachall_patient_list.paymenttype}</td>
-
-
-								<td>
-									<a href="#" class="btn btn-primary light btn-rounded btn-sm text-nowrap">5
-										Appointment</a>
-								</td>
-								
-								<td><span class="font-w500">text</span></td>
-								{% if eachall_patient_list.status == 1 %}
-								<td><span class="font-w500">Avaliable</span></td>
-								{% else %}
-								<td><span class="font-w500">Unvaliable</span></td>
-								{% endif %}
+								<td>{{list_all_patient.patientid}}</td>
+								<td>{{list_all_patient.title}} {{list_all_patient.name}}</td>
+								<td><span class="font-w500">{{list_all_patient.phone}}</span></td>
+								<td>{{list_all_patient.nok}}</td>
+								<td>{{list_all_patient.non}}</td>
+                                <td>{{list_all_patient.paymenttype}}</td>
+								<td><span class="font-w500">{{list_all_patient.created_at | timesince }} ago</span></td>
 							</tr>
 							{% endfor %}
 
