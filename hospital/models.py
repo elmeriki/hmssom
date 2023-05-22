@@ -125,7 +125,8 @@ class Chat(models.Model):
 
 class Childbirth(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_birth")
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_who_gave_birth")
+    title = models.CharField(max_length=200,default=0,null=True,blank=True)
+    race = models.CharField(max_length=200,default=0,null=True,blank=True)
     dob = models.DateField()
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -138,9 +139,13 @@ class Childbirth(models.Model):
     
 class Deadthrecord(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_was_birthed")
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_who_died")
+    title = models.CharField(max_length=200,default=0,null=True,blank=True)
+    race = models.CharField(max_length=200,default=0,null=True,blank=True)
+    name = models.CharField(max_length=200,default=0,null=True,blank=True)
+    phone = models.CharField(max_length=200,default=0,null=True,blank=True)
+    addres = models.CharField(max_length=200,default=0,null=True,blank=True)
+    desc = models.CharField(max_length=200,default=0,null=True,blank=True)
     dod = models.DateField()
-    status = models.CharField(max_length=200,default=0,null=True,blank=True)
     remark =  models.TextField(null=True,blank=True,default="N/A")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
