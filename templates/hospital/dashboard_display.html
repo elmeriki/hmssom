@@ -48,32 +48,14 @@
     <div class="dashboard_bar">
         Appointment
     </div>
-    {% elif "/humanresource_by_category/Laboratorist" in request.path %}
+    {% elif "/bedcategory_list" in request.path %}
     <div class="dashboard_bar">
-        Human Resources
+        Bed Category
     </div>
-    {% elif "/humanresource_by_category/Receptionist" in request.path %}
+    {% elif "/add_bedcategory" in request.path %}
     <div class="dashboard_bar">
-        Human Resources
+        Bed Category
     </div>
-    {% elif "/humanresource_by_category/Accountant" in request.path %}
-    <div class="dashboard_bar">
-        Human Resources
-    </div>
-    {% elif "/humanresource_by_category/Phamarcist" in request.path %}
-    <div class="dashboard_bar">
-        Human Resources
-    </div>
-    {% elif "/humanresource_by_category/Nurse" in request.path %}
-    <div class="dashboard_bar">
-        Human Resources
-    </div>
-
-    {% elif "/humanresource_by_category/Doctor" in request.path %}
-    <div class="dashboard_bar">
-        Human Resources
-    </div>
-
     {% else %}
     <div class="dashboard_bar">
         Dashboard
