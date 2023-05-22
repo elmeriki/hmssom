@@ -26,11 +26,13 @@ urlpatterns = [
     path('add_humanresource', views.add_humanresourceView, name='add_humanresourceView'),
     path('create_humanresource', views.create_humanresourceView, name='create_humanresourceView'),
     path('humanresource_list', views.humanresource_listView, name='humanresource_listView'),
+    path('humanresource_by_category/<str:category>', views.humanresource_by_categoryView, name='humanresource_by_categoryView'),
 
 
     path('add_appointment', views.add_appointmentView, name='add_appointmentView'),
     path('create_appointment', views.create_appointmentView, name='create_appointmentView'),
     path('appointment_list', views.appointment_listView, name='appointment_listView'),
+
 
 
 ]

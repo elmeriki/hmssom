@@ -256,7 +256,50 @@ def humanresource_listView(request):
         }
         return render(request,'hospital/humanresource_list.html',context=hr_data)
     
-
+def humanresource_by_categoryView(request,category):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        if category == "Doctor":
+            list_all_doctor=Humanresource.objects.filter(hospital=hospital_instance,category=category)
+            data = {
+                'list_all_doctor':list_all_doctor
+            }
+            return render(request,'hospital/humanresource_list.html',context=data)
+        if category == "Nurse":
+            list_all_nurses=Humanresource.objects.filter(hospital=hospital_instance,category=category)
+            data = {
+                'list_all_nurses':list_all_nurses
+            }
+            return render(request,'hospital/humanresource_list.html',context=data)
+        
+        if category == "Phamarcist":
+            list_all_phamarcist=Humanresource.objects.filter(hospital=hospital_instance,category=category)
+            data = {
+                'list_all_phamarcist':list_all_phamarcist
+            }
+            return render(request,'hospital/humanresource_list.html',context=data)
+        if category == "Laboratorist":
+            list_all_laboratorist=Humanresource.objects.filter(hospital=hospital_instance,category=category)
+            data = {
+                'list_all_laboratorist':list_all_laboratorist
+            }
+            return render(request,'hospital/humanresource_list.html',context=data)
+        
+        if category == "Accountant":
+            list_all_accountant=Humanresource.objects.filter(hospital=hospital_instance,category=category)
+            data = {
+                'list_all_accountant':list_all_accountant
+            }
+            return render(request,'hospital/humanresource_list.html',context=data)
+        
+        if category == "Receptionist":
+            list_all_receptionist=Humanresource.objects.filter(hospital=hospital_instance,category=category)
+            data = {
+                'list_all_receptionist':list_all_receptionist
+            }
+            return render(request,'hospital/humanresource_list.html',context=data)
+        
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_appointmentView(request):

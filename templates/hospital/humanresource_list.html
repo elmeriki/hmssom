@@ -36,6 +36,7 @@
 								<th>Last Seen</th>
 							</tr>
 						</thead>
+						{% if list_all_humanresource %}
 						<tbody>
 							{% for eachlist_all_humanresource in list_all_humanresource %}
 							<tr>
@@ -71,6 +72,227 @@
 						
                             {% endfor %}
 						</tbody>
+						{% elif list_all_doctor %}
+						<tbody>
+							{% for list_all_doctor in list_all_doctor %}
+							<tr>
+								<td>{{list_all_doctor.employeeid}}</td>
+								<td>{{list_all_doctor.category}}</td>
+                                <td>{{list_all_doctor.name}}</td>
+								<td>{{list_all_doctor.email}}</td>
+                                <td>{{list_all_doctor.address}}</td>
+                                <td><span class="font-w500">{{list_all_doctor.phone}}</span></td>
+                            
+							
+                            <td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{list_all_doctor.picture.url}}">
+								</div>
+								</td>
+                                <td>
+                                    <div class="timeline-panel">
+                                    <div class="media mr-2"> 
+                                    <img alt="image" width="50" src="{{list_all_doctor.signature.url}}">
+                                    </div>
+                                    </td>
+								{% if list_all_doctor.status == 1 %}
+								<td><span class="font-w500">Avaliable</span></td>
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
+                                
+                                <td><span class="font-w500">{{list_all_doctor.created_at | timesince }} ago</span></td>
+
+							</tr>
+						
+                            {% endfor %}
+						</tbody>
+						{% elif list_all_nurses %}
+						<tbody>
+							{% for list_all_nurses in list_all_nurses %}
+							<tr>
+								<td>{{list_all_nurses.employeeid}}</td>
+								<td>{{list_all_nurses.category}}</td>
+                                <td>{{list_all_nurses.name}}</td>
+								<td>{{list_all_nurses.email}}</td>
+                                <td>{{list_all_nurses.address}}</td>
+                                <td><span class="font-w500">{{list_all_nurses.phone}}</span></td>
+                            
+							
+                            <td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{list_all_nurses.picture.url}}">
+								</div>
+								</td>
+                                <td>
+                                    <div class="timeline-panel">
+                                    <div class="media mr-2"> 
+                                    <img alt="image" width="50" src="{{list_all_nurses.signature.url}}">
+                                    </div>
+                                    </td>
+								{% if list_all_nurses.status == 1 %}
+								<td><span class="font-w500">Avaliable</span></td>
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
+                                
+                                <td><span class="font-w500">{{list_all_nurses.created_at | timesince }} ago</span></td>
+
+							</tr>
+						
+                            {% endfor %}
+						</tbody>
+						{% elif list_all_phamarcist %}
+						<tbody>
+							{% for list_all_phamarcist in list_all_phamarcist %}
+							<tr>
+								<td>{{list_all_phamarcist.employeeid}}</td>
+								<td>{{list_all_phamarcist.category}}</td>
+                                <td>{{list_all_phamarcist.name}}</td>
+								<td>{{list_all_phamarcist.email}}</td>
+                                <td>{{list_all_phamarcist.address}}</td>
+                                <td><span class="font-w500">{{list_all_phamarcist.phone}}</span></td>
+                            
+							
+                            <td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{list_all_phamarcist.picture.url}}">
+								</div>
+								</td>
+                                <td>
+                                    <div class="timeline-panel">
+                                    <div class="media mr-2"> 
+                                    <img alt="image" width="50" src="{{list_all_phamarcist.signature.url}}">
+                                    </div>
+                                    </td>
+								{% if list_all_phamarcist.status == 1 %}
+								<td><span class="font-w500">Avaliable</span></td>
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
+                                
+                                <td><span class="font-w500">{{list_all_phamarcist.created_at | timesince }} ago</span></td>
+
+							</tr>
+						
+                            {% endfor %}
+						</tbody>
+
+						{% elif list_all_laboratorist %}
+						<tbody>
+							{% for list_all_laboratorist in list_all_laboratorist %}
+							<tr>
+								<td>{{list_all_laboratorist.employeeid}}</td>
+								<td>{{list_all_laboratorist.category}}</td>
+                                <td>{{list_all_laboratorist.name}}</td>
+								<td>{{list_all_laboratorist.email}}</td>
+                                <td>{{list_all_laboratorist.address}}</td>
+                                <td><span class="font-w500">{{list_all_laboratorist.phone}}</span></td>
+                            
+							
+                            <td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{list_all_laboratorist.picture.url}}">
+								</div>
+								</td>
+                                <td>
+                                    <div class="timeline-panel">
+                                    <div class="media mr-2"> 
+                                    <img alt="image" width="50" src="{{list_all_laboratorist.signature.url}}">
+                                    </div>
+                                    </td>
+								{% if list_all_laboratorist.status == 1 %}
+								<td><span class="font-w500">Avaliable</span></td>
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
+                                
+                                <td><span class="font-w500">{{list_all_laboratorist.created_at | timesince }} ago</span></td>
+
+							</tr>
+						
+                            {% endfor %}
+						</tbody>
+
+						{% elif list_all_accountant %}
+						<tbody>
+							{% for list_all_accountant in list_all_accountant %}
+							<tr>
+								<td>{{list_all_accountant.employeeid}}</td>
+								<td>{{list_all_accountant.category}}</td>
+                                <td>{{list_all_accountant.name}}</td>
+								<td>{{list_all_accountant.email}}</td>
+                                <td>{{list_all_accountant.address}}</td>
+                                <td><span class="font-w500">{{list_all_accountant.phone}}</span></td>
+                            
+							
+                            <td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{list_all_accountant.picture.url}}">
+								</div>
+								</td>
+                                <td>
+                                    <div class="timeline-panel">
+                                    <div class="media mr-2"> 
+                                    <img alt="image" width="50" src="{{list_all_accountant.signature.url}}">
+                                    </div>
+                                    </td>
+								{% if list_all_accountant.status == 1 %}
+								<td><span class="font-w500">Avaliable</span></td>
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
+                                
+                                <td><span class="font-w500">{{list_all_accountant.created_at | timesince }} ago</span></td>
+
+							</tr>
+						
+                            {% endfor %}
+						</tbody>
+
+						{% elif list_all_receptionist %}
+						<tbody>
+							{% for list_all_receptionist in list_all_receptionist %}
+							<tr>
+								<td>{{list_all_receptionist.employeeid}}</td>
+								<td>{{list_all_receptionist.category}}</td>
+                                <td>{{list_all_receptionist.name}}</td>
+								<td>{{list_all_receptionist.email}}</td>
+                                <td>{{list_all_receptionist.address}}</td>
+                                <td><span class="font-w500">{{list_all_receptionist.phone}}</span></td>
+                            
+							
+                            <td>
+								<div class="timeline-panel">
+								<div class="media mr-2"> 
+								<img alt="image" width="50" src="{{list_all_receptionist.picture.url}}">
+								</div>
+								</td>
+                                <td>
+                                    <div class="timeline-panel">
+                                    <div class="media mr-2"> 
+                                    <img alt="image" width="50" src="{{list_all_receptionist.signature.url}}">
+                                    </div>
+                                    </td>
+								{% if list_all_receptionist.status == 1 %}
+								<td><span class="font-w500">Avaliable</span></td>
+								{% else %}
+								<td><span class="font-w500">Unvaliable</span></td>
+								{% endif %}
+                                
+                                <td><span class="font-w500">{{list_all_receptionist.created_at | timesince }} ago</span></td>
+
+							</tr>
+						
+                            {% endfor %}
+						</tbody>
+
+						{% endif %}
 					</table>
 				
 			</div>
