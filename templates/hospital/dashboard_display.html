@@ -48,6 +48,14 @@
     <div class="dashboard_bar">
         Appointment
     </div>
+    {% elif "/bedcategory_list" in request.path %}
+    <div class="dashboard_bar">
+        Bed Category
+    </div>
+    {% elif "/add_bedcategory" in request.path %}
+    <div class="dashboard_bar">
+        Bed Category
+    </div>
     {% else %}
     <div class="dashboard_bar">
         Dashboard
