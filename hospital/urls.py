@@ -33,6 +33,10 @@ urlpatterns = [
     path('create_appointment', views.create_appointmentView, name='create_appointmentView'),
     path('appointment_list', views.appointment_listView, name='appointment_listView'),
 
+    path('add_bedcategory', views.add_bedcategoryView, name='add_bedcategoryView'),
+    path('create_bedcategory', views.create_bedcategoryView, name='create_bedcategoryView'),
+    path('bedcategory_list', views.bedcategory_listView, name='bedcategory_listView'),
+
 
 
 ]

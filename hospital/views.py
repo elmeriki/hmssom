@@ -310,12 +310,49 @@ def create_appointmentView(request):
 @transaction.atomic  #transactional 
 def add_appointmentView(request):
     #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'hospital/add_appointment.html',{})
+    return render(request,'hospital/add_appointment.html')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def appointment_listView(request):
     #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'hospital/appointment_list.html',{})
+    return render(request,'hospital/appointment_list.html')
+    
 
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_bedcategoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_bedcategory.html')
+
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_bedcategoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        categoryname = request.POST['categoryname']
+        bednumber = request.POST['bednumber']
+        status = request.POST['status']       
+        id = random_id(length=9,character_set=string.digits)
+    
+        save_bedcategory_details=Bedcategory(hospital=hospital_instance, id=id, categoryname=categoryname,bednumber=bednumber,status=status)
+        save_bedcategory_details.save()
+        messages.info(request,'Bed Category created successfully')
+        return redirect('/add_bedcategory')
+      
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def bedcategory_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        list_all_bedcategories=Bedcategory.objects.filter(hospital=hospital_instance)
+        bedcategory_data = {
+            'list_all_bedcategories':list_all_bedcategories
+        }
+        return render(request,'hospital/bedcategory_list.html',context=bedcategory_data)
+       
        
