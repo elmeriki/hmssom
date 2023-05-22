@@ -25,7 +25,7 @@
 						<thead>
 							<tr>
 								<th>Employee ID</th>
-                                <th>Employee Title</th>
+                                <th>Employee Category</th>
 								<th>Employee Fullname</th>
 								<th>Employee Email</th>
 								<th>Employee Address</th>
@@ -40,7 +40,7 @@
 							{% for eachlist_all_humanresource in list_all_humanresource %}
 							<tr>
 								<td>{{eachlist_all_humanresource.employeeid}}</td>
-								<td>{{eachlist_all_humanresource.title}}</td>
+								<td>{{eachlist_all_humanresource.category}}</td>
                                 <td>{{eachlist_all_humanresource.name}}</td>
 								<td>{{eachlist_all_humanresource.email}}</td>
                                 <td>{{eachlist_all_humanresource.address}}</td>
@@ -76,6 +76,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </div>
 
 {% endblock %}
