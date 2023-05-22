@@ -86,7 +86,6 @@ class Bedcategory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-
 class Notice(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
