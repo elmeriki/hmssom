@@ -237,13 +237,13 @@ def create_humanresourceView(request):
         save_humanresource_details=Humanresource(hospital=hospital_instance, employeeid=employeeid,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
         save_humanresource_details.save()
         messages.info(request,'Employee Profile created successfully')
-        return redirect('/add_human_resource')
+        return redirect('/add_humanresource')
 
    
 @login_required(login_url='/')  
 def add_humanresourceView(request):
     if request.user.is_authenticated and request.user.is_hospital:
-        return render(request,'hospital/add_human_resource.html')
+        return render(request,'hospital/add_humanresource.html')
     
     
 def humanresource_listView(request):
@@ -254,7 +254,7 @@ def humanresource_listView(request):
         hr_data = {
             'list_all_humanresource':list_all_humanresource 
         }
-        return render(request,'hospital/human_resource_list.html',context=hr_data)
+        return render(request,'hospital/humanresource_list.html',context=hr_data)
     
 
 @login_required(login_url='/')  
