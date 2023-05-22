@@ -226,6 +226,7 @@ def create_humanresourceView(request):
             messages.info(request,"The Email address is used already")
             return redirect('/add_humanresource')
         hospital_instance=User.objects.get(username=username)
+        category = request.POST['category']
         title = request.POST['title']
         name = request.POST['name']
         email = request.POST['email']
@@ -233,7 +234,7 @@ def create_humanresourceView(request):
         number = request.POST['phone']        
         employeeid = random_id(length=10,character_set=string.digits)
     
-        save_humanresource_details=Humanresource(hospital=hospital_instance, employeeid=employeeid,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
+        save_humanresource_details=Humanresource(hospital=hospital_instance, employeeid=employeeid,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
         save_humanresource_details.save()
         messages.info(request,'Employee Profile created successfully')
         return redirect('/add_human_resource')
