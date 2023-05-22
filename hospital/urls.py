@@ -37,6 +37,14 @@ urlpatterns = [
     path('create_bedcategory', views.create_bedcategoryView, name='create_bedcategoryView'),
     path('bedcategory_list', views.bedcategory_listView, name='bedcategory_listView'),
 
+    path('add_childbirth', views.add_childbirthView, name='add_childbirthView'),
+    path('create_childbirth', views.create_childbirthView, name='create_childbirthView'),
+    path('childbirth_list', views.childbirth_listView, name='childbirth_listView'),
+
+    path('add_deadthrecord', views.add_deadthrecordView, name='add_deadthrecordView'),
+    path('create_deadthrecord', views.create_deadthrecordView, name='create_deadthrecordView'),
+    path('deadthrecord_list', views.deadthrecord_listView, name='deadthrecord_listView'),
+
 
 
 ]

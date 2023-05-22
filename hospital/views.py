@@ -354,5 +354,95 @@ def bedcategory_listView(request):
             'list_all_bedcategories':list_all_bedcategories
         }
         return render(request,'hospital/bedcategory_list.html',context=bedcategory_data)
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_childbirthView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        title = request.POST['title']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        dob = request.POST['dob'] 
+        gender = request.POST['gender']  
+        weight = request.POST['weight']
+        race = request.POST['race']
+        remark = request.POST['remark']
+             
+        id = random_id(length=9,character_set=string.digits)
+    
+        save_childbirth_details=Childbirth(hospital=hospital_instance, id=id, title=title,firstname=firstname, lastname=lastname,
+                                            dob=dob, gender=gender,weight=weight, race=race, remark=remark)
+        save_childbirth_details.save()
+                                             
+        messages.info(request,'Child birth record created successfully')
+        return redirect('/add_childbirth')
+    
        
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_childbirthView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_childbirth.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def childbirth_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        list_all_childbirth=Childbirth.objects.filter(hospital=hospital_instance)
+        childbirth_data = {
+            'list_all_childbirth':list_all_childbirth
+        }
+        return render(request,'hospital/childbirth_list.html',context=childbirth_data)
        
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_deadthrecordView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        title = request.POST['title']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        dod = request.POST['dod'] 
+        gender = request.POST['gender']  
+        phone = request.POST['phone']
+        address = request.POST['address']
+        desc = request.POST['desc']
+        race = request.POST['race']
+        remark = request.POST['remark']
+             
+        id = random_id(length=9,character_set=string.digits)
+    
+        save_deadthrecord_details=Deadthrecord(hospital=hospital_instance, id=id, title=title,firstname=firstname, lastname=lastname,
+                                            dod=dod, gender=gender,phone=phone, address=address,desc=desc, race=race, remark=remark)
+        save_deadthrecord_details.save()
+                                             
+        messages.info(request,'Death record created successfully')
+        return redirect('/add_deadthrecord')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_deadthrecordView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_deathrecord.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def deadthrecord_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        list_all_deadthrecord=Deadthrecord.objects.filter(hospital=hospital_instance)
+        deadthrecord_data = {
+            'list_all_deadthrecord':list_all_deadthrecord
+        }
+        return render(request,'hospital/deathrecord_list.html',context=deadthrecord_data)

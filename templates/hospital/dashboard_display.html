@@ -56,6 +56,22 @@
     <div class="dashboard_bar">
         Bed Category
     </div>
+    {% elif "/childbirth_list" in request.path %}
+    <div class="dashboard_bar">
+        Child Birth
+    </div>
+    {% elif "/add_childbirth" in request.path %}
+    <div class="dashboard_bar">
+        Child Birth
+    </div>
+    {% elif "/deadthrecord_list" in request.path %}
+    <div class="dashboard_bar">
+        Death Record
+    </div>
+    {% elif "/add_deadthrecord" in request.path %}
+    <div class="dashboard_bar">
+        Death Record
+    </div>
     {% else %}
     <div class="dashboard_bar">
         Dashboard

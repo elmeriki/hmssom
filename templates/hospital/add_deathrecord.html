@@ -1,0 +1,92 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">New Death Record</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/create_deadthrecord" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">                               
+                                    <div class="form-group col-md-6">
+                                        <select class="form-control" name="title" required>
+                                            <option value="">Select Title</option>
+                                            <option value="Mr">Mr</option>
+                                            <option value="Mrs">Mrs</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" name="firstname" placeholder="Firstname"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" name="lastname" placeholder="Lastname"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <input type="date" class="form-control" name="dod" placeholder="Date of Death"
+                                            required>
+                                    </div>                                  
+                                    <div class="form-group col-md-6">
+                                        <select class="form-control" name="race" required>
+                                            <option value="">Select Race</option>
+                                            <option value="African">African</option>
+                                            <option value="Indian">Indian</option>
+                                            <option value="White">White</option>
+                                            <option value="Coloured">Coloured</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <select class="form-control" name="gender" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" name="remark" placeholder="Remarks"
+                                            required>
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <input type="tel" class="form-control" name="phone" placeholder="Phone Number"
+                                            required>
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" name="address" placeholder="Address"
+                                            required>
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <input type="text" class="form-control" name="desc" placeholder="Description"
+                                            required>
+                                    </div>    
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
