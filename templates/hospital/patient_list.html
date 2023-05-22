@@ -25,19 +25,21 @@
 						<thead>
 							<tr>
 								<th>Patient ID</th>
+								<th>Title</th>
 								<th>Fullname</th>
 								<th>Patient Phone</th>
 								<th>Next of kin</th>
 								<th>Next of kin Number</th>
 								<th>Payment Type</th>
-								<th>Date</th>
+								<th>Last Seen</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for list_all_patient in list_all_patient %}
 							<tr>
 								<td>{{list_all_patient.patientid}}</td>
-								<td>{{list_all_patient.title}} {{list_all_patient.name}}</td>
+								<td>{{list_all_patient.title}}</td>
+								<td>{{list_all_patient.name}}</td>
 								<td><span class="font-w500">{{list_all_patient.phone}}</span></td>
 								<td>{{list_all_patient.nok}}</td>
 								<td>{{list_all_patient.non}}</td>
@@ -53,5 +55,7 @@
 		</div>
 	</div>
 </div>
+</div>
+
 
 {% endblock %}

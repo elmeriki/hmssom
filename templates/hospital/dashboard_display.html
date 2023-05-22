@@ -40,6 +40,14 @@
     <div class="dashboard_bar">
         Employee Department
     </div>
+    {% elif "/appointment_list" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
+    {% elif "/add_appointment" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
     {% else %}
     <div class="dashboard_bar">
         Dashboard

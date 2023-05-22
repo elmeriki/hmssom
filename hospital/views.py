@@ -254,3 +254,24 @@ def humanresource_listView(request):
             'list_all_humanresource':list_all_humanresource 
         }
         return render(request,'hospital/human_resource_list.html',context=hr_data)
+    
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_appointmentView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+        return render(request,'hospital/add_appointment.html',{})
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_appointmentView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'hospital/add_appointment.html',{})
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def appointment_listView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'hospital/appointment_list.html',{})
+
+       
