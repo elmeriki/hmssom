@@ -34,11 +34,11 @@
     </div>
     {% elif "/humanresource_list" in request.path %}
     <div class="dashboard_bar">
-        Employee Department
+        Human Resources
     </div>
     {% elif "/add_humanresource" in request.path %}
     <div class="dashboard_bar">
-        Employee Department
+        Human Resources
     </div>
     {% elif "/appointment_list" in request.path %}
     <div class="dashboard_bar">
@@ -48,6 +48,32 @@
     <div class="dashboard_bar">
         Appointment
     </div>
+    {% elif "/humanresource_by_category/Laboratorist" in request.path %}
+    <div class="dashboard_bar">
+        Human Resources
+    </div>
+    {% elif "/humanresource_by_category/Receptionist" in request.path %}
+    <div class="dashboard_bar">
+        Human Resources
+    </div>
+    {% elif "/humanresource_by_category/Accountant" in request.path %}
+    <div class="dashboard_bar">
+        Human Resources
+    </div>
+    {% elif "/humanresource_by_category/Phamarcist" in request.path %}
+    <div class="dashboard_bar">
+        Human Resources
+    </div>
+    {% elif "/humanresource_by_category/Nurse" in request.path %}
+    <div class="dashboard_bar">
+        Human Resources
+    </div>
+
+    {% elif "/humanresource_by_category/Doctor" in request.path %}
+    <div class="dashboard_bar">
+        Human Resources
+    </div>
+
     {% else %}
     <div class="dashboard_bar">
         Dashboard
