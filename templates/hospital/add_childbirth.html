@@ -20,8 +20,9 @@
                     <div class="basic-form">
                         <form action="/create_childbirth" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="form-row">                               
+                            <div class="form-row">   
                                     <div class="form-group col-md-6">
+                                        <label for="title">Title</label>                            
                                         <label for="title"><Title></Title></label>
                                         <select class="form-control" name="title" required>
                                             <option value="">Select Title</option>
