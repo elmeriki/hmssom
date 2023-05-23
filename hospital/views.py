@@ -25,6 +25,14 @@ from random_id import random_id
 import string 
 import threading
 
+
+class Emailthread(threading.Thread):
+    def __init__(self,msg):
+        self.msg=msg
+        threading.Thread.__init__(self)
+    def run(self):
+        self.msg.send(fail_silently=False)
+
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -208,7 +216,76 @@ def patient_listView(request):
         }
         return render(request,'hospital/patient_list.html',context=data)
     
+@login_required(login_url='/')  
+def hospital_profileView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        about_the_hospital_text=Hospital.objects.get(hospital=hospital_instance)
+        data = {
+        'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
+        'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
+        'about_the_hospital_text':about_the_hospital_text.desc
+        }
+        return render(request,'hospital/profile.html',context=data)
+
+@login_required(login_url='/')  
+def compose_emailView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        sent_email_count = Email.objects.filter(hospital=hospital_instance).count()
+        data = {
+            'sent_email_count':sent_email_count
+        }
+        return render(request,'hospital/compose.html',context=data)
     
+@login_required(login_url='/')  
+def email_inboxView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        sent_email_count = Email.objects.filter(hospital=hospital_instance).count()
+        data = {
+            'sent_email_count':sent_email_count
+        }
+        return render(request,'hospital/inbox.html',context=data)
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def send_bulk_emailView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        category = request.POST['category']
+        title = request.POST['title']
+        message = request.POST['text']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        if category == "All":
+            if not Humanresource.objects.filter(hospital=hospital_instance):
+                messages.info(request,'No Email Found')
+                return redirect('/compose_email')
+            if Humanresource.objects.filter(hospital=hospital_instance):
+                fetch_all_staff_email=Humanresource.objects.filter(hospital=hospital_instance)
+                for each_staff_info in fetch_all_staff_email:
+                    subject=title
+                    from_email=f'{each_staff_info.hospital.first_name} <no_reply@savemoregroup.com>'
+                    sento = each_staff_info.email
+                    messagbody = '#'
+                    html_content =f'''<p><strong>Dear {each_staff_info.name} </strong> <br><br>  
+                    {message}
+                    <br><hr> Best Regards <br> {each_staff_info.hospital.first_name} </p>'''
+                    msg=EmailMultiAlternatives(subject, messagbody, from_email,[sento])
+                    msg.attach_alternative(html_content, "text/html")
+                    Emailthread(msg).start()
+            save_sent_email=Email(hospital=hospital_instance,title=title,message=message)
+            if save_sent_email:
+                save_sent_email.save()
+                messages.info(request,'Email sent successfully to all staffs') 
+                return redirect('/compose_email')
+        else:
+            messages.info(request,'Something went wrong while sending email') 
+            return redirect('/compose_email')
+        
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_humanresourceView(request):

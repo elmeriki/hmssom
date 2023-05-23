@@ -3,8 +3,13 @@ from hospital import views
 
 urlpatterns = [
     path('hospital_dashboard', views.hospital_dashboardView, name='hospital_dashboardView'),
-    
-    
+    path('hospital_profile', views.hospital_profileView, name='hospital_profileView'),
+
+    path('compose_email', views.compose_emailView, name='compose_emailView'),
+    path('send_bulk_email', views.send_bulk_emailView, name='send_bulk_emailView'),
+    path('email_inbox', views.email_inboxView, name='email_inboxView'),
+
+
     path('department', views.departmentView, name='departmentView'),
     path('add_department', views.add_departmentView, name='add_departmentView'),
     path('save_add_department', views.save_add_departmentView, name='save_add_departmentView'),
@@ -17,7 +22,8 @@ urlpatterns = [
     path('doctor_list', views.doctor_listView, name='doctor_listView'),
     path('create_doctor', views.create_doctorView, name='create_doctorView'),
 
-    
+
+
     path('add_patient', views.add_patientView, name='dd_patientView'),
     path('patient_list', views.patient_listView, name='patient_listView'),
     path('create_patient', views.create_patientView, name='create_patientView'),
