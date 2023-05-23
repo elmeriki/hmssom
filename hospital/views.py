@@ -446,3 +446,46 @@ def deadthrecord_listView(request):
             'list_all_deadthrecord':list_all_deadthrecord
         }
         return render(request,'hospital/deathrecord_list.html',context=deadthrecord_data)
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_donorView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        title = request.POST['title']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        bloodgroup = request.POST['bloodgroup'] 
+        weights = request.POST['weights']
+        age = request.POST['age']
+        gender = request.POST['gender']  
+        phone = request.POST['phone']
+        email = request.POST['email']       
+        donorid = random_id(length=9,character_set=string.digits)
+    
+        save_donor_details=Donor(hospital=hospital_instance, donorid=donorid, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weights=weights, age=age, gender=gender,phone=phone, email=email)
+        save_donor_details.save()
+                                             
+        messages.info(request,'Donor created successfully')
+        return redirect('/add_donor')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_donorView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_donor.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def donor_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_donor_list=Donor.objects.filter(hospital=hospital_instance)
+        donor_data = {
+            'all_donor_list':all_donor_list
+        }
+        return render(request,'hospital/donor_list.html',context=donor_data)
