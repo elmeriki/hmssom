@@ -188,6 +188,8 @@ class File(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_files")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     document = models.ImageField(null=True, upload_to="document/",)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
 class Donor(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_donor")

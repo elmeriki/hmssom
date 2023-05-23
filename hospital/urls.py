@@ -55,6 +55,11 @@ urlpatterns = [
     path('create_donor', views.create_donorView, name='create_donorView'),
     path('donor_list', views.donor_listView, name='donor_listView'),
 
+    path('add_file', views.add_fileView, name='add_fileView'),
+    path('create_file', views.create_fileView, name='create_fileView'),
+    path('file_list', views.file_listView, name='file_listView'),
+
+
 
 ]
 

@@ -539,9 +539,9 @@ def create_donorView(request):
         gender = request.POST['gender']  
         phone = request.POST['phone']
         email = request.POST['email']       
-        donorid = random_id(length=9,character_set=string.digits)
+        id = random_id(length=9,character_set=string.digits)
     
-        save_donor_details=Donor(hospital=hospital_instance, donorid=donorid, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weights=weights, age=age, gender=gender,phone=phone, email=email)
+        save_donor_details=Donor(hospital=hospital_instance, id=id, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weights=weights, age=age, gender=gender,phone=phone, email=email)
         save_donor_details.save()
                                              
         messages.info(request,'Donor created successfully')
@@ -566,3 +566,46 @@ def donor_listView(request):
             'all_donor_list':all_donor_list
         }
         return render(request,'hospital/donor_list.html',context=donor_data)
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_fileView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        if len(request.FILES) != 0:
+            document=request.FILES['document']
+            documentfilesize=document.size
+            if documentfilesize > 2621440  > 2621440:
+                messages.info(request,"The File is Biger Than 2MB")
+                return redirect('/add_file')
+        title = request.POST['title']
+            
+        id = random_id(length=9,character_set=string.digits)
+    
+        save_file_details=File(hospital=hospital_instance, id=id, title=title, document=document)
+        save_file_details.save()
+                                             
+        messages.info(request,'File created successfully')
+        return redirect('/add_file')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_fileView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_file.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def file_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_file_list=File.objects.filter(hospital=hospital_instance)
+        file_data = {
+            'all_file_list':all_file_list
+        }
+        return render(request,'hospital/file_list.html',context=file_data)
+
