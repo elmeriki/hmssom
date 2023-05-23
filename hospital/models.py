@@ -1,6 +1,7 @@
 from django.db import models
 from hmmauth.models import *
 
+
 # Create your models here.
 class Hospital(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_names")
@@ -40,7 +41,7 @@ class Doctor(models.Model):
 class Humanresource(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_human_resource")
     category = models.CharField(max_length=200,blank=True,null=True,default="None")
-    employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    #employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -193,17 +194,16 @@ class File(models.Model):
 
 class Donor(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_donor")
-    donorid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
     bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    weights = models.CharField(max_length=200,default="0",null=True,blank=True)
+    weight = models.CharField(max_length=200,default=0,null=True,blank=True)
     age =  models.CharField(max_length=200,blank=True,null=True,default="None")
     gender =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.EmailField(max_length=200,blank=True,null=True,default="None")
-    lastdonationdate =  models.DateField()
+    lastdonationdate = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

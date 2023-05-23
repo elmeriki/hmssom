@@ -309,9 +309,9 @@ def create_humanresourceView(request):
         email = request.POST['email']
         address = request.POST['address']
         number = request.POST['phone']        
-        employeeid = random_id(length=10,character_set=string.digits)
+        id = random_id(length=10,character_set=string.digits)
     
-        save_humanresource_details=Humanresource(hospital=hospital_instance, employeeid=employeeid,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
+        save_humanresource_details=Humanresource(hospital=hospital_instance, id=id,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
         save_humanresource_details.save()
         messages.info(request,'Employee Profile created successfully')
         return redirect('/add_humanresource')
@@ -534,14 +534,14 @@ def create_donorView(request):
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         bloodgroup = request.POST['bloodgroup'] 
-        weights = request.POST['weights']
+        weight = request.POST['weight']
         age = request.POST['age']
         gender = request.POST['gender']  
         phone = request.POST['phone']
         email = request.POST['email']       
         id = random_id(length=9,character_set=string.digits)
     
-        save_donor_details=Donor(hospital=hospital_instance, id=id, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weights=weights, age=age, gender=gender,phone=phone, email=email)
+        save_donor_details=Donor(hospital=hospital_instance, id=id, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weight=weight, age=age, gender=gender,phone=phone, email=email)
         save_donor_details.save()
                                              
         messages.info(request,'Donor created successfully')
