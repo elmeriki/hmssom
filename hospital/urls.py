@@ -51,6 +51,9 @@ urlpatterns = [
     path('create_deadthrecord', views.create_deadthrecordView, name='create_deadthrecordView'),
     path('deadthrecord_list', views.deadthrecord_listView, name='deadthrecord_listView'),
 
+    path('add_donor', views.add_donorView, name='add_donorView'),
+    path('create_donor', views.create_donorView, name='create_donorView'),
+    path('donor_list', views.donor_listView, name='donor_listView'),
 
 
 ]
