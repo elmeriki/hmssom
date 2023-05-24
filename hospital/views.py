@@ -609,3 +609,75 @@ def file_listView(request):
         }
         return render(request,'hospital/file_list.html',context=file_data)
 
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_bloodView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        bloodgroup = request.POST['bloodgroup']
+        quantity = request.POST['quantity']
+        status = request.POST['status']       
+        id = random_id(length=9,character_set=string.digits)
+        save_blood_details=Blood(hospital=hospital_instance, id=id, bloodgroup=bloodgroup, quantity=quantity, status=status)
+        save_blood_details.save()
+                                             
+        messages.info(request,'Blood created successfully')
+        return redirect('/add_blood')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_bloodView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_blood.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def blood_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_blood_list=Blood.objects.filter(hospital=hospital_instance)
+        blood_data = {
+            'all_blood_list':all_blood_list
+        }
+        return render(request,'hospital/blood_list.html',context=blood_data)
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_prescriptionView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        medicine = request.POST['medicine']
+        symptoms = request.POST['symptoms']
+        consumptionscript = request.POST['consumptionscript']       
+        id = random_id(length=9,character_set=string.digits)
+        save_prescription_details=Prescription(hospital=hospital_instance, id=id, medicine=medicine,symptoms=symptoms, consumptionscript=consumptionscript)
+        save_prescription_details.save()
+                                             
+        messages.info(request,'Prescription created successfully')
+        return redirect('/add_prescription')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_prescriptionView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_prescription.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def prescription_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_prescription_list=Prescription.objects.filter(hospital=hospital_instance)
+        prescription_data = {
+            'all_prescription_list':all_prescription_list
+        }
+        return render(request,'hospital/prescription_list.html',context=prescription_data )
+

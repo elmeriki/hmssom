@@ -88,6 +88,22 @@
     <div class="dashboard_bar">
         File Department
     </div>
+    {% elif "/add_blood" in request.path %}
+    <div class="dashboard_bar">
+        Blood Bank
+    </div>
+    {% elif "/blood_list" in request.path %}
+    <div class="dashboard_bar">
+        Blood Bank
+    </div>
+    {% elif "/add_prescription" in request.path %}
+    <div class="dashboard_bar">
+        Prescription
+    </div>
+    {% elif "/prescription_list" in request.path %}
+    <div class="dashboard_bar">
+        Prescription
+    </div>
     {% else %}
     <div class="dashboard_bar">
         Dashboard

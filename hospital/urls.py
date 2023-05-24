@@ -59,6 +59,14 @@ urlpatterns = [
     path('create_file', views.create_fileView, name='create_fileView'),
     path('file_list', views.file_listView, name='file_listView'),
 
+    path('add_blood', views.add_bloodView, name='add_bloodView'),
+    path('create_blood', views.create_bloodView, name='create_bloodView'),
+    path('blood_list', views.blood_listView, name='blood_listView'),
+
+    path('add_prescription', views.add_prescriptionView, name='add_prescriptionView'),
+    path('create_prescription', views.create_prescriptionView, name='create_prescriptionView'),
+    path('prescription_list', views.prescription_listView, name='prescription_listView'),
+
 
 
 ]

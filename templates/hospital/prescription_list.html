@@ -8,7 +8,7 @@
 	<div class="container-fluid">
 		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
 			<div class="mr-auto d-lg-block">
-				<a href="/add_donor" class="btn btn-primary btn-rounded">+ Add New</a>
+				<a href="/add_prescription" class="btn btn-primary btn-rounded">+ Add New</a>
 			</div>
 			<div class="input-group search-area ml-auto d-inline-flex mr-2">
 				<input type="text" class="form-control" placeholder="Search here">
@@ -24,34 +24,28 @@
 					<table id="example5" class="table shadow-hover  table-bordered mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>Donor ID</th>
-                                <th>Title</th>
-								<th>Firstname</th>
-								<th>Lastname</th>
-                                <th>Blood Group</th>
-                                <th>Weight</th>
-                                <th>Age</th>
-                                <th>Gender</th>                            
-                                <th>Phone</th>
-								<th>Email</th>
-								<th>Last Donation Date</th>
+								<th>Prescription ID</th>
+                                <th>Doctor's Name</th>
+								<th>Patient's Name</th>
+                                <th>Medicine</th>
+								<th>Symptoms</th>
+								<th>Consumption Script</th>
+                                <th>Date</th>
+
 							</tr>
 						</thead>
 						<tbody>
-							{% for eachall_donor_list in all_donor_list %}
+							{% for eachall_prescription_list in all_prescription_list %}
 							<tr>
-								<td>{{eachall_donor_list.id}}</td>
-                                <td>{{eachall_donor_list.title}}</td>
-								<td>{{eachall_donor_list.firstname}}</td>
-                                <td>{{eachall_donor_list.lastname}}</td>
-								<td>{{eachall_donor_list.bloodgroup}}</td>
-                                <td>{{eachall_donor_list.weight}}</td>
-                                <td>{{eachall_donor_list.age}}</td>
-                                <td>{{eachall_donor_list.gender}}</td>
-                                <td>{{eachall_donor_list.phone}}</td>                          
-                                <td>{{eachall_donor_list.email}}</td>
-                                <td><span class="font-w500">{{eachall_donor_list.lastdonationdate | date }}</span></td>
+								<td>{{eachall_prescription_list.id}}</td>
+                                <td>{{eachall_prescription_list.doctor.name}}</td>
+								<td>{{eachall_prescription_list.patient.name}}</td>
+                                <td>{{eachall_prescription_list.medicine}}</td>
+                                <td>{{eachall_prescription_list.symptoms}}</td>
+                                <td>{{eachall_prescription_list.consumptionscript}}</td>
+                                <td><span class="font-w500">{{eachall_prescription_list.date | date }}</span></td>
 
+								
 
                                 <td>
                                     <a href="">
@@ -81,7 +75,6 @@
 							</tr>				
                             {% endfor %}
 						</tbody>
-    
 					</table>
 			</div>
 		</div>

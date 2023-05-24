@@ -65,6 +65,18 @@ class Patient(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Prescription(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_dr_patient_prescription")
+    doctor = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_dr_gives_prescription")
+    patient = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_receives_prescription")
+    medicine =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    symptoms =  models.TextField(max_length=200,blank=True,null=True,default="None")
+    consumptionscript =  models.TextField(max_length=200,blank=True,null=True,default="None")
+    date = models.DateField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Labtest(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_lab_test")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_lab_test")
@@ -175,16 +187,6 @@ class Email(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
-    
-class Blood(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
-    group =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
-    status = models.CharField(max_length=200,default=0,null=True,blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-
 class File(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_files")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -203,14 +205,14 @@ class Donor(models.Model):
     gender =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.EmailField(max_length=200,blank=True,null=True,default="None")
-    lastdonationdate = models.DateField()
+    lastdonationdate = models.DateField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Bloodbank(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_bloodbank")
-    bloodgroupid =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    bloodgroup = models.CharField(max_length=200,default=0,null=True,blank=True)
+class Blood(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
+    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
