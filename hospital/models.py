@@ -1,5 +1,6 @@
 from django.db import models
 from hmmauth.models import *
+from customer.models import *
 
 
 # Create your models here.
@@ -26,11 +27,14 @@ class Doctor(models.Model):
     department = models.ForeignKey(Department,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_department")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    email =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    email =  models.EmailField(max_length=200,blank=True,null=True,default="None")
     address =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    password =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    departmentid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     signature = models.ImageField(null=True, upload_to="doctors_signature/",)
     picture = models.ImageField(null=True, upload_to="doctors_pictures/",)
     profile=  models.TextField(null=True,blank=True)
+    message_about_dr=  models.TextField(null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -55,24 +59,14 @@ class Humanresource(models.Model):
 
 class Patient(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admitted")
-    patientid =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    #patientid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     nok =  models.CharField(max_length=200,blank=True,null=True,default="None")
     non =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     paymenttype =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-class Prescription(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_dr_patient_prescription")
-    doctor = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_dr_gives_prescription")
-    patient = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_receives_prescription")
-    medicine =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    symptoms =  models.TextField(max_length=200,blank=True,null=True,default="None")
-    consumptionscript =  models.TextField(max_length=200,blank=True,null=True,default="None")
-    date = models.DateField(auto_now=True)
+    status =  models.CharField(max_length=200,blank=True,null=True,default="None")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -103,6 +97,7 @@ class Notice(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     noticfor =  models.ForeignKey(Department,on_delete=models.CASCADE, related_name="department_notice")
+    noticmsg = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

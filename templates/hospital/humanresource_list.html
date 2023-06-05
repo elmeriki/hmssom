@@ -25,15 +25,16 @@
 						<thead>
 							<tr>
 								<th>Employee ID</th>
-                                <th>Employee Category</th>
+								<th>Employee Category</th>
 								<th>Employee Fullname</th>
 								<th>Employee Email</th>
 								<th>Employee Address</th>
 								<th>Employee Phone</th>
-                                <th>Profile Picture</th>
-                                <th>Signature</th>
-                                <th>Status</th>
+								<th>Profile Picture</th>
+								<th>Signature</th>
+								<th>Status</th>
 								<th>Last Seen</th>
+								<th>Options</th>
 							</tr>
 						</thead>
 						{% if list_all_humanresource %}
@@ -42,35 +43,48 @@
 							<tr>
 								<td>{{eachlist_all_humanresource.id}}</td>
 								<td>{{eachlist_all_humanresource.category}}</td>
-                                <td>{{eachlist_all_humanresource.name}}</td>
+								<td>{{eachlist_all_humanresource.name}}</td>
 								<td>{{eachlist_all_humanresource.email}}</td>
-                                <td>{{eachlist_all_humanresource.address}}</td>
-                                <td><span class="font-w500">{{eachlist_all_humanresource.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{eachlist_all_humanresource.picture.url}}">
-								</div>
+								<td>{{eachlist_all_humanresource.address}}</td>
+								<td><span class="font-w500">{{eachlist_all_humanresource.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50"
+												src="{{eachlist_all_humanresource.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{eachlist_all_humanresource.signature.url}}">
-                                    </div>
-                                    </td>
-								{% if eachall_humanresource_list.status == 1 %}
-								<td><span class="font-w500">Avaliable</span></td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50"
+												src="{{eachlist_all_humanresource.signature.url}}">
+										</div>
+								</td>
+								{% if eachall_doctors_list.status == 1 %}
+								<!--<td><span class="font-w500">Available</span></td>-->
+								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i> Available</div></td>
+
 								{% else %}
-								<td><span class="font-w500">Unvaliable</span></td>
+								<!--<td><span class="font-w500">Unvailable</span></td>-->
+								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-danger mr-1"></i> Unvailable</div></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{eachlist_all_humanresource.created_at | timesince }} ago</span></td>
+								<td><span class="font-w500">{{eachlist_all_humanresource.created_at | timesince }}
+										ago</span></td>
+								<td>
+									<div class="d-flex">
+										<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i
+												class="fa fa-pencil"></i></a>
+										<a href="#" class="btn btn-danger shadow btn-xs sharp mr-1"><i
+												class="fa fa-trash"></i></a>
+									</div>
+								</td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 						{% elif list_all_doctor %}
 						<tbody>
@@ -78,35 +92,35 @@
 							<tr>
 								<td>{{list_all_doctor.employeeid}}</td>
 								<td>{{list_all_doctor.category}}</td>
-                                <td>{{list_all_doctor.name}}</td>
+								<td>{{list_all_doctor.name}}</td>
 								<td>{{list_all_doctor.email}}</td>
-                                <td>{{list_all_doctor.address}}</td>
-                                <td><span class="font-w500">{{list_all_doctor.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{list_all_doctor.picture.url}}">
-								</div>
+								<td>{{list_all_doctor.address}}</td>
+								<td><span class="font-w500">{{list_all_doctor.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_doctor.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{list_all_doctor.signature.url}}">
-                                    </div>
-                                    </td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_doctor.signature.url}}">
+										</div>
+								</td>
 								{% if list_all_doctor.status == 1 %}
-								<td><span class="font-w500">Avaliable</span></td>
+								<td><span class="font-w500">Available</span></td>
 								{% else %}
-								<td><span class="font-w500">Unvaliable</span></td>
+								<td><span class="font-w500">Unvailable</span></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{list_all_doctor.created_at | timesince }} ago</span></td>
+
+								<td><span class="font-w500">{{list_all_doctor.created_at | timesince }} ago</span></td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 						{% elif list_all_nurses %}
 						<tbody>
@@ -114,35 +128,35 @@
 							<tr>
 								<td>{{list_all_nurses.employeeid}}</td>
 								<td>{{list_all_nurses.category}}</td>
-                                <td>{{list_all_nurses.name}}</td>
+								<td>{{list_all_nurses.name}}</td>
 								<td>{{list_all_nurses.email}}</td>
-                                <td>{{list_all_nurses.address}}</td>
-                                <td><span class="font-w500">{{list_all_nurses.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{list_all_nurses.picture.url}}">
-								</div>
+								<td>{{list_all_nurses.address}}</td>
+								<td><span class="font-w500">{{list_all_nurses.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_nurses.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{list_all_nurses.signature.url}}">
-                                    </div>
-                                    </td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_nurses.signature.url}}">
+										</div>
+								</td>
 								{% if list_all_nurses.status == 1 %}
 								<td><span class="font-w500">Avaliable</span></td>
 								{% else %}
 								<td><span class="font-w500">Unvaliable</span></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{list_all_nurses.created_at | timesince }} ago</span></td>
+
+								<td><span class="font-w500">{{list_all_nurses.created_at | timesince }} ago</span></td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 						{% elif list_all_phamarcist %}
 						<tbody>
@@ -150,35 +164,36 @@
 							<tr>
 								<td>{{list_all_phamarcist.employeeid}}</td>
 								<td>{{list_all_phamarcist.category}}</td>
-                                <td>{{list_all_phamarcist.name}}</td>
+								<td>{{list_all_phamarcist.name}}</td>
 								<td>{{list_all_phamarcist.email}}</td>
-                                <td>{{list_all_phamarcist.address}}</td>
-                                <td><span class="font-w500">{{list_all_phamarcist.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{list_all_phamarcist.picture.url}}">
-								</div>
+								<td>{{list_all_phamarcist.address}}</td>
+								<td><span class="font-w500">{{list_all_phamarcist.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_phamarcist.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{list_all_phamarcist.signature.url}}">
-                                    </div>
-                                    </td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_phamarcist.signature.url}}">
+										</div>
+								</td>
 								{% if list_all_phamarcist.status == 1 %}
 								<td><span class="font-w500">Avaliable</span></td>
 								{% else %}
 								<td><span class="font-w500">Unvaliable</span></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{list_all_phamarcist.created_at | timesince }} ago</span></td>
+
+								<td><span class="font-w500">{{list_all_phamarcist.created_at | timesince }} ago</span>
+								</td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 
 						{% elif list_all_laboratorist %}
@@ -187,35 +202,36 @@
 							<tr>
 								<td>{{list_all_laboratorist.employeeid}}</td>
 								<td>{{list_all_laboratorist.category}}</td>
-                                <td>{{list_all_laboratorist.name}}</td>
+								<td>{{list_all_laboratorist.name}}</td>
 								<td>{{list_all_laboratorist.email}}</td>
-                                <td>{{list_all_laboratorist.address}}</td>
-                                <td><span class="font-w500">{{list_all_laboratorist.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{list_all_laboratorist.picture.url}}">
-								</div>
+								<td>{{list_all_laboratorist.address}}</td>
+								<td><span class="font-w500">{{list_all_laboratorist.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_laboratorist.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{list_all_laboratorist.signature.url}}">
-                                    </div>
-                                    </td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_laboratorist.signature.url}}">
+										</div>
+								</td>
 								{% if list_all_laboratorist.status == 1 %}
 								<td><span class="font-w500">Available</span></td>
 								{% else %}
 								<td><span class="font-w500">Unvailable</span></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{list_all_laboratorist.created_at | timesince }} ago</span></td>
+
+								<td><span class="font-w500">{{list_all_laboratorist.created_at | timesince }} ago</span>
+								</td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 
 						{% elif list_all_accountant %}
@@ -224,35 +240,36 @@
 							<tr>
 								<td>{{list_all_accountant.employeeid}}</td>
 								<td>{{list_all_accountant.category}}</td>
-                                <td>{{list_all_accountant.name}}</td>
+								<td>{{list_all_accountant.name}}</td>
 								<td>{{list_all_accountant.email}}</td>
-                                <td>{{list_all_accountant.address}}</td>
-                                <td><span class="font-w500">{{list_all_accountant.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{list_all_accountant.picture.url}}">
-								</div>
+								<td>{{list_all_accountant.address}}</td>
+								<td><span class="font-w500">{{list_all_accountant.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_accountant.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{list_all_accountant.signature.url}}">
-                                    </div>
-                                    </td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_accountant.signature.url}}">
+										</div>
+								</td>
 								{% if list_all_accountant.status == 1 %}
 								<td><span class="font-w500">Avaliable</span></td>
 								{% else %}
 								<td><span class="font-w500">Unvaliable</span></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{list_all_accountant.created_at | timesince }} ago</span></td>
+
+								<td><span class="font-w500">{{list_all_accountant.created_at | timesince }} ago</span>
+								</td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 
 						{% elif list_all_receptionist %}
@@ -261,44 +278,45 @@
 							<tr>
 								<td>{{list_all_receptionist.employeeid}}</td>
 								<td>{{list_all_receptionist.category}}</td>
-                                <td>{{list_all_receptionist.name}}</td>
+								<td>{{list_all_receptionist.name}}</td>
 								<td>{{list_all_receptionist.email}}</td>
-                                <td>{{list_all_receptionist.address}}</td>
-                                <td><span class="font-w500">{{list_all_receptionist.phone}}</span></td>
-                            
-							
-                            <td>
-								<div class="timeline-panel">
-								<div class="media mr-2"> 
-								<img alt="image" width="50" src="{{list_all_receptionist.picture.url}}">
-								</div>
+								<td>{{list_all_receptionist.address}}</td>
+								<td><span class="font-w500">{{list_all_receptionist.phone}}</span></td>
+
+
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_receptionist.picture.url}}">
+										</div>
 								</td>
-                                <td>
-                                    <div class="timeline-panel">
-                                    <div class="media mr-2"> 
-                                    <img alt="image" width="50" src="{{list_all_receptionist.signature.url}}">
-                                    </div>
-                                    </td>
+								<td>
+									<div class="timeline-panel">
+										<div class="media mr-2">
+											<img alt="image" width="50" src="{{list_all_receptionist.signature.url}}">
+										</div>
+								</td>
 								{% if list_all_receptionist.status == 1 %}
 								<td><span class="font-w500">Avaliable</span></td>
 								{% else %}
 								<td><span class="font-w500">Unvaliable</span></td>
 								{% endif %}
-                                
-                                <td><span class="font-w500">{{list_all_receptionist.created_at | timesince }} ago</span></td>
+
+								<td><span class="font-w500">{{list_all_receptionist.created_at | timesince }} ago</span>
+								</td>
 
 							</tr>
-						
-                            {% endfor %}
+
+							{% endfor %}
 						</tbody>
 
 						{% endif %}
 					</table>
-				
+
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </div>
 
 {% endblock %}

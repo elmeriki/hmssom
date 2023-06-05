@@ -21,23 +21,26 @@ urlpatterns = [
     path('add_doctor', views.add_doctorView, name='add_doctorView'),
     path('doctor_list', views.doctor_listView, name='doctor_listView'),
     path('create_doctor', views.create_doctorView, name='create_doctorView'),
-
-
+    path('edit_doctor/<str:doctorsid>', views.edit_doctorView, name='edit_doctorView'),
+    path('update_doctor/<str:doctorsid>', views.update_doctorView, name='update_doctorView'),
+    path('delete_doctor/<str:doctorsid>', views.delete_doctorView, name='delete_doctorView'),
+    
 
     path('add_patient', views.add_patientView, name='dd_patientView'),
+    path('save_add_patient', views.save_add_patientView, name='save_add_patientiVew'),
+    #path('create_patient', views.create_patientView, name='create_patientView'),
     path('patient_list', views.patient_listView, name='patient_listView'),
-    path('create_patient', views.create_patientView, name='create_patientView'),
-
+    path('edit_patient/<str:patientid>', views.edit_patientView, name='edit_patientView'),
+    path('update_patient/<str:patientid>', views.update_patientView, name='update_patientView'),
+    path('delete_patient/<str:patientid>', views.delete_patientView, name='delete_patientView'),
+    
+    
 
     path('add_humanresource', views.add_humanresourceView, name='add_humanresourceView'),
     path('create_humanresource', views.create_humanresourceView, name='create_humanresourceView'),
     path('humanresource_list', views.humanresource_listView, name='humanresource_listView'),
     path('humanresource_by_category/<str:category>', views.humanresource_by_categoryView, name='humanresource_by_categoryView'),
 
-
-    path('add_appointment', views.add_appointmentView, name='add_appointmentView'),
-    path('create_appointment', views.create_appointmentView, name='create_appointmentView'),
-    path('appointment_list', views.appointment_listView, name='appointment_listView'),
 
     path('add_bedcategory', views.add_bedcategoryView, name='add_bedcategoryView'),
     path('create_bedcategory', views.create_bedcategoryView, name='create_bedcategoryView'),
@@ -63,9 +66,10 @@ urlpatterns = [
     path('create_blood', views.create_bloodView, name='create_bloodView'),
     path('blood_list', views.blood_listView, name='blood_listView'),
 
-    path('add_prescription', views.add_prescriptionView, name='add_prescriptionView'),
-    path('create_prescription', views.create_prescriptionView, name='create_prescriptionView'),
-    path('prescription_list', views.prescription_listView, name='prescription_listView'),
+   
+    path('add_notice', views.add_noticeView, name='add_noticeView'),
+    path('create_notice', views.create_noticeView, name='create_noticeView'),
+    path('notice_list', views.notice_listView, name='notice_listView'),
 
 
 

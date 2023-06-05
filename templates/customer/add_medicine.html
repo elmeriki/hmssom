@@ -1,0 +1,99 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">New Medicine</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/create_medicine" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">                               
+                                    <!--<div class="form-group col-md-6">
+                                        <label for="title">Title</label>
+                                        <select class="form-control" name="title" required>
+                                            <option value="">Select Title</option>
+                                            <option value="Mr">Mr</option>
+                                            <option value="Mrs">Mrs</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>-->
+                                    
+                                    <div class="form-group col-md-6">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name" placeholder="Medicine"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="category">Category</label>
+                                        <select class="form-control" name="category" required>
+                                            <option value="">Select Category</option>
+                                            <option value="Capsules">Capsules</option>
+                                            <option value="Liquid">Liquid</option>
+                                            <option value="Topical">Topical</option>
+                                            <option value="Injections">Injections</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="storebox">Storebox</label>
+                                        <input type="text" class="form-control" name="storebox"
+                                            placeholder="Storebox" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="purchaseprice">Purchase Price</label>
+                                        <input type="number" class="form-control" name="purchaseprice" placeholder="Purchase Price"
+                                            required>
+                                    </div>   
+                                    <div class="form-group col-md-6">
+                                        <label for="saleprice">Sale Price</label>
+                                        <input type="number" class="form-control" name="saleprice" placeholder="Sale Price"
+                                            required>
+                                    </div>  
+                                    <div class="form-group col-md-6">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="number" class="form-control" name="quantity" placeholder="Quantity"
+                                            required>
+                                    </div>                                           
+                                    <div class="form-group col-md-6">
+                                        <label for="genericname">Genericname</label>
+                                        <input type="text" class="form-control" name="genericname" placeholder="Genericname"
+                                            required>
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <label for="company">Company</label>
+                                        <input type="text" class="form-control" name="company" placeholder="Company"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="effects">Effects</label>
+                                        <input type="text" class="form-control" name="effects" placeholder="Effects"
+                                            required>
+                                    </div>
+                                     
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

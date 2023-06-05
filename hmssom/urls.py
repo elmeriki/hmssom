@@ -10,5 +10,5 @@ urlpatterns = [
     path('', include('hospital.urls')),
     path('', include('administrator.urls')),
     path('', include('finance.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # New
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
 
