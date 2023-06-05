@@ -20,6 +20,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.views.generic import View
 from hmmauth.models import *
 from customer.models import *
+from hospital.models import *
 from django.db.models import Sum
 from random_id import random_id
 import string 
@@ -33,6 +34,7 @@ class Emailthread(threading.Thread):
     def run(self):
         self.msg.send(fail_silently=False)
 
+
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -44,7 +46,6 @@ def hospital_dashboardView(request):
         }
         return render(request,'hospital/dashboard.html',context=data)
     
-
 
 @login_required(login_url='/')  
 def departmentView(request):
@@ -68,10 +69,10 @@ def add_departmentView(request):
 def save_add_departmentView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
         department_name = request.POST['departmentname']
-        department_decs = request.POST['departmentdec']
+        departmentdesc = request.POST['departmentdesc']
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        create_Department =Department(hospital=hospital_instance,name=department_name,desc=department_decs)
+        create_Department =Department(hospital=hospital_instance,name=department_name,desc=departmentdesc)
         if create_Department:
             create_Department.save()
             messages.info(request,'Department Created successfully')
@@ -89,7 +90,7 @@ def edit_departmentView(request,departmentid):
         get_department_instance = Department.objects.get(id=departmentid)
         data = {
         'department':get_department_instance.name,
-        'deaprtmentdesc':get_department_instance.desc,
+        'departmentdesc':get_department_instance.desc,
         'departmentid':get_department_instance.id,
         'departmentid':departmentid
         }
@@ -101,9 +102,9 @@ def edit_departmentView(request,departmentid):
 def update_departmentView(request,departmentid):
     if request.user.is_authenticated and request.user.is_hospital:
         departmentname=request.POST['departmentname']
-        departmentdec=request.POST['departmentdec']
+        departmentdesc=request.POST['departmentdesc']
         Department.objects.filter(pk=departmentid).update(name=departmentname)
-        Department.objects.filter(pk=departmentid).update(desc=departmentdec)
+        Department.objects.filter(pk=departmentid).update(desc=departmentdesc)
         messages.info(request,'Update has been done successfully')
         return redirect(f'/edit_department/{departmentid}')
 
@@ -114,37 +115,9 @@ def delete_departmentView(request, departmentid):
         delete_department = Department.objects.get(id=departmentid)
         delete_department.delete()
         return redirect('/department')
-    
 
 
-@login_required(login_url='/')  
-def doctor_listView(request):
-    if request.user.is_authenticated and request.user.is_hospital:
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        all_doctors_list =Doctor.objects.filter(hospital=hospital_instance)
-        data = {
-            'all_doctors_list':all_doctors_list
-        }
-        return render(request,'hospital/doctor_list.html',context=data)
-    
-    
-@login_required(login_url='/')  
-def add_doctorView(request):
-    if request.user.is_authenticated and request.user.is_hospital:
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
-        data = {
-            'get_all_hospital_department_list':get_all_hospital_department_list
-        }
-        return render(request,'hospital/add_doctor.html',context=data)
-        
-def patient_listView(request):
-    return render(request,'hospital/patient_list.html')
 
-
-    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_doctorView(request):
@@ -174,47 +147,222 @@ def create_doctorView(request):
         create_new_doctors_account=User.objects.create_user(username=email,first_name=name,last_name=name,password=password,is_dr=True,email=email,address=address,number=number,customerid=doctorsid)
         create_new_doctors_account.save()
             
-        save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,profile=message_about_dr)
+        save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
         save_doctors_details.save()
         messages.info(request,'Doctors Profile created successfully')
         return render(request,'hospital/add_doctor.html',{})
+
+# @login_required(login_url='/')  
+# @transaction.atomic  #transactional 
+# def create_doctorView(request):
+#     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+#         username=request.user.username
+#         hospital_instance=User.objects.get(username=username)
+#         if len(request.FILES) != 0:
+#             picture=request.FILES['picture']
+#             signature=request.FILES['signature']
+#             picturefilesize=picture.size
+#             signaturefilesize=signature.size
+#             if picturefilesize > 2621440 and signaturefilesize > 2621440:
+#                 messages.info(request,"The Dr Picture and Signature is Biger Than 2MB")
+#                 return redirect('/add_doctor')
+#         if User.objects.filter(email=request.POST['email']).exists():
+#             messages.info(request,"The Email address is used already")
+#             return redirect('/add_doctor')
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         number = request.POST['phone']
+#         address = request.POST['address']
+#         password = request.POST['password']
+#         department = request.POST['department']
+#         message_about_dr = request.POST['message_about_dr']
+#         status = request.POST['status']
+
+#         doctorsid = random_id(length=9,character_set=string.digits)
+#         #department_instance = Department.objects.get(id=departmentid)
+#         create_new_doctors_account=User.objects.create_user(id=doctorsid, username=email, first_name=name,last_name=name, password=password,email=email,address=address,number=number,is_dr=True)
+#         create_new_doctors_account.save()
+            
+#         save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr,status=status)
+#         save_doctors_details.save()
+#         messages.info(request,'Doctors Profile created successfully')
+#         return render(request,'hospital/add_doctor.html',{})
+    
+@login_required(login_url='/')  
+def add_doctorView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
+        data = {
+            'get_all_hospital_department_list':get_all_hospital_department_list
+        }
+        return render(request,'hospital/add_doctor.html',context=data)
     
 
 @login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def create_patientView(request):
-    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+def doctor_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        title = request.POST['title']
-        patientname = request.POST['patientname']
-        nok = request.POST['nok']
-        non = request.POST['non']
-        number = request.POST['phone']        
-        paymenttype = request.POST['paymenttype']
-        patientid = random_id(length=9,character_set=string.digits)
-    
-        save_patient_details=Patient(hospital=hospital_instance,patientid=patientid,title=title,name=patientname,nok=nok,non=non,phone=number,paymenttype=paymenttype)
-        save_patient_details.save()
-        messages.info(request,'Patient Profile created successfully')
-        return redirect('/add_patient')
+        hospital_doctor =Doctor.objects.filter(hospital=hospital_instance)
+        data = {
+            'hospital_doctor':hospital_doctor
+        }
+        return render(request,'hospital/doctor_list.html',context=data)
+
+
+@login_required(login_url='/')  
+def edit_doctorView(request,doctorsid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_doctor_instance = Doctor.objects.get(id=doctorsid)
+        data = {
+        'name' : get_doctor_instance.name,
+        'email' : get_doctor_instance.email,
+        'phone' : get_doctor_instance.phone,
+        'address' : get_doctor_instance.address,
+        'departmentid' : get_doctor_instance.department,
+        'password' : get_doctor_instance.user.password,
+        'message_about_dr': get_doctor_instance.message_about_dr,
+        'status' : get_doctor_instance.status,
+        'picture' : get_doctor_instance.picture,
+        'signature' : get_doctor_instance.signature,
+        'doctorsid':get_doctor_instance.id,
+        'doctorsid':doctorsid,
+
+        }
+        return render(request,'hospital/edit_doctor.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_doctorView(request,doctorsid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        name = request.POST['name']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        address = request.POST['address']
+        password = request.POST['password']
+        department = request.POST['department']
+        message_about_dr = request.POST['message_about_dr']
+        status = request.POST['status']
+        picture = request.POST['picture']
+        signature = request.POST['signature']
+
+        
+        Doctor.objects.filter(pk=doctorsid).update(name=name)
+        Doctor.objects.filter(pk=doctorsid).update(email=email)
+        Doctor.objects.filter(pk=doctorsid).update(phone=phone)
+        Doctor.objects.filter(pk=doctorsid).update(address=address)
+        Doctor.objects.filter(pk=doctorsid).update(password=password)
+        Doctor.objects.filter(pk=doctorsid).update(departmentid=department)
+        Doctor.objects.filter(pk=doctorsid).update(message_about_dr=message_about_dr)
+        Doctor.objects.filter(pk=doctorsid).update(status=status)
+        Doctor.objects.filter(pk=doctorsid).update(picture=picture)
+        Doctor.objects.filter(pk=doctorsid).update(signature=signature)
+        messages.info(request,'Update has been done successfully')
+
+        return redirect(f'/edit_doctor/{doctorsid}')
+
+
+@login_required(login_url='/')  
+def delete_doctorView(request, doctorsid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_doctor = Doctor.objects.get(id=doctorsid)
+        delete_doctor.delete()
+        return redirect('/doctor_list')
     
 
 @login_required(login_url='/')  
 def add_patientView(request):
-    if request.user.is_authenticated and request.user.is_hospital:
-        return render(request,'hospital/add_patient.html')
+    return render(request,'hospital/add_patient.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def save_add_patientView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        title = request.POST['title']
+        patientname = request.POST['patientname']
+        nok = request.POST['nok']
+        non = request.POST['non']
+        phone = request.POST['phone']        
+        paymenttype = request.POST['paymenttype']
+        status = request.POST['status']
+        username=request.user.username
+        patientid = random_id(length=9,character_set=string.digits)
+        hospital_instance=User.objects.get(username=username)
+        create_patient=Patient(hospital=hospital_instance, id=patientid, title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype, status=status)
+        if create_patient:
+            create_patient.save()
+            messages.info(request,'Patient Created successfully')
+            return redirect('/add_patient')
+        else:
+            return redirect('/patient_list')
+    else:
+       return redirect('/patient_list')
     
-        
+
+
+@login_required(login_url='/')  
 def patient_listView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        list_all_patient =Patient.objects.filter(hospital=hospital_instance)
+        hospital_patient =Patient.objects.filter(hospital=hospital_instance)
         data = {
-            'list_all_patient':list_all_patient
+        'hospital_patient':hospital_patient
         }
-        return render(request,'hospital/patient_list.html',context=data)
+        return render(request,'hospital/patient_list.html',context=data)    
+
+
+@login_required(login_url='/')  
+def edit_patientView(request,patientid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_patient_instance = Patient.objects.get(id=patientid)
+        data = {
+        'title':get_patient_instance.title,
+        'patientname':get_patient_instance.name,
+        'nok':get_patient_instance.nok,
+        'non':get_patient_instance.non,
+        'phone':get_patient_instance.phone,
+        'paymenttype':get_patient_instance.paymenttype,
+        'status':get_patient_instance.status,
+        'patientid':get_patient_instance.id,
+        'patientid':patientid
+
+        }
+        return render(request,'hospital/edit_patient.html',context=data)
+    
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_patientView(request,patientid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        title = request.POST['title']
+        patientname = request.POST['patientname']
+        nok = request.POST['nok']
+        non = request.POST['non']
+        phone = request.POST['phone']        
+        paymenttype = request.POST['paymenttype']
+        status = request.POST['status']        
+        Patient.objects.filter(pk=patientid).update(title=title)
+        Patient.objects.filter(pk=patientid).update(name=patientname)
+        Patient.objects.filter(pk=patientid).update(nok=nok)
+        Patient.objects.filter(pk=patientid).update(non=non)
+        Patient.objects.filter(pk=patientid).update(phone=phone)
+        Patient.objects.filter(pk=patientid).update(paymenttype=paymenttype)
+        Patient.objects.filter(pk=patientid).update(status=status)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_patient/{patientid}')
+
+
+@login_required(login_url='/')  
+def delete_patientView(request, patientid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_patient = Patient.objects.get(id=patientid)
+        delete_patient.delete()
+        return redirect('/patient_list')
     
 @login_required(login_url='/')  
 def hospital_profileView(request):
@@ -228,6 +376,7 @@ def hospital_profileView(request):
         'about_the_hospital_text':about_the_hospital_text.desc
         }
         return render(request,'hospital/profile.html',context=data)
+    
 
 @login_required(login_url='/')  
 def compose_emailView(request):
@@ -240,6 +389,7 @@ def compose_emailView(request):
         }
         return render(request,'hospital/compose.html',context=data)
     
+    
 @login_required(login_url='/')  
 def email_inboxView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -250,6 +400,7 @@ def email_inboxView(request):
             'sent_email_count':sent_email_count
         }
         return render(request,'hospital/inbox.html',context=data)
+    
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -286,6 +437,7 @@ def send_bulk_emailView(request):
             messages.info(request,'Something went wrong while sending email') 
             return redirect('/compose_email')
         
+        
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_humanresourceView(request):
@@ -309,9 +461,9 @@ def create_humanresourceView(request):
         email = request.POST['email']
         address = request.POST['address']
         number = request.POST['phone']        
-        employeeid = random_id(length=10,character_set=string.digits)
+        id = random_id(length=10,character_set=string.digits)
     
-        save_humanresource_details=Humanresource(hospital=hospital_instance, employeeid=employeeid,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
+        save_humanresource_details=Humanresource(hospital=hospital_instance, id=id,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
         save_humanresource_details.save()
         messages.info(request,'Employee Profile created successfully')
         return redirect('/add_humanresource')
@@ -332,6 +484,7 @@ def humanresource_listView(request):
             'list_all_humanresource':list_all_humanresource 
         }
         return render(request,'hospital/humanresource_list.html',context=hr_data)
+    
     
 def humanresource_by_categoryView(request,category):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -377,24 +530,6 @@ def humanresource_by_categoryView(request,category):
             }
             return render(request,'hospital/humanresource_list.html',context=data)
         
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def create_appointmentView(request):
-    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-        return render(request,'hospital/add_appointment.html',{})
-    
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def add_appointmentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'hospital/add_appointment.html')
-
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def appointment_listView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'hospital/appointment_list.html')
-    
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -523,6 +658,7 @@ def deadthrecord_listView(request):
             'list_all_deadthrecord':list_all_deadthrecord
         }
         return render(request,'hospital/deathrecord_list.html',context=deadthrecord_data)
+    
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -534,14 +670,14 @@ def create_donorView(request):
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         bloodgroup = request.POST['bloodgroup'] 
-        weights = request.POST['weights']
+        weight = request.POST['weight']
         age = request.POST['age']
         gender = request.POST['gender']  
         phone = request.POST['phone']
         email = request.POST['email']       
         id = random_id(length=9,character_set=string.digits)
     
-        save_donor_details=Donor(hospital=hospital_instance, id=id, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weights=weights, age=age, gender=gender,phone=phone, email=email)
+        save_donor_details=Donor(hospital=hospital_instance, id=id, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weight=weight, age=age, gender=gender,phone=phone, email=email)
         save_donor_details.save()
                                              
         messages.info(request,'Donor created successfully')
@@ -566,6 +702,7 @@ def donor_listView(request):
             'all_donor_list':all_donor_list
         }
         return render(request,'hospital/donor_list.html',context=donor_data)
+    
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -608,4 +745,88 @@ def file_listView(request):
             'all_file_list':all_file_list
         }
         return render(request,'hospital/file_list.html',context=file_data)
+    
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_bloodView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        bloodgroup = request.POST['bloodgroup']
+        quantity = request.POST['quantity']
+        status = request.POST['status']       
+        id = random_id(length=9,character_set=string.digits)
+        save_blood_details=Blood(hospital=hospital_instance, id=id, bloodgroup=bloodgroup, quantity=quantity, status=status)
+        save_blood_details.save()
+                                             
+        messages.info(request,'Blood created successfully')
+        return redirect('/add_blood')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_bloodView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_blood.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def blood_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_blood_list=Blood.objects.filter(hospital=hospital_instance)
+        blood_data = {
+            'all_blood_list':all_blood_list
+        }
+        return render(request,'hospital/blood_list.html',context=blood_data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_noticeView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        title = request.POST['title']
+        noticfor=request.POST['noticfor']
+        noticmsg = request.POST['noticmsg']
+        status = request.POST['status']       
+        id = random_id(length=9,character_set=string.digits)
+        noticfor_instance = Department.objects.get(id=id)
+        save_notice_details=Notice(hospital=hospital_instance,noticfor_instance=noticfor_instance, id=id, title=title, noticfor=noticfor, noticmsg=noticmsg, status=status)
+        save_notice_details.save()
+                                             
+        messages.info(request,'Notice created successfully')
+        return redirect('/add_notice')
+    
+       
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_noticeView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
+        data = {
+            'get_all_hospital_department_list':get_all_hospital_department_list
+        }
+        return render(request,'hospital/add_notice.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def notice_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_notice_list=Notice.objects.filter(hospital=hospital_instance)
+        notice_data = {
+            'all_notice_list':all_notice_list
+        }
+        return render(request,'hospital/notice_list.html',context=notice_data )
+
+
 

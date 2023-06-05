@@ -1,5 +1,7 @@
 from django.db import models
 from hmmauth.models import *
+from customer.models import *
+
 
 # Create your models here.
 class Hospital(models.Model):
@@ -25,11 +27,14 @@ class Doctor(models.Model):
     department = models.ForeignKey(Department,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_department")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    email =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    email =  models.EmailField(max_length=200,blank=True,null=True,default="None")
     address =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    password =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    departmentid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     signature = models.ImageField(null=True, upload_to="doctors_signature/",)
     picture = models.ImageField(null=True, upload_to="doctors_pictures/",)
     profile=  models.TextField(null=True,blank=True)
+    message_about_dr=  models.TextField(null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,7 +45,7 @@ class Doctor(models.Model):
 class Humanresource(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_human_resource")
     category = models.CharField(max_length=200,blank=True,null=True,default="None")
-    employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    #employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -54,15 +59,17 @@ class Humanresource(models.Model):
 
 class Patient(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admitted")
-    patientid =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    #patientid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     nok =  models.CharField(max_length=200,blank=True,null=True,default="None")
     non =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     paymenttype =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    status =  models.CharField(max_length=200,blank=True,null=True,default="None")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
 class Labtest(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_lab_test")
@@ -90,6 +97,7 @@ class Notice(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     noticfor =  models.ForeignKey(Department,on_delete=models.CASCADE, related_name="department_notice")
+    noticmsg = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -174,16 +182,6 @@ class Email(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
-    
-class Blood(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
-    group =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
-    status = models.CharField(max_length=200,default=0,null=True,blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-
 class File(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_files")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -193,24 +191,23 @@ class File(models.Model):
 
 class Donor(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_donor")
-    donorid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
     bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    weights = models.CharField(max_length=200,default="0",null=True,blank=True)
+    weight = models.CharField(max_length=200,default=0,null=True,blank=True)
     age =  models.CharField(max_length=200,blank=True,null=True,default="None")
     gender =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.EmailField(max_length=200,blank=True,null=True,default="None")
-    lastdonationdate =  models.DateField()
+    lastdonationdate = models.DateField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Bloodbank(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_bloodbank")
-    bloodgroupid =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    bloodgroup = models.CharField(max_length=200,default=0,null=True,blank=True)
+class Blood(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
+    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

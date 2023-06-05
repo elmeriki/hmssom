@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from hmmauth.models import *
 
 
-
 class User(AbstractUser):
     is_hospital = models.BooleanField(default=False,blank=True,null=True)
     is_dr = models.BooleanField(default=False,blank=True,null=True)
@@ -20,7 +19,6 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
        swappable = 'AUTH_USER_MODEL'
        
-# Create your models here.
 class Passcode(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_names_passcode")
     password =  models.CharField(max_length=200,blank=True,null=True,default="None")

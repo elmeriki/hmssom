@@ -57,7 +57,6 @@
                                 <td>{{hospital_department.name}}</td>
                                 <td>{{hospital_department.desc}}</td>
 
-
                                 <td>
                                     <a href="/edit_department/{{hospital_department.id}}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -71,7 +70,7 @@
 
                                 </td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#department_delete_modal"  href="#">
+                                    <a data-toggle="modal" data-target="#department_delete_modal" href="#">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M3 6H5H21" stroke="#F46B68" stroke-width="2" stroke-linecap="round"
@@ -85,26 +84,27 @@
                                 </td>
                             </tr>
 
-
-<div class="modal fade" id="department_delete_modal">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Department Delete</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <p>Are you sure you want to delete the selected department?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
-                <a href="/delete_department/{{hospital_department.id}}" class="btn btn-primary">Delete </a>
-            </div>
-        </div>
-    </div>
-</div>
-
+                            <div class="modal fade" id="department_delete_modal">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Department Delete</h5>
+                                            <button type="button" class="close"
+                                                data-dismiss="modal"><span>&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete the selected department?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger light"
+                                                data-dismiss="modal">Close</button>
+                                            <a href="/delete_department/{{hospital_department.id}}"
+                                                class="btn btn-primary">Delete </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {% endfor %}
                         </tbody>
                     </table>
