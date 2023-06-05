@@ -25,15 +25,6 @@
                     <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="checkbox text-right align-self-center">
-                                        <div class="custom-control custom-checkbox ">
-                                            <input type="checkbox" class="custom-control-input" id="checkAll"
-                                                required="">
-                                            <label class="custom-control-label" for="checkAll"></label>
-                                        </div>
-                                    </div>
-                                </th>
                                 <th>Department ID</th>
                                 <th>Department Name </th>
                                 <th>Department Desc</th>
@@ -44,21 +35,11 @@
                         <tbody>
                             {% for hospital_department in hospital_department %}
                             <tr>
-                                <td>
-                                    <div class="checkbox text-right align-self-center">
-                                        <div class="custom-control custom-checkbox ">
-                                            <input type="checkbox" class="custom-control-input" id="customCheckBox1"
-                                                required="">
-                                            <label class="custom-control-label" for="customCheckBox1"></label>
-                                        </div>
-                                    </div>
-                                </td>
                                 <td>{{hospital_department.id}}</td>
                                 <td>{{hospital_department.name}}</td>
                                 <td>{{hospital_department.desc}}</td>
-
                                 <td>
-                                    <a href="/edit_department/{{hospital_department.id}}">
+                                    <a href="/edit_department/{{hospital_department.id}}" onclick="if(!confirm('Are you sure you want to edith this Department?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -70,7 +51,7 @@
 
                                 </td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#department_delete_modal" href="#">
+                                    <a  href="/delete_department/{{hospital_department.id}}" onclick="if(!confirm('Are you sure you want to delete this Department?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M3 6H5H21" stroke="#F46B68" stroke-width="2" stroke-linecap="round"
@@ -83,28 +64,6 @@
                                     </a>
                                 </td>
                             </tr>
-
-                            <div class="modal fade" id="department_delete_modal">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Department Delete</h5>
-                                            <button type="button" class="close"
-                                                data-dismiss="modal"><span>&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Are you sure you want to delete the selected department?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger light"
-                                                data-dismiss="modal">Close</button>
-                                            <a href="/delete_department/{{hospital_department.id}}"
-                                                class="btn btn-primary">Delete </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             {% endfor %}
                         </tbody>
                     </table>
