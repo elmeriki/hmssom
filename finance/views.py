@@ -29,51 +29,116 @@ import threading
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_paymentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/add_payment.html')
-
+    if request.user.is_authenticated and request.user.is_hospital:        
+        return render(request,'finance/add_payment.html')
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def payment_listView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/payment_list.html')
-
+    if request.user.is_authenticated and request.user.is_hospital:        
+        return render(request,'finance/payment_list.html')
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_paymentcategoryView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/add_paymentcategory.html')
-
+    if request.user.is_authenticated and request.user.is_hospital:        
+        return render(request,'finance/add_paymentcategory.html')
+    else:
+        return redirect('/')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def paymentcategoryView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/paymentcategory.html')
-    
+    if request.user.is_authenticated and request.user.is_hospital:        
+        return render(request,'finance/paymentcategory.html')
+    else:
+        return redirect('/')
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_expenseView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/add_expense.html')
-
+    if request.user.is_authenticated and request.user.is_hospital:  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+        'all_expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
+        }      
+        return render(request,'finance/add_expense.html',context=data)
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def expense_listView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/expense_list.html')
-
+    if request.user.is_authenticated and request.user.is_hospital: 
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = { 
+        'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15]
+        }       
+        return render(request,'finance/expense_list.html',context=data)
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_expensecategoryView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/add_expensecategory.html')
-
+    if request.user.is_authenticated and request.user.is_hospital:        
+        return render(request,'finance/add_expensecategory.html')
+    else:
+        return redirect('/')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def expensecategoryView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/expensecategory.html')
+    if request.user.is_authenticated and request.user.is_hospital:  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+        'expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
+        }      
+        return render(request,'finance/expensecategory.html',context=data)
+    else:
+        return redirect('/')
     
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_new_categoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        category_name =request.POST['category']  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        create_new_expenses_category=Expensescategory(hospital=hospital_instance,name=category_name)
+        if create_new_expenses_category:
+            create_new_expenses_category.save()
+            messages.success(request,'Expended Category created successfuly.')
+            return redirect('/add_expensecategory')
+        else:
+            return redirect('/add_expensecategory')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_new_expensesView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        category_id =int(request.POST['category'] )
+        amount =request.POST['amount'] 
+        desc =request.POST['description']  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        category_instance = Expensescategory.objects.get(id=category_id)
+        save_new_expenses=Expense(hospital=hospital_instance,category=category_instance,amount=amount,decs=desc)
+        if save_new_expenses:
+            save_new_expenses.save()
+            messages.success(request,'Expenses has been save successfuly.')
+            return redirect('/add_expense')
+        else:
+            return redirect('/add_expense')
+    else:
+        return redirect('/')

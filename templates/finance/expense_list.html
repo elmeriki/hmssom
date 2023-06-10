@@ -38,12 +38,11 @@
 								<th>Amount</th>
 								<th>Description</th>
 								<th>Date</th>
-								<th>Options</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								{% for hospital_patient in hospital_patient %}
+								{% for expenses_list in expenses_list %}
 								<td>
 									<div class="checkbox text-right align-self-center">
 										<div class="custom-control custom-checkbox ">
@@ -53,47 +52,10 @@
 										</div>
 									</div>
 								</td>
-								<td>{{hospital_patient.id}}</td>
-								<td>{{hospital_patient.title}}</td>
-								<td>{{hospital_patient.name}}</td>
-								<td><span class="font-w500">{{hospital_patient.phone}}</span></td>
-								<td>{{hospital_patient.nok}}</td>
-								<td>{{hospital_patient.non}}</td>
-								<td>{{hospital_patient.paymenttype}}</td>
-
-								
-								{% if hospital_patient.status == 1 %}
-								<td>
-									<span class="text-nowrap">
-										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
-											xmlns="http://www.w3.org/2000/svg">
-											<circle cx="4.5" cy="4.5" r="4.5" fill="#FFB800" />
-										</svg>
-										<span class="text-warning">Pending</span>
-									</span>
-								</td>
-								{% elif hospital_patient.status == 2%}
-								<td>
-									<span class="text-nowrap">
-										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
-											xmlns="http://www.w3.org/2000/svg">
-											<circle cx="4.5" cy="4.5" r="4.5" fill="#369DC9" />
-										</svg>
-										<span class="text-info">On Recovery</span>
-									</span>
-								</td>
-								{% else %}
-								<td>
-									<span class="text-nowrap">
-										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
-											xmlns="http://www.w3.org/2000/svg">
-											<circle cx="4.5" cy="4.5" r="4.5" fill="#2BC155" />
-										</svg>
-										<span class="text-primary">Recovered</span>
-									</span>
-								</td>
-								{% endif %}
-
+								<td>{{expenses_list.category.name}}</td>
+								<td>{{expenses_list.amount}}</td>
+								<td>{{expenses_list.decs}}</td>
+								<td>{{expenses_list.created_at | timesince}} ago</td>
 								<td>
 									<a href="/edit_patient/{{hospital_patient.id}}"
 										onclick="if(!confirm('Are you sure you want to edit this Patient?')){return false;}">

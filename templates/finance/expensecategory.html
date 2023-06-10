@@ -36,11 +36,12 @@
                                 </th>
                                 <th>Category Name</th>
                                 <th>Options</th>
+                                <th>Del</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                {% for hospital_patient in hospital_patient %}
+                                {% for expenses_categories in expenses_categories %}
                                 <td>
                                     <div class="checkbox text-right align-self-center">
                                         <div class="custom-control custom-checkbox ">
@@ -50,7 +51,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{hospital_expensecategory.name}}</td>
+                                <td>{{expenses_categories.name}}</td>
                                 <td>
                                     <a href="/edit_patient/{{hospital_patient.id}}"
                                         onclick="if(!confirm('Are you sure you want to edit this Patient?')){return false;}">

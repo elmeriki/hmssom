@@ -11,6 +11,8 @@ urlpatterns = [
     path('expensecategory', views.expensecategoryView, name='expensecategoryView'),
     path('add_expensecategory', views.add_expensecategoryView, name='add_expensecategoryView'),
 
-  
+    path('create_new_category', views.create_new_categoryView, name='create_new_categoryView'),
+
+    path('create_new_expenses', views.create_new_expensesView, name='create_new_expensesView'),
 
 ]
