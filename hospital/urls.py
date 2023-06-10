@@ -24,8 +24,12 @@ urlpatterns = [
     path('edit_doctor/<str:doctorsid>', views.edit_doctorView, name='edit_doctorView'),
     path('update_doctor/<str:doctorsid>', views.update_doctorView, name='update_doctorView'),
     path('delete_doctor/<str:doctorsid>', views.delete_doctorView, name='delete_doctorView'),
-    
+    path('doctor_treatment_record', views.doctor_treatment_recordView, name='doctor_treatment_recordView'),
+    path('doctor_visit', views.doctor_visitView, name='doctor_visitView'),
+    path('add_doctor_visit', views.add_doctor_visitView, name='add_doctor_visitView'),
 
+
+    
     path('add_patient', views.add_patientView, name='dd_patientView'),
     path('save_add_patient', views.save_add_patientView, name='save_add_patientiVew'),
     #path('create_patient', views.create_patientView, name='create_patientView'),
@@ -33,34 +37,48 @@ urlpatterns = [
     path('edit_patient/<str:patientid>', views.edit_patientView, name='edit_patientView'),
     path('update_patient/<str:patientid>', views.update_patientView, name='update_patientView'),
     path('delete_patient/<str:patientid>', views.delete_patientView, name='delete_patientView'),
-    
-    
+    path('patient_payments', views.patient_paymentsView, name='patient_paymentsView'),
+    path('patient_payment_history', views.patient_payment_historyView, name='patient_payment_historyView'),
+    path('case_list', views.case_listView, name='case_listView'),
+    path('add_case', views.add_caseView, name='add_caseView'),
+     path('document_list', views.document_listView, name='document_listView'),
+    path('add_document', views.add_documentView, name='add_documentView'),
+
+
 
     path('add_humanresource', views.add_humanresourceView, name='add_humanresourceView'),
     path('create_humanresource', views.create_humanresourceView, name='create_humanresourceView'),
     path('humanresource_list', views.humanresource_listView, name='humanresource_listView'),
     path('humanresource_by_category/<str:category>', views.humanresource_by_categoryView, name='humanresource_by_categoryView'),
+    path('edit_humanresource/<str:humanresourceid>', views.edit_humanresourceView, name='edit_humanresourceView'),
+    path('update_humanresource/<str:humanresourceid>', views.update_humanresourceView, name='update_humanresourceView'),
+    path('delete_humanresource/<str:humanresourceid>', views.delete_humanresourceView, name='delete_humanresourceView'),
 
 
     path('add_bedcategory', views.add_bedcategoryView, name='add_bedcategoryView'),
     path('create_bedcategory', views.create_bedcategoryView, name='create_bedcategoryView'),
     path('bedcategory_list', views.bedcategory_listView, name='bedcategory_listView'),
 
+
     path('add_childbirth', views.add_childbirthView, name='add_childbirthView'),
     path('create_childbirth', views.create_childbirthView, name='create_childbirthView'),
     path('childbirth_list', views.childbirth_listView, name='childbirth_listView'),
+
 
     path('add_deadthrecord', views.add_deadthrecordView, name='add_deadthrecordView'),
     path('create_deadthrecord', views.create_deadthrecordView, name='create_deadthrecordView'),
     path('deadthrecord_list', views.deadthrecord_listView, name='deadthrecord_listView'),
 
+
     path('add_donor', views.add_donorView, name='add_donorView'),
     path('create_donor', views.create_donorView, name='create_donorView'),
     path('donor_list', views.donor_listView, name='donor_listView'),
 
+
     path('add_file', views.add_fileView, name='add_fileView'),
     path('create_file', views.create_fileView, name='create_fileView'),
     path('file_list', views.file_listView, name='file_listView'),
+
 
     path('add_blood', views.add_bloodView, name='add_bloodView'),
     path('create_blood', views.create_bloodView, name='create_bloodView'),

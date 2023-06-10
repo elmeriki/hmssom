@@ -159,4 +159,29 @@ def appointment_listView(request):
     return render(request,'customer/appointment_list.html')
     
 
-    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def todays_appointmentView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'customer/todays_appointment.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def upcoming_appointmentView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'customer/upcoming_appointment.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def calendarView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'customer/calendar.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def request_listView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'customer/request_appointment.html')

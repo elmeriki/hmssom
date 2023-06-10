@@ -16,6 +16,11 @@ urlpatterns = [
     path('add_appointment', views.add_appointmentView, name='add_appointmentView'),
     path('create_appointment', views.create_appointmentView, name='create_appointmentView'),
     path('appointment_list', views.appointment_listView, name='appointment_listView'),
+    path('todays_appointment', views.todays_appointmentView, name='todays_appointmentView'),
+    path('upcoming_appointment', views.upcoming_appointmentView, name='upcoming_appointmentView'),
+    path('calendar', views.calendarView, name='calendarView'),
+    path('request', views.request_listView, name='request_listView'),
+
 
 
 ]

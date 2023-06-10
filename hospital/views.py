@@ -27,6 +27,7 @@ import string
 import threading
 
 
+#==================================EMAIL=====================================
 class Emailthread(threading.Thread):
     def __init__(self,msg):
         self.msg=msg
@@ -35,6 +36,7 @@ class Emailthread(threading.Thread):
         self.msg.send(fail_silently=False)
 
 
+#==============================HOSPITAL DASHBOARD==============================
 @login_required(login_url='/')  
 def hospital_dashboardView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -47,6 +49,7 @@ def hospital_dashboardView(request):
         return render(request,'hospital/dashboard.html',context=data)
     
 
+#====================================DEPARTMENT==================================
 @login_required(login_url='/')  
 def departmentView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -83,7 +86,7 @@ def save_add_departmentView(request):
        return redirect('/department')
     
 
-
+#=======================================DOCTOR====================================
 @login_required(login_url='/')  
 def edit_departmentView(request,departmentid):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -221,7 +224,7 @@ def edit_doctorView(request,doctorsid):
         'email' : get_doctor_instance.email,
         'phone' : get_doctor_instance.phone,
         'address' : get_doctor_instance.address,
-        'departmentid' : get_doctor_instance.department,
+        'department' : get_doctor_instance.department,
         'password' : get_doctor_instance.user.password,
         'message_about_dr': get_doctor_instance.message_about_dr,
         'status' : get_doctor_instance.status,
@@ -274,6 +277,21 @@ def delete_doctorView(request, doctorsid):
     
 
 @login_required(login_url='/')  
+def doctor_treatment_recordView(request):
+    return render(request,'hospital/doctor_treatment_record.html')
+
+@login_required(login_url='/')  
+def doctor_visitView(request):
+    return render(request,'hospital/doctor_visit.html')
+
+
+@login_required(login_url='/')  
+def add_doctor_visitView(request):
+    return render(request,'hospital/add_doctor_visit.html')
+
+
+#===========================================PATIENT========================================
+@login_required(login_url='/')  
 def add_patientView(request):
     return render(request,'hospital/add_patient.html')
 
@@ -292,7 +310,7 @@ def save_add_patientView(request):
         username=request.user.username
         patientid = random_id(length=9,character_set=string.digits)
         hospital_instance=User.objects.get(username=username)
-        create_patient=Patient(hospital=hospital_instance, id=patientid, title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype, status=status)
+        create_patient=Patient(hospital=hospital_instance, id=patientid, title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype,status=status)
         if create_patient:
             create_patient.save()
             messages.info(request,'Patient Created successfully')
@@ -364,6 +382,41 @@ def delete_patientView(request, patientid):
         delete_patient.delete()
         return redirect('/patient_list')
     
+
+@login_required(login_url='/')  
+def patient_paymentsView(request):
+        return render(request,'hospital/patient_payments.html') 
+
+
+@login_required(login_url='/')  
+def patient_payment_historyView(request):
+        return render(request,'hospital/patient_payment_history.html') 
+
+@login_required(login_url='/')  
+def case_listView(request):
+        return render(request,'hospital/case_list.html') 
+
+
+@login_required(login_url='/')  
+def add_caseView(request):
+        return render(request,'hospital/add_case.html') 
+
+
+@login_required(login_url='/')  
+def document_listView(request):
+        return render(request,'hospital/document_list.html') 
+
+
+@login_required(login_url='/')  
+def add_documentView(request):
+        return render(request,'hospital/add_document.html') 
+
+
+
+
+    
+
+#===========================================EMAIL========================================
 @login_required(login_url='/')  
 def hospital_profileView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -376,8 +429,10 @@ def hospital_profileView(request):
         'about_the_hospital_text':about_the_hospital_text.desc
         }
         return render(request,'hospital/profile.html',context=data)
-    
 
+
+
+#===========================================EMAIL========================================
 @login_required(login_url='/')  
 def compose_emailView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -437,7 +492,8 @@ def send_bulk_emailView(request):
             messages.info(request,'Something went wrong while sending email') 
             return redirect('/compose_email')
         
-        
+
+ #===========================================HUMAN RESOURCES========================================       
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_humanresourceView(request):
@@ -460,15 +516,23 @@ def create_humanresourceView(request):
         name = request.POST['name']
         email = request.POST['email']
         address = request.POST['address']
-        number = request.POST['phone']        
-        id = random_id(length=10,character_set=string.digits)
-    
-        save_humanresource_details=Humanresource(hospital=hospital_instance, id=id,category=category,title=title,name=name,email=email,address=address,phone=number,signature=signature,picture=picture)
-        save_humanresource_details.save()
-        messages.info(request,'Employee Profile created successfully')
-        return redirect('/add_humanresource')
+        phone = request.POST['phone']   
+        # picture = request.POST['picture']
+        # signature = request.POST['signature']     
+       # humanresourceid = random_id(length=10,character_set=string.digits)
+        hospital_instance=User.objects.get(username=username)
+        create_Humanresource=Humanresource(hospital=hospital_instance, category=category,title=title,name=name,email=email,address=address,phone=phone,signature=signature,picture=picture)
+        if create_Humanresource:
+            create_Humanresource.save()
+            messages.info(request,'Employee Created successfully')
+            return redirect('/add_humanresource')
+        else:
+            return redirect('/humanresource_list')
+    else:
+       return redirect('/humanresource_list')
 
-   
+
+
 @login_required(login_url='/')  
 def add_humanresourceView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -484,6 +548,60 @@ def humanresource_listView(request):
             'list_all_humanresource':list_all_humanresource 
         }
         return render(request,'hospital/humanresource_list.html',context=hr_data)
+    
+@login_required(login_url='/')  
+def edit_humanresourceView(request,humanresourceid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_humanresource_instance = Humanresource.objects.get(id=humanresourceid)
+        data = {
+        'category' : get_humanresource_instance.category,
+        'title' : get_humanresource_instance.title,
+        'name' : get_humanresource_instance.name,
+        'email' : get_humanresource_instance.email,
+        'phone' : get_humanresource_instance.phone,
+        'address' : get_humanresource_instance.address,
+        'picture' : get_humanresource_instance.picture,
+        'signature' : get_humanresource_instance.signature,
+        'humanresourceid':get_humanresource_instance.id,
+        'humanresourceid':humanresourceid,
+
+        }
+        return render(request,'hospital/edit_humanresource.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_humanresourceView(request,humanresourceid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        category = request.POST['category']
+        title = request.POST['title']
+        name = request.POST['name']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        address = request.POST['address']
+        picture = request.POST['picture']
+        signature = request.POST['signature']
+
+
+        Humanresource.objects.filter(pk=humanresourceid).update(category=category)
+        Humanresource.objects.filter(pk=humanresourceid).update(title=title)
+        Humanresource.objects.filter(pk=humanresourceid).update(name=name)
+        Humanresource.objects.filter(pk=humanresourceid).update(email=email)
+        Humanresource.objects.filter(pk=humanresourceid).update(phone=phone)
+        Humanresource.objects.filter(pk=humanresourceid).update(address=address)
+        Humanresource.objects.filter(pk=humanresourceid).update(picture=picture)
+        Humanresource.objects.filter(pk=humanresourceid).update(signature=signature)
+        messages.info(request,'Update has been done successfully')
+
+        return redirect(f'/edit_humanresource/{humanresourceid}')
+
+
+@login_required(login_url='/')  
+def delete_humanresourceView(request, humanresourceid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_humanresource = Humanresource.objects.get(id=humanresourceid)
+        delete_humanresource.delete()
+        return redirect('/humanresource_list')
     
     
 def humanresource_by_categoryView(request,category):
@@ -531,6 +649,7 @@ def humanresource_by_categoryView(request,category):
             return render(request,'hospital/humanresource_list.html',context=data)
         
 
+#===========================================BED CATEGORY========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_bedcategoryView(request):
@@ -568,6 +687,8 @@ def bedcategory_listView(request):
         return render(request,'hospital/bedcategory_list.html',context=bedcategory_data)
     
     
+
+#===========================================CHILD BIRTH========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_childbirthView(request):
@@ -613,6 +734,7 @@ def childbirth_listView(request):
         return render(request,'hospital/childbirth_list.html',context=childbirth_data)
        
 
+#===========================================DEATH RECORD========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_deadthrecordView(request):
@@ -660,6 +782,7 @@ def deadthrecord_listView(request):
         return render(request,'hospital/deathrecord_list.html',context=deadthrecord_data)
     
 
+#===========================================DONOR========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_donorView(request):
@@ -704,6 +827,7 @@ def donor_listView(request):
         return render(request,'hospital/donor_list.html',context=donor_data)
     
     
+#===========================================FILE========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_fileView(request):
@@ -747,6 +871,7 @@ def file_listView(request):
         return render(request,'hospital/file_list.html',context=file_data)
     
 
+#===========================================BLOOD========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_bloodView(request):
