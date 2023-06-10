@@ -1,7 +1,8 @@
 from django.contrib import admin
-from customer.models import *
+from .models import *
 
+# Register your models here.
 
+admin.site.register(Appointment)
 admin.site.register(Medicine)
 admin.site.register(Prescription)
-admin.site.register(Appointment)

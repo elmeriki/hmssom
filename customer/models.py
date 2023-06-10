@@ -18,17 +18,6 @@ class Appointment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
-# class Prescription(models.Model):
-#     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_prescription")
-#     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_prescription")
-#     dr = models.ForeignKey(User,on_delete=models.CASCADE,related_name="dr_who_prescribe")
-#     history =  models.TextField(null=True,blank=True)
-#     date = models.DateField()
-#     note =  models.TextField(null=True,blank=True)
-#     advise =  models.TextField(null=True,blank=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
 class Medicine(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_medicine")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -59,13 +48,7 @@ class Prescription(models.Model):
     
 
 
-# class Medication(models.Model):
-#     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_medications")
-#     prescription = models.ForeignKey(Prescription,on_delete=models.CASCADE,related_name="prescription_medication_for_patient")
-#     name =  models.TextField(null=True,blank=True)
-#     dosage = models.DateField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+
 
 
     

@@ -21,7 +21,6 @@ class Payment(models.Model):
     pname =  models.TextField(null=True,blank=True)
     paymentcategory = models.ForeignKey(Paymentcategory,on_delete=models.CASCADE)
     pnumber = models.CharField(max_length=200,default=0,null=True,blank=True)
-    amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     paymenttype = models.CharField(max_length=200,default=0,null=True,blank=True)
     paymentstatus = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

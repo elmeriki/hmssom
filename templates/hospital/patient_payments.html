@@ -1,0 +1,72 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+			<div class="mr-auto d-none d-lg-block">
+				<a href="/patient_payment_history" class="btn btn-primary btn-rounded">Payment History</a>
+			</div>
+
+			<div class="input-group search-area ml-auto d-inline-flex mr-3">
+				<input type="text" class="form-control" placeholder="Search here">
+				<div class="input-group-append">
+					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="table-responsive">
+					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+						<thead>
+							<tr>
+								<th>
+									<div class="checkbox text-right align-self-center">
+										<div class="custom-control custom-checkbox ">
+											<input type="checkbox" class="custom-control-input" id="checkAll"
+												required="">
+											<label class="custom-control-label" for="checkAll"></label>
+										</div>
+									</div>
+								</th>
+								<th>Patient ID</th>
+								<th>Fullname</th>
+								<th>Patient Phone</th>								
+								<th>Due Balance</th>
+								<th>Payment History</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{% for hospital_patient in hospital_patient %}
+								<td>
+									<div class="checkbox text-right align-self-center">
+										<div class="custom-control custom-checkbox ">
+											<input type="checkbox" class="custom-control-input" id="customCheckBox"
+												required="">
+											<label class="custom-control-label" for="customCheckBox"></label>
+										</div>
+									</div>
+								</td>
+								<td>{{hospital_patient.id}}</td>
+								<td>{{hospital_patient.name}}</td>
+								<td><span class="font-w500">{{hospital_patient.phone}}</span></td>
+								<td>{{hospital_patient.nok}}</td>
+								
+								<td><a href="">Payment History</a></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

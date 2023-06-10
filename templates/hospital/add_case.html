@@ -1,0 +1,44 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+<div class="container-fluid">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">New Case</h4>
+                {% endif %}            
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="#" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="patientname" placeholder="Patient Full Names" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="title" class="form-control" name="case_title" placeholder="Case Title" required>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <input type="text" class="form-control" name="case" placeholder="Case" required>
+                            </div>
+                        </div>    
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+

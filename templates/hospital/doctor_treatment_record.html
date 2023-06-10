@@ -1,0 +1,66 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department |   {% endblock %}
+{% load static %}
+{% block content %}
+<div class="content-body">
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">Treatment History</h4>
+                {% endif %}            
+            </div>
+            <div class="card-body">
+                <div class="col-xl-4 mb-3">
+                    <div class="example">
+                        <p class="mb-1">Date From - Date To</p>
+                        <input class="form-control input-daterange-datepicker" type="text" name="daterange" value="01/01/2015 - 01/31/2015">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="table-responsive">
+                            <table id="example5" class="table primary-table-bg-hover"  table-bordered mb-4 dataTablesCard fs-14">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor ID</th>
+                                        <th>Doctor</th>
+                                        <th>Number Of Patients Treated</th>
+                                        <th>Details</th>
+        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for eachhospital_doctor in hospital_doctor %}
+                                    <tr>
+                                        <td>{{eachhospital_doctor.id}}</td>
+                                        <td>Dr. {{eachhospital_doctor.name}}</td>
+                                        <td></td>
+                                            <td>
+                                                <a href="#" class="btn btn-info btn-lg" role="button" aria-disabled="false">Details</a>
+            
+                                            </td>
+                                    </tr>
+                                    {% endfor %}
+        
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+
