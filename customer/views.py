@@ -197,30 +197,30 @@ def appointment_listView(request):
     else:
         return redirect('/')
     
-
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def todays_appointmentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/todays_appointment.html')
-
-
+def todays_appointment_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital: 
+        todays_date = date.today()
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username) 
+        data = {
+        'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date=todays_date)
+        }       
+        return render(request,'customer/appointment_list.html',context=data)
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def upcoming_appointmentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/upcoming_appointment.html')
-
-
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def calendarView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/calendar.html')
-
-
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def request_listView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/request_appointment.html')
+def upcoming_appointment_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital: 
+        todays_date = date.today()
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username) 
+        data = {
+        'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date__gt=todays_date)
+        }       
+        return render(request,'customer/appointment_list.html',context=data)
+    else:
+        return redirect('/')

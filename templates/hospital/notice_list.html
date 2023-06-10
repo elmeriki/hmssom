@@ -34,13 +34,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% for eachall_notice_list in all_notice_list %}
+							{% for eachall_notice_list in eachall_notice_list %}
 							<tr>
-								<td>{{eachall_donor_list.id}}</td>
-                                <td>{{eachall_donor_list.title}}</td>
-								<td>{{eachall_donor_list.status}}</td>
-                                <td>{{eachall_doctors_list.noticfor.name}}</td>
-                                <td><span class="font-w500">{{eachall_donor_list.created_at | date }}</span></td>
+								<td>{{eachall_notice_list.id}}</td>
+                                <td>{{eachall_notice_list.title}}</td>
+								<td>{{eachall_notice_list.status}}</td>
+                                <td>{{eachall_notice_list.noticfor.name}}</td>
+                                <td><span class="font-w500">{{eachall_notice_list.created_at | date }}</span></td>
 
 
                                 <td>
