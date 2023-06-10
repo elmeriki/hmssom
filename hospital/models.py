@@ -217,7 +217,7 @@ class Blood(models.Model):
 class Paymentcategory(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name='hospital_category_name')
     category = models.CharField(max_length=200,default=0,null=True,blank=True)
-    dec=models.TextField(null=True,blank=True)
+    desc=models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

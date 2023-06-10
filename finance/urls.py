@@ -15,4 +15,9 @@ urlpatterns = [
 
     path('create_new_expenses', views.create_new_expensesView, name='create_new_expensesView'),
 
+    path('create_new_payment_category', views.create_new_payment_categoryView, name='create_new_payment_categoryView'),
+    
+    path('record_payment', views.record_paymentView, name='record_paymentView'),
+
+
 ]

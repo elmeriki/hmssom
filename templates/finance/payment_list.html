@@ -48,7 +48,7 @@
 						</thead>
 						<tbody>
 							<tr>
-								{% for hospital_patient in hospital_patient %}
+								{% for payment_list in payment_list %}
 								<td>
 									<div class="checkbox text-right align-self-center">
 										<div class="custom-control custom-checkbox ">
@@ -58,16 +58,18 @@
 										</div>
 									</div>
 								</td>
-								<td>{{hospital_patient.id}}</td>
-								<td>{{hospital_patient.title}}</td>
-								<td>{{hospital_patient.name}}</td>
-								<td><span class="font-w500">{{hospital_patient.phone}}</span></td>
-								<td>{{hospital_patient.nok}}</td>
-								<td>{{hospital_patient.non}}</td>
-								<td>{{hospital_patient.paymenttype}}</td>
+								<td>{{payment_list.id}}</td>
+								<td>{{payment_list.patient.name}}</td>
+								<td>{{payment_list.category.category}}</td>
+								<td><span class="font-w500">Dr.{{payment_list.treatedby_dr.name}}</span></td>
+								<td>Biir{{payment_list.amount}}</td>
+								<td>{{payment_list.visitdsc}}</td>
+								<td>{{payment_list.paymenttype}}</td>
+								<td>{{payment_list.created_at.date}}</td>
+
 
 								
-								{% if hospital_patient.status == 1 %}
+								{% if payment_list.status == 1 %}
 								<td>
 									<span class="text-nowrap">
 										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
