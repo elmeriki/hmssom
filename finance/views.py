@@ -37,4 +37,11 @@ def add_paymentView(request):
 def payment_listView(request):
     #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
     return render(request,'finance/payment_list.html')
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def draft_payment_listView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'finance/draft_payment.html')
+    
     
