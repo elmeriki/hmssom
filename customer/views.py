@@ -149,39 +149,78 @@ def create_appointmentView(request):
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_appointmentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/add_appointment.html')
+    if request.user.is_authenticated and request.user.is_hospital:     
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)        
+        data= {
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0)
+        }
+        return render(request,'customer/add_appointment.html',context=data)
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_patient_appointmentView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        phone =request.POST['phone']
+        doctor_id =int(request.POST['doctor_id'])
+        apointmentdate =request.POST['apointmentdate']
+        charges =request.POST['charges']
+        remarks =request.POST['remarks']
+        visitdesc =request.POST['visitdesc'] 
+        paymenttype =request.POST['paymenttype'] 
+        payment_status =request.POST['payment_status'] 
+        username=request.user.username
+        if not Patient.objects.filter(phone=phone).exists():
+            messages.info(request,'Patient Cellphone Number Does Not Exists')
+            return redirect('/add_appointment')
+        else:
+            hospital_instance=User.objects.get(username=username)   
+            patient_instance=Patient.objects.get(phone=phone)
+            doctor_instance=Doctor.objects.get(id=doctor_id)
+            create_apointment=Appointment(hospital=hospital_instance,date=apointmentdate,patient=patient_instance,dr=doctor_instance,visitdsc=visitdesc,remark=remarks,amount=charges,paymenttype=paymenttype,paymentstatus=payment_status) 
+            create_apointment.save()
+            messages.info(request,'Patient Appointment has been created successfully')
+            return redirect('/add_appointment')
+    else:
+        return redirect('/')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def appointment_listView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/appointment_list.html')
+    if request.user.is_authenticated and request.user.is_hospital: 
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username) 
+        data = {
+        'appointment_list':Appointment.objects.filter(hospital=hospital_instance)
+        }       
+        return render(request,'customer/appointment_list.html',context=data)
+    else:
+        return redirect('/')
     
-
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def todays_appointmentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/todays_appointment.html')
-
-
+def todays_appointment_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital: 
+        todays_date = date.today()
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username) 
+        data = {
+        'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date=todays_date)
+        }       
+        return render(request,'customer/appointment_list.html',context=data)
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def upcoming_appointmentView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/upcoming_appointment.html')
-
-
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def calendarView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/calendar.html')
-
-
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def request_listView(request):
-    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'customer/request_appointment.html')
+def upcoming_appointment_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital: 
+        todays_date = date.today()
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username) 
+        data = {
+        'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date__gt=todays_date)
+        }       
+        return render(request,'customer/appointment_list.html',context=data)
+    else:
+        return redirect('/')

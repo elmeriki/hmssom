@@ -4,13 +4,14 @@ from hospital.models import *
 
 # Create your models here.
 class Appointment(models.Model):
-    patient = models.ForeignKey(User,on_delete=models.CASCADE,related_name="patient_appointment_name")
-    dr = models.ForeignKey(User,on_delete=models.CASCADE,related_name="dr_who_is_alocated")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_appointment_name")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_appointment_name")
+    dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True,blank=True,related_name="dr_who_is_alocated")
     visitdsc =  models.TextField(null=True,blank=True)
     remark =  models.TextField(null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
-    date = models.DateField(auto_now=True)
+    date =models.DateField(default=0,null=True,blank=True)
     paymenttype = models.CharField(max_length=200,default=0,null=True,blank=True)
     paymentstatus = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -59,7 +59,6 @@ class Humanresource(models.Model):
 
 class Patient(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admitted")
-    #patientid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     nok =  models.CharField(max_length=200,blank=True,null=True,default="None")

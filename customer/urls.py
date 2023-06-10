@@ -16,11 +16,12 @@ urlpatterns = [
     path('add_appointment', views.add_appointmentView, name='add_appointmentView'),
     path('create_appointment', views.create_appointmentView, name='create_appointmentView'),
     path('appointment_list', views.appointment_listView, name='appointment_listView'),
-    path('todays_appointment', views.todays_appointmentView, name='todays_appointmentView'),
-    path('upcoming_appointment', views.upcoming_appointmentView, name='upcoming_appointmentView'),
-    path('calendar', views.calendarView, name='calendarView'),
-    path('request', views.request_listView, name='request_listView'),
+    
+    path('todays_appointment_list', views.todays_appointment_listView, name='todays_appointment_listView'),
+
+    path('upcoming_appointment_list', views.upcoming_appointment_listView, name='upcoming_appointment_listView'),
 
 
+    path('create_patient_appointment', views.create_patient_appointmentView, name='create_patient_appointmentView'),
 
 ]
