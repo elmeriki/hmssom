@@ -40,8 +40,40 @@ def payment_listView(request):
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def draft_payment_listView(request):
+def add_paymentcategoryView(request):
     #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
-    return render(request,'finance/draft_payment.html')
+    return render(request,'finance/add_paymentcategory.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def paymentcategoryView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'finance/paymentcategory.html')
     
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_expenseView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'finance/add_expense.html')
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def expense_listView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'finance/expense_list.html')
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_expensecategoryView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'finance/add_expensecategory.html')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def expensecategoryView(request):
+    #if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":        
+    return render(request,'finance/expensecategory.html')
     

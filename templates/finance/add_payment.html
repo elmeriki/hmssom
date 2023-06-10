@@ -23,13 +23,29 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="patient">Patient</label>
-                                    <select class="form-control" name="name" required>
-                                        <option value="">Add New</option>
-                                         </select>
+                                <select class="form-control" name="patient_id" required>
+                                    <option value="">Patient</option>
+                                    {% for patient_list in patient_list %}
+                                    <option value="{{doctor_list.id}}">{{patient_list.user.first_name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="name">Patient FullName</label>
-                                <input type="text" class="form-control" name="name" placeholder="Patient Fullname" required>
+                                <label for="category">Category</label>
+                                <select class="form-control" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Xray">Xray</option>
+                                    <option value="Blood Test">Blood Test</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="doctor">Doctor</label>
+                                <select class="form-control" name="doctor_id" required>
+                                    <option value="">Treated by Dr:</option>
+                                    {% for doctor_list in doctor_list %}
+                                    <option value="{{doctor_list.id}}">{{doctor_list.user.first_name}} {{doctor_list.department.desc}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="amount">Amount</label>
@@ -45,10 +61,6 @@
                                 <input type="date" class="form-control" name="dob" placeholder="Date Of Birth" required>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="pname">Payment Name</label>
-                                <input type="text" class="form-control" name="pname" placeholder="Payment Name" required>
-                            </div>
-                            <div class="form-group col-md-6">
                                 <label for="paymenttype">Payment Type</label>
                                 <select class="form-control" name="paymenttype" required>
                                     <option value="">Payment Type</option>
@@ -58,18 +70,16 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="status">Payment status</label>
-                                <select class="form-control" name="status" required>
+                                <select class="form-control" name="paymentstatus" required>
                                     <option value="">Payment status</option>
                                     <option value="Pending">Deposit</option>
                                     <option value="On_Recovery">Paid In full</option>
                                     <option value="Recovered">Outstanding</option>
                                     <option value="Other">Other</option>
                                 </select>
+                        </div>            
                         </div>
-                
-                        </div>
-                            
-                        <button type="submit" class="btn btn-primary">Save</button>
+                      <button type="submit" class="btn btn-primary">Save</button>
 
                     </form>
                     
@@ -81,4 +91,3 @@
 </div>
 
 {% endblock %}
-

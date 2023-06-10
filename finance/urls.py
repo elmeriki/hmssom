@@ -4,7 +4,12 @@ from finance import views
 urlpatterns = [
     path('add_payment', views.add_paymentView, name='add_paymentView'),
     path('payment_list', views.payment_listView, name='payment_listView'),
-    path('draft_payment', views.draft_payment_listView, name='draft_payment_listView'),
+    path('paymentcategory', views.paymentcategoryView, name='paymentcategoryView'),
+    path('add_paymentcategory', views.add_paymentcategoryView, name='add_paymentcategoryView'),
+    path('add_expense', views.add_expenseView, name='add_expenseView'),
+    path('expense_list', views.expense_listView, name='expense_listView'),
+    path('expensecategory', views.expensecategoryView, name='expensecategoryView'),
+    path('add_expensecategory', views.add_expensecategoryView, name='add_expensecategoryView'),
 
   
 
