@@ -45,7 +45,8 @@ def hospital_dashboardView(request):
         data = {
         'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
         'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
-        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count()
+        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance)
         }
         return render(request,'hospital/dashboard.html',context=data)
     
