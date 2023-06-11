@@ -24,31 +24,26 @@
 					<table id="example5" class="table shadow-hover  table-bordered mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>Prescription ID</th>
-                                <th>Doctor's Name</th>
-								<th>Patient's Name</th>
-                               
-								<th>Medicine</th>
+								<th>Id</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Date-Time</th>
 								<th>History</th>
                                 <th>Note</th>
 								<th>Advice</th>
+								<th>Date</th>
 					</tr>
 						</thead>
 						<tbody>
-							{% for eachall_prescription_list in eachall_prescription_list %}
+							{% for eachall_prescription_list in all_prescription_list %}
 							<tr>
 								<td>{{eachall_prescription_list.id}}</td>
                                 <td>{{eachall_prescription_list.doctor.name}}</td>
 								<td>{{eachall_prescription_list.patient.name}}</td>
-                               
-                                <td>{{eachall_prescription_list.medicine}}</td>
                                 <td>{{eachall_prescription_list.history}}</td>
 								<td>{{eachall_prescription_list.note}}</td>
                                 <td>{{eachall_prescription_list.advice}}</td>
-                                <td><span class="font-w500">{{eachall_prescription_list.date | date }}</span></td>
-
-								
-
+								<td>{{eachall_prescription_list.date}}</td>
                                 <td>
                                     <a href="">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
