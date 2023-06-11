@@ -18,30 +18,25 @@
             </div>
             <div class="card-body">
                 <div class="basic-form">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="/record_payment" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="patient">Patient</label>
-                                <select class="form-control" name="patient_id" required>
-                                    <option value="">Patient</option>
-                                    {% for patient_list in patient_list %}
-                                    <option value="{{doctor_list.id}}">{{patient_list.user.first_name}}</option>
+                                <label for="amount">Patient Cell Phone Number</label>
+                                <input type="number" class="form-control" name="phone" placeholder="Patient cell phone number" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="category">Category</label>
+                                <select class="form-control" name="category_id" required>
+                                    {% for payment_category in payment_category %}
+                                    <option value="{{payment_category.id}}">{{payment_category.category}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="category">Category</label>
-                                <select class="form-control" name="category" required>
-                                    <option value="">Select Category</option>
-                                    <option value="Xray">Xray</option>
-                                    <option value="Blood Test">Blood Test</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="doctor">Doctor</label>
+                                <label for="doctor">Select Doctor</label>
                                 <select class="form-control" name="doctor_id" required>
-                                    <option value="">Treated by Dr:</option>
+                                    <option value="" readonly>Treated by Dr:</option>
                                     {% for doctor_list in doctor_list %}
                                     <option value="{{doctor_list.id}}">{{doctor_list.user.first_name}} {{doctor_list.department.desc}}</option>
                                     {% endfor %}
@@ -52,14 +47,11 @@
                                 <input type="number" class="form-control" name="amount" placeholder="Amount" required>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label for="visit desc">Visit Description</label>
                                 <input type="text" class="form-control" name="visitdsc" placeholder="Visit Description" required>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="dob">Date Of Birth</label>
-                                <input type="date" class="form-control" name="dob" placeholder="Date Of Birth" required>
-                            </div>
+               
                             <div class="form-group col-md-6">
                                 <label for="paymenttype">Payment Type</label>
                                 <select class="form-control" name="paymenttype" required>
@@ -70,12 +62,9 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="status">Payment status</label>
-                                <select class="form-control" name="paymentstatus" required>
-                                    <option value="">Payment status</option>
-                                    <option value="Pending">Deposit</option>
-                                    <option value="On_Recovery">Paid In full</option>
-                                    <option value="Recovered">Outstanding</option>
-                                    <option value="Other">Other</option>
+                                <select class="form-control" name="payment_status" required>
+                                    <option value="">Confirmed</option>
+                                    <option value="Pending">Pending</option>
                                 </select>
                         </div>            
                         </div>

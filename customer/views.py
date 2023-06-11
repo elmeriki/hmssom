@@ -147,10 +147,10 @@ def prescription_listView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         all_prescription_list=Prescription.objects.filter(hospital=hospital_instance)
-        prescription_data = {
+        data = {
             'all_prescription_list':all_prescription_list
         }
-        return render(request,'customer/prescription_list.html',context=prescription_data )
+        return render(request,'customer/prescription_list.html',context=data )
     else:
         return redirect('/')
     

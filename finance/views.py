@@ -29,16 +29,27 @@ import threading
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_paymentView(request):
-    if request.user.is_authenticated and request.user.is_hospital:        
-        return render(request,'finance/add_payment.html')
+    if request.user.is_authenticated and request.user.is_hospital:    
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)    
+        data={
+        'payment_category':Paymentcategory.objects.filter(hospital=hospital_instance),
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance)
+        }    
+        return render(request,'finance/add_payment.html',context=data)
     else:
         return redirect('/')
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def payment_listView(request):
-    if request.user.is_authenticated and request.user.is_hospital:        
-        return render(request,'finance/payment_list.html')
+    if request.user.is_authenticated and request.user.is_hospital: 
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)  
+        data = {
+         'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10]
+        }       
+        return render(request,'finance/payment_list.html',context=data)
     else:
         return redirect('/')
     
@@ -53,8 +64,13 @@ def add_paymentcategoryView(request):
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def paymentcategoryView(request):
-    if request.user.is_authenticated and request.user.is_hospital:        
-        return render(request,'finance/paymentcategory.html')
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)    
+        data = {
+            'payment_category':Paymentcategory.objects.filter(hospital=hospital_instance)
+        }    
+        return render(request,'finance/paymentcategory.html',context=data)
     else:
         return redirect('/')
     
@@ -140,5 +156,53 @@ def create_new_expensesView(request):
             return redirect('/add_expense')
         else:
             return redirect('/add_expense')
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_new_payment_categoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        category_name =request.POST['category']  
+        description =request.POST['description']  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        create_new_payment_category=Paymentcategory(hospital=hospital_instance,category=category_name,desc=description)
+        if create_new_payment_category:
+            create_new_payment_category.save()
+            messages.success(request,'Payment Category created successfuly.')
+            return redirect('/add_paymentcategory')
+        else:
+            return redirect('/add_paymentcategory')
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def record_paymentView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        phone =request.POST['phone']
+        category_id =int(request.POST['category_id'])
+        doctor_id =int(request.POST['doctor_id'])
+        amount =request.POST['amount']
+        visitdsc =request.POST['visitdsc'] 
+        paymenttype =request.POST['paymenttype'] 
+        payment_status =request.POST['payment_status'] 
+        
+        username=request.user.username
+        if not Patient.objects.filter(phone=phone).exists():
+            messages.info(request,'Patient Cellphone Number Does Not Exists')
+            return redirect('/add_payment')
+        else:
+            hospital_instance=User.objects.get(username=username)   
+            patient_instance=Patient.objects.get(phone=phone)
+            doctor_instance=Doctor.objects.get(id=doctor_id)
+            payment_category_instance=Paymentcategory.objects.get(id=category_id)
+            create_apointment=Payment(hospital=hospital_instance,patient=patient_instance,category=payment_category_instance,treatedby_dr=doctor_instance,visitdsc=visitdsc,amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
+            create_apointment.save()
+            messages.info(request,'Patient has been save successfully')
+            return redirect('/add_payment')
     else:
         return redirect('/')
