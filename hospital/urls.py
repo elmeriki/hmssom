@@ -89,8 +89,7 @@ urlpatterns = [
     path('create_notice', views.create_noticeView, name='create_noticeView'),
     path('notice_list', views.notice_listView, name='notice_listView'),
 
-
-
+    path('doctors_profile/<str:doctor_id>', views.doctors_profileView, name='doctors_profileView'),
 ]
 
 

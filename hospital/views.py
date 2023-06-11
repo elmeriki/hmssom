@@ -956,4 +956,23 @@ def notice_listView(request):
         return render(request,'hospital/notice_list.html',context=notice_data )
 
 
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def doctors_profileView(request,doctor_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        doctors_instance = Doctor.objects.get(id=doctor_id)
+        data = {
+        'doctorsnames':doctors_instance.name,
+        'department':doctors_instance.department.name,
+        'phone':doctors_instance.phone,
+        'address':doctors_instance.address,
+        'email':doctors_instance.email,
+        'departmentid':doctors_instance.departmentid,
+        'picture':doctors_instance.picture,
+        'message_about_dr':doctors_instance.message_about_dr,
+        'doctorsappointment':Appointment.objects.filter(hospital=hospital_instance,status=0).filter(dr=doctors_instance)
+        }
+        return render(request,'hospital/doctorsprofile.html',context=data)
 

@@ -100,31 +100,44 @@ def medicine_by_categoryView(request,category):
             }
             return render(request,'customer/medicine_list.html',context=data)
         
-
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_prescriptionView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        medicine = request.POST['medicine']
+        phone =request.POST['phone']
+        doctor_id =int(request.POST['doctor_id'])
+        prescriptiondate =request.POST['date']
         history = request.POST['history']
-        note = request.POST['note']       
-        advice = request.POST['advice']       
-        id = random_id(length=9,character_set=string.digits)
-        save_prescription_details=Prescription(hospital=hospital_instance, id=id, medicine=medicine, 
-                                               history=history, note=note, advice=advice)
-        save_prescription_details.save()
-                                             
-        messages.info(request,'Prescription created successfully')
-        return redirect('/add_prescription')
-    
+        note = request.POST['note']
+        advice = request.POST['advice']
+        username=request.user.username
+        if not Patient.objects.filter(phone=phone).exists():
+            messages.info(request,'Patient Cellphone Number Does Not Exists')
+            return redirect('/add_prescription')
+        else:
+            hospital_instance=User.objects.get(username=username)   
+            patient_instance=Patient.objects.get(phone=phone)
+            doctor_instance=Doctor.objects.get(id=doctor_id)
+            create_prescription=Prescription(hospital=hospital_instance,date=prescriptiondate,
+                                             patient=patient_instance,dr=doctor_instance,history=history,
+                                             note=note,advice=advice) 
+            create_prescription.save()
+            messages.info(request,'Patient Prescription has been created successfully')
+            return redirect('/add_prescription')
+    else:
+        return redirect('/')
        
+
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_prescriptionView(request):
-    if request.user.is_authenticated and request.user.is_hospital:
-        return render(request,'customer/add_prescription.html')
+    if request.user.is_authenticated and request.user.is_hospital:     
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)        
+        data= {
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0)
+        }
+        return render(request,'customer/add_prescription.html', context=data)
 
 
 @login_required(login_url='/')  
@@ -134,10 +147,12 @@ def prescription_listView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         all_prescription_list=Prescription.objects.filter(hospital=hospital_instance)
-        prescription_data = {
+        data = {
             'all_prescription_list':all_prescription_list
         }
-        return render(request,'customer/prescription_list.html',context=prescription_data )
+        return render(request,'customer/prescription_list.html',context=data )
+    else:
+        return redirect('/')
     
 
 @login_required(login_url='/')  
