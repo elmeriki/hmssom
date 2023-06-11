@@ -107,9 +107,9 @@ def create_prescriptionView(request):
         phone =request.POST['phone']
         doctor_id =int(request.POST['doctor_id'])
         prescriptiondate =request.POST['date']
-        history =  models.TextField(null=True,blank=True)
-        note =  models.TextField(null=True,blank=True)
-        advice =  models.TextField(null=True,blank=True)
+        history = request.POST['history']
+        note = request.POST['note']
+        advice = request.POST['advice']
         username=request.user.username
         if not Patient.objects.filter(phone=phone).exists():
             messages.info(request,'Patient Cellphone Number Does Not Exists')
