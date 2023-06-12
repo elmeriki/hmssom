@@ -5,7 +5,7 @@ from hospital.models import *
 # Create your models here.
 class Appointment(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_appointment_name")
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_appointment_name")
+    patient=models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_appointment_name")
     dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True,blank=True,related_name="dr_who_is_alocated")
     visitdsc =  models.TextField(null=True,blank=True)
     remark =  models.TextField(null=True,blank=True)

@@ -1,0 +1,12 @@
+{% load static %}
+<div class="header-left">
+    {% if "/app_home" in request.path %}
+    <div class="dashboard_bar">
+        Hi Guest
+    </div>
+    {% else %}
+    <div class="dashboard_bar">
+        Dashboard
+    </div>
+    {% endif %}
+</div>

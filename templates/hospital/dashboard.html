@@ -259,83 +259,26 @@
                 <div class="card border-0 pb-0">
                     <div class="card-header flex-wrap border-0 pb-0">
                         <h3 class="fs-20 mb-0 text-black">Recent Patient</h3>
-                        <a href="patient-list.html" class="text-primary font-w500">View more >></a>
+                        <a href="/patient_list" class="text-primary font-w500">View more >></a>
                     </div>
                     <div class="card-body"> 
                         <div id="DZ_W_Todo2" class="widget-media dz-scroll ps ps--active-y height320">
                             <ul class="timeline">
+                                {% for patient_list in patient_list %}
                                 <li>
                                     <div class="timeline-panel flex-wrap">
                                         <div class="media mr-3">
                                             <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/1.jpg' %}">
                                         </div>
                                         <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Aziz Bakree</a></h5>
-                                            <span class="fs-14">24 Years</span>
+                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">{{patient_list.name}}</a></h5>
+                                            <span class="fs-14">{{patient_list.created_at | timesince }} ago</span>
                                         </div>
-                                        <a href="javascript:void(0);" class="text-warning mt-2">Pending</a>
+                                        <a href="/patient_details/{{patient_list.id}}" class="text-warning mt-2">Show</a>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/2.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="{% static 'assets/patient-details.html' %}">Griezerman</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-info mt-2">On Recovery</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/3.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="{% static 'assets/patient-details.html' %}">Oconner</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-danger mt-2">Rejected</a>
-                                    </div>
-                                </li>
-                                 <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/5.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Uli Trumb</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-primary mt-2">Recovered</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/1.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Aziz Bakree</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-warning mt-2">Pending</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/2.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Aziz Bakree</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-warning mt-2">Pending</a>
-                                    </div>
-                                </li>
+                                {% endfor %}
+
                             </ul>
                         </div>
                     </div>

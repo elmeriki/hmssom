@@ -185,12 +185,17 @@ def create_patient_appointmentView(request):
         paymenttype =request.POST['paymenttype'] 
         payment_status =request.POST['payment_status'] 
         username=request.user.username
+  
         if not Patient.objects.filter(phone=phone).exists():
             messages.info(request,'Patient Cellphone Number Does Not Exists')
             return redirect('/add_appointment')
+        patient_instance=Patient.objects.get(phone=phone)
+        hospital_instance=User.objects.get(username=username) 
+        
+        if Appointment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=0).exists():
+            messages.info(request,'Please cancel first appointmet before you can create another for patient')
+            return redirect('/add_appointment')
         else:
-            hospital_instance=User.objects.get(username=username)   
-            patient_instance=Patient.objects.get(phone=phone)
             doctor_instance=Doctor.objects.get(id=doctor_id)
             create_apointment=Appointment(hospital=hospital_instance,date=apointmentdate,patient=patient_instance,dr=doctor_instance,visitdsc=visitdesc,remark=remarks,amount=charges,paymenttype=paymenttype,paymentstatus=payment_status) 
             create_apointment.save()
@@ -237,5 +242,15 @@ def upcoming_appointment_listView(request):
         'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date__gt=todays_date)
         }       
         return render(request,'customer/appointment_list.html',context=data)
+    else:
+        return redirect('/')
+    
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def app_homeView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'app/index.html')
     else:
         return redirect('/')

@@ -23,5 +23,9 @@ urlpatterns = [
 
 
     path('create_patient_appointment', views.create_patient_appointmentView, name='create_patient_appointmentView'),
+    
+    
+    path('app_home', views.app_homeView, name='app_homeView'),
+
 
 ]

@@ -90,6 +90,9 @@ urlpatterns = [
     path('notice_list', views.notice_listView, name='notice_listView'),
 
     path('doctors_profile/<str:doctor_id>', views.doctors_profileView, name='doctors_profileView'),
+    
+    path('patient_details/<str:patient_id>', views.patient_detailsView, name='patient_detailsView'),
+
 ]
 
 
