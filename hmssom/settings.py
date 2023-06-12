@@ -120,8 +120,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-STATIC_URL = '/static/'
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -139,6 +137,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 
 # SESSION_EXPIRE_SECONDS =3628800
 # SESSION_TIMEOUT_REDIRECT = '/userlogin'
+
+# SESSION_COOKIE_SECURE = False
 
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

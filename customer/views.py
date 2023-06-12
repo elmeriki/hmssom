@@ -247,10 +247,7 @@ def upcoming_appointment_listView(request):
     
     
     
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
 def app_homeView(request):
-    if request.user.is_authenticated and request.user.is_hospital:
-        return render(request,'app/index.html')
-    else:
-        return redirect('/')
+    return render(request,'app/index.html')
+
+

@@ -17,6 +17,7 @@
                 <div class="basic-form">
                     <form action="/create_hospital_account" method="POST">
                         {% csrf_token %}
+   
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <input type="text" class="form-control" name="hospitalname" placeholder="Enter hospital name" required>
@@ -30,7 +31,6 @@
                             <div class="form-group col-md-6">
                                 <input type="number" class="form-control" name="number" placeholder="Enter Phone Number">
                             </div>
-                    
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -48,10 +48,11 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <select id="inputState" name="country" class="form-control">
-                                    <option selected>Choose Country...</option>
-                                    <option value="Ethiopia">Ethiopia</option>
-                                    <option value="South Africa">South Africa </option>
-                                    <option value="Uganda">Uganda </option>
+                                    <option selected>Choose Province...</option>
+                                    <option value="Afar">Afar</option>
+                                    <option value="Amhara">Amhara</option>
+                                    <option value="Oromia">Oromia</option>
+                                    <option value="Harari">Harari</option>
                                 </select>
                             </div>
                             

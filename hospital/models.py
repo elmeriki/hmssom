@@ -3,6 +3,8 @@ from hmmauth.models import *
 from customer.models import *
 
 
+
+
 # Create your models here.
 class Hospital(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_names")
@@ -13,8 +15,18 @@ class Hospital(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    def __str__(self):
+        return self.hospital.first_name
+    
+# # Create your models here.
+# class Province(models.Model):
+#     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     status = models.CharField(max_length=200,default=0,null=True,blank=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+    
 class Department(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_diff_departments")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_diff_departments")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     desc=  models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
