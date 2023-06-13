@@ -145,7 +145,7 @@ def update_paymentcategoryView(request,paymentcategoryid):
 @login_required(login_url='/')  
 def delete_paymentcategoryView(request, paymentcategoryid):
     if request.user.is_authenticated and request.user.is_hospital:
-        delete_paymentcategory = Payment.objects.get(id=paymentcategoryid)
+        delete_paymentcategory = Paymentcategory.objects.get(id=paymentcategoryid)
         delete_paymentcategory.delete()
         return redirect('/paymentcategory')
     
