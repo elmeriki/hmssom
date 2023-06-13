@@ -45,7 +45,9 @@ def hospital_dashboardView(request):
         data = {
         'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
         'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
-        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count()
+        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
+        'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10]
         }
         return render(request,'hospital/dashboard.html',context=data)
     
@@ -426,7 +428,9 @@ def hospital_profileView(request):
         data = {
         'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
         'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
-        'about_the_hospital_text':about_the_hospital_text.desc
+        'about_the_hospital_text':about_the_hospital_text.desc,
+        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+
         }
         return render(request,'hospital/profile.html',context=data)
 
@@ -955,3 +959,44 @@ def notice_listView(request):
         }
         return render(request,'hospital/notice_list.html',context=notice_data )
 
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def doctors_profileView(request,doctor_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        doctors_instance = Doctor.objects.get(id=doctor_id)
+        data = {
+        'doctorsnames':doctors_instance.name,
+        'department':doctors_instance.department.name,
+        'phone':doctors_instance.phone,
+        'address':doctors_instance.address,
+        'email':doctors_instance.email,
+        'departmentid':doctors_instance.departmentid,
+        'picture':doctors_instance.picture,
+        'message_about_dr':doctors_instance.message_about_dr,
+        'doctorsappointment':Appointment.objects.filter(hospital=hospital_instance,status=0).filter(dr=doctors_instance)
+        }
+        return render(request,'hospital/doctorsprofile.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def patient_detailsView(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(id=patient_id)
+        patient_appointment=Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0)
+        data = {
+        'patient_id':patient_instance.id,
+        'title':patient_instance.title,
+        'name':patient_instance.name,
+        'nok':patient_instance.nok,
+        'non':patient_instance.non,
+        'phone':patient_instance.phone,
+        'created_at':patient_instance.created_at,
+        'patient_appointment':patient_appointment,
+        }
+        return render(request,'hospital/patient_details.html',context=data)

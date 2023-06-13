@@ -172,6 +172,7 @@
     <div class="dashboard_bar">
         Finance Department
     </div>
+<<<<<<< HEAD
     {% elif "/add_prescription" in request.path %}
     <div class="dashboard_bar">
         Prescription 
@@ -184,6 +185,16 @@
     <div class="dashboard_bar">
         Prescription 
     </div>  
+=======
+    {% elif "/doctors_profile" in request.path %}
+    <div class="dashboard_bar">
+        Doctor's Details
+    </div>
+    {% elif "/patient_details" in request.path %}
+    <div class="dashboard_bar">
+        Patient's Details
+    </div>
+>>>>>>> c17157e0fb4d8440b7c0c7d14ace22ca471eab4a
     {% else %}
     <div class="dashboard_bar">
         Dashboard

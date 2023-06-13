@@ -225,18 +225,21 @@
             <div class="col-xl-9 col-xxl-8 col-lg-7">
                 <div class="card">	
                     <div class="card-header border-0 pb-0">
-                        <h3 class="fs-20 mb-0 text-black">List Rated Doctors</h3>
+                        <h3 class="fs-20 mb-0 text-black">Top Rated Doctors</h3>
                         <a href="page-review.html" class="text-primary font-w500">View more >></a>
                     </div>
                     <div class="card-body">
                         <div class="assigned-doctor owl-carousel">
+      
+
+                        {% for doctor_list in doctor_list %}
                             <div class="items">
                                 <div class="text-center">
-                                    <img src="{% static 'assets/images/doctors/5.jpg' %}" alt="" >
+                                    <img src="{{doctor_list.picture.url}}" height="130px" width="100px" alt="" >
                                     <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Alexandro Jr.</a></h5>
-                                    <span class="text-primary mb-2 d-block">Dentist</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
+                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="/doctors_profile/{{doctor_list.id}}">Dr. {{doctor_list.name}}</a></h5>
+                                    <span class="text-primary mb-2 d-block">{{doctor_list.department.name}}</span>
+                                    <p class="fs-12">{{doctor_list.address}}</p>
                                     <div class="social-media">
                                         <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
                                         <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
@@ -244,104 +247,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img src="{% static 'assets/images/doctors/1.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Samantha</a></h5>
-                                    <span class="text-primary mb-2 d-block">Physical Therapy</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img src="{% static 'assets/images/doctors/2.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Aliandro M</a></h5>
-                                    <span class="text-primary mb-2 d-block">Nursing</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img  src="{% static 'assets/images/doctors/3.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Samuel</a></h5>
-                                    <span class="text-primary mb-2 d-block">Gynecologist</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img src="{% static 'assets/images/doctors/4.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Melinda</a></h5>
-                                    <span class="text-primary mb-2 d-block">Dentist</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img src="{% static 'assets/images/doctors/1.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Alexandro Jr.</a></h5>
-                                    <span class="text-primary mb-2 d-block">Dentist</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img  src="{% static 'assets/images/doctors/2.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Aliandro M</a></h5>
-                                    <span class="text-primary mb-2 d-block">Nursing</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="items">
-                                <div class="text-center">
-                                    <img src="{% static 'assets/images/doctors/3.jpg' %}" alt="" >
-                                    <div class="dr-star"><i class="las la-star"></i> 4.2</div>
-                                    <h5 class="fs-16 mb-1 font-w600"><a class="text-black" href="page-review.html">Dr. Samuel</a></h5>
-                                    <span class="text-primary mb-2 d-block">Gynecologist</span>
-                                    <p class="fs-12">795 Folsom Ave, Suite 600 San Francisco, CADGE 94107</p>
-                                    <div class="social-media">
-                                        <a href="javascript:void(0);"><i class="lab la-instagram"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-facebook-f"></i></a>
-                                        <a href="javascript:void(0);"><i class="lab la-twitter"></i></a>
-                                    </div>
-                                </div>
-                            </div>
+
+                            {% endfor %}
+
+
                         </div>
                     </div>
                 </div>
@@ -350,83 +259,26 @@
                 <div class="card border-0 pb-0">
                     <div class="card-header flex-wrap border-0 pb-0">
                         <h3 class="fs-20 mb-0 text-black">Recent Patient</h3>
-                        <a href="patient-list.html" class="text-primary font-w500">View more >></a>
+                        <a href="/patient_list" class="text-primary font-w500">View more >></a>
                     </div>
                     <div class="card-body"> 
                         <div id="DZ_W_Todo2" class="widget-media dz-scroll ps ps--active-y height320">
                             <ul class="timeline">
+                                {% for patient_list in patient_list %}
                                 <li>
                                     <div class="timeline-panel flex-wrap">
                                         <div class="media mr-3">
                                             <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/1.jpg' %}">
                                         </div>
                                         <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Aziz Bakree</a></h5>
-                                            <span class="fs-14">24 Years</span>
+                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">{{patient_list.name}}</a></h5>
+                                            <span class="fs-14">{{patient_list.created_at | timesince }} ago</span>
                                         </div>
-                                        <a href="javascript:void(0);" class="text-warning mt-2">Pending</a>
+                                        <a href="/patient_details/{{patient_list.id}}" class="text-warning mt-2">Show</a>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/2.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="{% static 'assets/patient-details.html' %}">Griezerman</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-info mt-2">On Recovery</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/3.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="{% static 'assets/patient-details.html' %}">Oconner</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-danger mt-2">Rejected</a>
-                                    </div>
-                                </li>
-                                 <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/5.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Uli Trumb</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-primary mt-2">Recovered</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/1.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Aziz Bakree</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-warning mt-2">Pending</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel flex-wrap">
-                                        <div class="media mr-3">
-                                            <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/widget/2.jpg' %}">
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">Aziz Bakree</a></h5>
-                                            <span class="fs-14">24 Years</span>
-                                        </div>
-                                        <a href="javascript:void(0);" class="text-warning mt-2">Pending</a>
-                                    </div>
-                                </li>
+                                {% endfor %}
+
                             </ul>
                         </div>
                     </div>
