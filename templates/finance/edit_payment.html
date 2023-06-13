@@ -1,0 +1,83 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Payment |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+<div class="container-fluid">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">Edit Payment</h4>
+                {% endif %}            
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="/update_payment/{{paymentid}}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="amount">Patient Cell Phone Number</label>
+                                <input type="number" class="form-control" name="phone" value="{{phone}}" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="category">Category</label>
+                                <select class="form-control" name="category_id" required>
+                                    {% for payment_category in payment_category %}
+                                    <option value="{{payment_category.id}}">{{payment_category.category}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="doctor">Select Doctor</label>
+                                <select class="form-control" name="doctor_id" required>
+                                    <option value="" readonly>Treated by Dr:</option>
+                                    {% for doctor_list in doctor_list %}
+                                    <option value="{{doctor_list.id}}">{{doctor_list.user.first_name}} {{doctor_list.department.desc}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="amount">Amount</label>
+                                <input type="number" class="form-control" name="amount" value="{{amount}}" required>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="visit desc">Visit Description</label>
+                                <input type="text" class="form-control" name="visitdsc" value="{{visitdsc}}" required>
+                            </div>
+               
+                            <div class="form-group col-md-6">
+                                <label for="paymenttype">Payment Type</label>
+                                <select class="form-control" name="paymenttype" required>
+                                    <option value="">{{paymenttype}}</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="status">Payment status</label>
+                                <select class="form-control" name="payment_status" required>
+                                    <option value="">{{status}}</option>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                        </div>            
+                        </div>
+                      <button type="submit" class="btn btn-primary">Save</button>
+
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

@@ -11,11 +11,18 @@ urlpatterns = [
     path('add_prescription', views.add_prescriptionView, name='add_prescriptionView'),
     path('create_prescription', views.create_prescriptionView, name='create_prescriptionView'),
     path('prescription_list', views.prescription_listView, name='prescription_listView'),
+    path('edit_prescription/<str:prescriptionid>', views.edit_prescriptionView, name='edit_prescriptionView'),
+    path('update_prescription/<str:prescriptionid>', views.update_prescriptionView, name='update_prescriptionView'),
+    path('delete_prescription/<str:prescriptionid>', views.delete_prescriptionView, name='delete_prescriptionView'),
 
 
     path('add_appointment', views.add_appointmentView, name='add_appointmentView'),
     path('create_appointment', views.create_appointmentView, name='create_appointmentView'),
     path('appointment_list', views.appointment_listView, name='appointment_listView'),
+    path('edit_appointment/<str:appointmentid>', views.edit_appointmentView, name='edit_appointmentView'),
+    path('update_appointment/<str:appointmentid>', views.update_appointmentView, name='update_pappointmentView'),
+    path('delete_appointment/<str:appointmentid>', views.delete_appointmentView, name='delete_appointmentView'),
+
     
     path('todays_appointment_list', views.todays_appointment_listView, name='todays_appointment_listView'),
 

@@ -100,13 +100,14 @@ def medicine_by_categoryView(request,category):
             }
             return render(request,'customer/medicine_list.html',context=data)
         
+#=======================================PRESCRIPTION====================================
+        
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_prescriptionView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
         phone =request.POST['phone']
         doctor_id =int(request.POST['doctor_id'])
-        prescriptiondate =request.POST['date']
         history = request.POST['history']
         note = request.POST['note']
         advice = request.POST['advice']
@@ -118,7 +119,7 @@ def create_prescriptionView(request):
             hospital_instance=User.objects.get(username=username)   
             patient_instance=Patient.objects.get(phone=phone)
             doctor_instance=Doctor.objects.get(id=doctor_id)
-            create_prescription=Prescription(hospital=hospital_instance,date=prescriptiondate,
+            create_prescription=Prescription(hospital=hospital_instance,
                                              patient=patient_instance,dr=doctor_instance,history=history,
                                              note=note,advice=advice) 
             create_prescription.save()
@@ -155,6 +156,43 @@ def prescription_listView(request):
         return redirect('/')
     
 
+@login_required(login_url='/')  
+def edit_prescriptionView(request,prescriptionid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_prescription_instance = Prescription.objects.get(id=prescriptionid)
+        data = {
+        #'date':get_prescription_instance.date,
+        'history':get_prescription_instance.history,
+        'note':get_prescription_instance.note,
+        'advice':get_prescription_instance.advice,
+        'prescriptionid':get_prescription_instance.id,
+        'prescriptionid':prescriptionid
+        }
+        return render(request,'customer/edit_prescription.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_prescriptionView(request,prescriptionid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        history=request.POST['history']
+        note=request.POST['note']
+        advice=request.POST['advice']
+        Prescription.objects.filter(pk=prescriptionid).update(history=history)
+        Prescription.objects.filter(pk=prescriptionid).update(note=note)
+        Prescription.objects.filter(pk=prescriptionid).update(advice=advice)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_prescription/{prescriptionid}')
+
+
+@login_required(login_url='/')  
+def delete_prescriptionView(request, prescriptionid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_prescription = Prescription.objects.get(id=prescriptionid)
+        delete_prescription.delete()
+        return redirect('/prescription_list')
+    
+#=======================================APPOINTMENT====================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_appointmentView(request):
@@ -211,6 +249,67 @@ def appointment_listView(request):
         return render(request,'customer/appointment_list.html',context=data)
     else:
         return redirect('/')
+    
+
+@login_required(login_url='/')  
+def edit_appointmentView(request,appointmentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_appointment_instance = Appointment.objects.get(id=appointmentid)
+        data = {
+        'phone' : get_appointment_instance.patient.phone,
+        #'doctor_id' : get_appointment_instance.doctor_id,
+        'date' : get_appointment_instance.date,
+        'amount' : get_appointment_instance.amount,
+        'remark' : get_appointment_instance.remark,
+        'visitdsc' : get_appointment_instance.visitdsc,
+        'paymenttype': get_appointment_instance.paymenttype,
+        'status' : get_appointment_instance.status,
+        'appointmentid':get_appointment_instance.id,
+        'appointmentid':appointmentid,
+
+        }
+        return render(request,'customer/edit_appointment.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_appointmentView(request,appointmentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        phone =request.POST['phone']
+        #doctor_id =int(request.POST['doctor_id'])
+        apointmentdate =request.POST['apointmentdate']
+        charges =request.POST['charges']
+        remarks =request.POST['remarks']
+        visitdesc =request.POST['visitdesc'] 
+        paymenttype =request.POST['paymenttype'] 
+        payment_status =request.POST['payment_status'] 
+
+        
+        Appointment.objects.filter(pk=appointmentid).update(phone=phone)
+        #Appointment.objects.filter(pk=appointmentid).update(doctor_id=doctor_id)
+        Appointment.objects.filter(pk=appointmentid).update(date=apointmentdate)
+        Appointment.objects.filter(pk=appointmentid).update(amount=charges)
+        Appointment.objects.filter(pk=appointmentid).update(remark=remarks)
+        Appointment.objects.filter(pk=appointmentid).update(visitdsc=visitdesc)
+        Appointment.objects.filter(pk=appointmentid).update(paymenttype=paymenttype)
+        Appointment.objects.filter(pk=appointmentid).update(status=payment_status)
+        messages.info(request,'Update has been done successfully')
+
+        return redirect(f'/edit_appointment/{appointmentid}')
+
+
+@login_required(login_url='/')  
+def delete_appointmentView(request, appointmentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_appointment = Appointment.objects.get(id=appointmentid)
+        delete_appointment.delete()
+        return redirect('/appointment_list')
+
+
+
+
+
+
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 

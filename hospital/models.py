@@ -92,11 +92,11 @@ class Bedcategory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Notice(models.Model):
+class Notices(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     noticfor =  models.ForeignKey(Department,on_delete=models.CASCADE, related_name="department_notice")
-    noticmsg = models.CharField(max_length=200,default=0,null=True,blank=True)
+    noticemsg = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

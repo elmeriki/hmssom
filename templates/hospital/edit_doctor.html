@@ -45,7 +45,7 @@
                                 <div class="form-group">
                                     <label for="">Department</label>
                                     <select class="form-control" name="department" required>
-                                        <option value="">{{department}}</option>
+                                        <option value="">{{department.name}}</option>
                                         {% for eachget_all_hospital_department_list in get_all_hospital_department_list %}
                                         <option value="{{eachget_all_hospital_department_list.id}}" >{{eachget_all_hospital_department_list.name}}</option>
                                         {% endfor %}
@@ -59,9 +59,18 @@
                             <div class="form-group col-md-6">
                                 <label for="status">Status</label>
                                 <select class="form-control" name="status" required>
-                                    <option value="">{{status}}</option>
-                                    <option value="Available">Available</option>
+                                    <option value="{{status}}">{{status}}</option>
+                                    {% if data.status == Available %}
+                                    <option value="Available" selected>Available</option>
+                                    {% else %}
+                                    <option value="Available" >Available</option>
+                                    {% endif %}
+
+                                    {% if data.status == Unavailable %}
+                                    <option value="Unavailable" selected>Unavailable</option>
+                                    {% else %}
                                     <option value="Unavailable">Unavailable</option>
+                                    {% endif %}
                                 </select>
                             </div>
                             <div class="form-group col-md-6">

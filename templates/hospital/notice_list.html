@@ -26,20 +26,21 @@
 							<tr>
 								<th>ID</th>
                                 <th>Title</th>
+								<th>Department</th>
 								<th>Notice</th>
 								<th>Status</th>
-                                <th>Department</th>
                                 <th>Date</th>
                 
 							</tr>
 						</thead>
 						<tbody>
-							{% for eachall_notice_list in eachall_notice_list %}
+							{% for eachall_notice_list in all_notice_list %}
 							<tr>
 								<td>{{eachall_notice_list.id}}</td>
                                 <td>{{eachall_notice_list.title}}</td>
+								<td>{{eachall_notice_list.noticfor.name}}</td>
+								<td>{{eachall_notice_list.noticemsg}}</td>
 								<td>{{eachall_notice_list.status}}</td>
-                                <td>{{eachall_notice_list.noticfor.name}}</td>
                                 <td><span class="font-w500">{{eachall_notice_list.created_at | date }}</span></td>
 
 

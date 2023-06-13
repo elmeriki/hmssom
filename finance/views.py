@@ -53,6 +53,49 @@ def payment_listView(request):
     else:
         return redirect('/')
     
+
+@login_required(login_url='/')  
+def edit_paymentView(request,paymentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_payment_instance = Payment.objects.get(id=paymentid)
+        data = {
+        
+        'paymentid':get_payment_instance.id,
+        'paymentid':paymentid
+        }
+        return render(request,'finance/edit_payment.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_paymentView(request,paymentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        category=request.POST['category']
+        amount=request.POST['amount']
+        visitdsc=request.POST['visitdsc']
+        paymenttype=request.POST['paymenttype']
+        paymentstatus=request.POST['paymentstatus']
+        
+        Payment.objects.filter(pk=paymentid).update(category=category)
+        Payment.objects.filter(pk=paymentid).update(amount=amount)
+        Payment.objects.filter(pk=paymentid).update(visitdsc=visitdsc)
+        Payment.objects.filter(pk=paymentid).update(paymenttype=paymenttype)
+        Payment.objects.filter(pk=paymentid).update(paymentstatus=paymentstatus)
+        Payment.info(request,'Update has been done successfully')
+
+        
+        return redirect(f'/edit_payment/{paymentid}')
+
+
+@login_required(login_url='/')  
+def delete_paymentView(request, paymentid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_payment = Payment.objects.get(id=paymentid)
+        delete_payment.delete()
+        return redirect('/payment_list')
+
+
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_paymentcategoryView(request):
@@ -73,6 +116,38 @@ def paymentcategoryView(request):
         return render(request,'finance/paymentcategory.html',context=data)
     else:
         return redirect('/')
+    
+@login_required(login_url='/')  
+def edit_paymentcategoryView(request,paymentcategoryid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_paymentcategory_instance = Paymentcategory.objects.get(id=paymentcategoryid)
+        data = {
+        'category':get_paymentcategory_instance.category,
+        'desc':get_paymentcategory_instance.desc,
+        'paymentcategoryid':get_paymentcategory_instance.id,
+        'paymentcategoryid':paymentcategoryid
+        }
+        return render(request,'finance/edit_paymentcategory.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_paymentcategoryView(request,paymentcategoryid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        category=request.POST['category']
+        description=request.POST['description']
+        Paymentcategory.objects.filter(pk=paymentcategoryid).update(category=category)
+        Paymentcategory.objects.filter(pk=paymentcategoryid).update(desc=description)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_paymentcategory/{paymentcategoryid}')
+
+
+@login_required(login_url='/')  
+def delete_paymentcategoryView(request, paymentcategoryid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_paymentcategory = Payment.objects.get(id=paymentcategoryid)
+        delete_paymentcategory.delete()
+        return redirect('/paymentcategory')
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -132,7 +207,7 @@ def create_new_categoryView(request):
         create_new_expenses_category=Expensescategory(hospital=hospital_instance,name=category_name)
         if create_new_expenses_category:
             create_new_expenses_category.save()
-            messages.success(request,'Expended Category created successfuly.')
+            messages.success(request,'Expense Category created successfuly.')
             return redirect('/add_expensecategory')
         else:
             return redirect('/add_expensecategory')
@@ -202,7 +277,7 @@ def record_paymentView(request):
             payment_category_instance=Paymentcategory.objects.get(id=category_id)
             create_apointment=Payment(hospital=hospital_instance,patient=patient_instance,category=payment_category_instance,treatedby_dr=doctor_instance,visitdsc=visitdsc,amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
             create_apointment.save()
-            messages.info(request,'Patient has been save successfully')
+            messages.info(request,'Payment has been saved successfully')
             return redirect('/add_payment')
     else:
         return redirect('/')

@@ -2,6 +2,7 @@ from django.db import models
 from hmmauth.models import *
 from hospital.models import *
 
+
 # Create your models here.
 class Appointment(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_appointment_name")

@@ -87,7 +87,6 @@ def save_add_departmentView(request):
        return redirect('/department')
     
 
-#=======================================DOCTOR====================================
 @login_required(login_url='/')  
 def edit_departmentView(request,departmentid):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -121,7 +120,7 @@ def delete_departmentView(request, departmentid):
         return redirect('/department')
 
 
-
+#=======================================DOCTOR====================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_doctorView(request):
@@ -908,8 +907,9 @@ def blood_listView(request):
             'all_blood_list':all_blood_list
         }
         return render(request,'hospital/blood_list.html',context=blood_data)
+    
 
-
+#===========================================NOTICES========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_noticeView(request):
@@ -917,16 +917,17 @@ def create_noticeView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         title = request.POST['title']
-        noticfor=request.POST['noticfor']
-        noticmsg = request.POST['noticmsg']
+        noticfor = request.POST['noticfor']
+        noticemsg = request.POST['noticemsg']
         status = request.POST['status']       
-        id = random_id(length=9,character_set=string.digits)
-        noticfor_instance = Department.objects.get(id=id)
-        save_notice_details=Notice(hospital=hospital_instance,noticfor_instance=noticfor_instance, id=id, title=title, noticfor=noticfor, noticmsg=noticmsg, status=status)
+        notice_id = random_id(length=9,character_set=string.digits)
+        noticfor_instance = Department.objects.get(id=noticfor)
+        save_notice_details=Notices(hospital=hospital_instance, id=notice_id, noticfor=noticfor_instance, title=title, noticemsg=noticemsg, status=status)
         save_notice_details.save()
                                              
         messages.info(request,'Notice created successfully')
         return redirect('/add_notice')
+    
     
        
 @login_required(login_url='/')  
@@ -948,11 +949,9 @@ def notice_listView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        all_notice_list=Notice.objects.filter(hospital=hospital_instance)
+        all_notice_list=Notices.objects.filter(hospital=hospital_instance)
         notice_data = {
             'all_notice_list':all_notice_list
         }
         return render(request,'hospital/notice_list.html',context=notice_data )
-
-
 

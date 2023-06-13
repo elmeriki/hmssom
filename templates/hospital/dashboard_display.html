@@ -152,6 +152,18 @@
     <div class="dashboard_bar">
         Finance Department
     </div>
+    {% elif "/payment_list" in request.path %}
+    <div class="dashboard_bar">
+        Finance Department
+    </div>
+    {% elif "/edit_payment" in request.path %}
+    <div class="dashboard_bar">
+        Finance Department
+    </div>
+    {% elif "/paymentcategory" in request.path %}
+    <div class="dashboard_bar">
+        Finance Department
+    </div>
     {% elif "/expensecategory" in request.path %}
     <div class="dashboard_bar">
         Finance Department
@@ -160,6 +172,18 @@
     <div class="dashboard_bar">
         Finance Department
     </div>
+    {% elif "/add_prescription" in request.path %}
+    <div class="dashboard_bar">
+        Prescription 
+    </div>
+    {% elif "/priscription_list" in request.path %}
+    <div class="dashboard_bar">
+        Prescription 
+    </div>
+    {% elif "/edit_prescription" in request.path %}
+    <div class="dashboard_bar">
+        Prescription 
+    </div>  
     {% else %}
     <div class="dashboard_bar">
         Dashboard

@@ -41,7 +41,7 @@ urlpatterns = [
     path('patient_payment_history', views.patient_payment_historyView, name='patient_payment_historyView'),
     path('case_list', views.case_listView, name='case_listView'),
     path('add_case', views.add_caseView, name='add_caseView'),
-     path('document_list', views.document_listView, name='document_listView'),
+    path('document_list', views.document_listView, name='document_listView'),
     path('add_document', views.add_documentView, name='add_documentView'),
 
 
