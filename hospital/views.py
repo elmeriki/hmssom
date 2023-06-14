@@ -418,7 +418,7 @@ def add_documentView(request):
 
     
 
-#===========================================EMAIL========================================
+#===========================================HOSPITAL PROFILE========================================
 @login_required(login_url='/')  
 def hospital_profileView(request):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -690,6 +690,42 @@ def bedcategory_listView(request):
         }
         return render(request,'hospital/bedcategory_list.html',context=bedcategory_data)
     
+
+@login_required(login_url='/')  
+def edit_bedcategoryView(request,bedcategoryid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_bedcategory_instance = Bedcategory.objects.get(id=bedcategoryid)
+        data = {
+        'categoryname':get_bedcategory_instance.categoryname,
+        'bednumber':get_bedcategory_instance.bednumber,
+        'status':get_bedcategory_instance.status,
+        'bedcategoryid':get_bedcategory_instance.id,
+        'bedcategoryid':bedcategoryid
+        }
+        return render(request,'hospital/edit_bedcategory.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_bedcategoryView(request,bedcategoryid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        categoryname = request.POST['categoryname']
+        bednumber = request.POST['bednumber']
+        status = request.POST['status']  
+        Bedcategory.objects.filter(pk=bedcategoryid).update(categoryname=categoryname)
+        Bedcategory.objects.filter(pk=bedcategoryid).update(bednumber=bednumber)
+        Bedcategory.objects.filter(pk=bedcategoryid).update(status=status)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_bedcategory/{bedcategoryid}')
+
+
+@login_required(login_url='/')  
+def delete_bedcategoryView(request, bedcategoryid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_bedcategory = Bedcategory.objects.get(id=bedcategoryid)
+        delete_bedcategory.delete()
+        return redirect('/bedcategory_list')
+    
     
 
 #===========================================CHILD BIRTH========================================
@@ -830,6 +866,60 @@ def donor_listView(request):
         }
         return render(request,'hospital/donor_list.html',context=donor_data)
     
+@login_required(login_url='/')  
+def edit_donorView(request,donorid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_donor_instance = Donor.objects.get(id=donorid)
+        data = {
+        'title':get_donor_instance.title,
+        'firstname':get_donor_instance.firstname,
+        'lastname':get_donor_instance.lastname,
+        'bloodgroup':get_donor_instance.bloodgroup,
+        'weight':get_donor_instance.weight,
+        'age':get_donor_instance.age,
+        'gender':get_donor_instance.gender,
+        'phone':get_donor_instance.phone,
+        'email':get_donor_instance.email,
+        'donorid':get_donor_instance.id,
+        'donorid':donorid
+        }
+        return render(request,'hospital/edit_donor.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_donorView(request,donorid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        title = request.POST['title']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        bloodgroup = request.POST['bloodgroup'] 
+        weight = request.POST['weight']
+        age = request.POST['age']
+        gender = request.POST['gender']  
+        phone = request.POST['phone']
+        email = request.POST['email'] 
+        Donor.objects.filter(pk=donorid).update(title=title)
+        Donor.objects.filter(pk=donorid).update(firstname=firstname)
+        Donor.objects.filter(pk=donorid).update(lastname=lastname)
+        Donor.objects.filter(pk=donorid).update(bloodgroup=bloodgroup)
+        Donor.objects.filter(pk=donorid).update(weight=weight)
+        Donor.objects.filter(pk=donorid).update(age=age)
+        Donor.objects.filter(pk=donorid).update(gender=gender)
+        Donor.objects.filter(pk=donorid).update(phone=phone)
+        Donor.objects.filter(pk=donorid).update(email=email)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_donor/{donorid}')
+
+
+@login_required(login_url='/')  
+def delete_donorView(request, donorid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_donor = Donor.objects.get(id=donorid)
+        delete_donor.delete()
+        return redirect('/donor_list')
+
+    
     
 #===========================================FILE========================================
 @login_required(login_url='/')  
@@ -911,6 +1001,41 @@ def blood_listView(request):
             'all_blood_list':all_blood_list
         }
         return render(request,'hospital/blood_list.html',context=blood_data)
+    
+@login_required(login_url='/')  
+def edit_bloodView(request,blood_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_blood_instance = Blood.objects.get(id=blood_id)
+        data = { 
+        'bloodgroup':get_blood_instance.bloodgroup,
+        'quantity':get_blood_instance.quantity,
+        'status':get_blood_instance.status,
+        'blood_id':get_blood_instance.id,
+        'blood_id':blood_id
+        }
+        return render(request,'hospital/edit_blood.html',context=data)
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_bloodView(request,blood_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        bloodgroup = request.POST['bloodgroup']
+        quantity = request.POST['quantity']
+        status = request.POST['status']  
+        Blood.objects.filter(pk=blood_id).update(bloodgroup=bloodgroup)
+        Blood.objects.filter(pk=blood_id).update(quantity=quantity)
+        Blood.objects.filter(pk=blood_id).update(status=status)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_blood/{blood_id}')
+
+
+@login_required(login_url='/')  
+def delete_bloodView(request, blood_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_blood = Blood.objects.get(id=blood_id)
+        delete_blood.delete()
+        return redirect('/blood_list')
     
 
 #===========================================NOTICES========================================

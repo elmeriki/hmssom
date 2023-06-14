@@ -52,9 +52,8 @@
                                 <td>{{eachall_donor_list.email}}</td>
                                 <td><span class="font-w500">{{eachall_donor_list.lastdonationdate | date }}</span></td>
 
-
                                 <td>
-                                    <a href="">
+                                    <a href="/edit_donor/{{eachall_donor_list.id}}" onclick="if(!confirm('Are you sure you want to edit this Donor?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -63,10 +62,9 @@
                                                 stroke-linejoin="round" />
                                         </svg>
                                     </a>
-
                                 </td>
                                 <td>
-                                    <a data-toggle="modal" data-target="#department_delete_modal"  href="#">
+                                    <a  href="/delete_donor/{{eachall_donor_list.id}}" onclick="if(!confirm('Are you sure you want to delete this Donor?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M3 6H5H21" stroke="#F46B68" stroke-width="2" stroke-linecap="round"

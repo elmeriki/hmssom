@@ -58,7 +58,10 @@ urlpatterns = [
     path('add_bedcategory', views.add_bedcategoryView, name='add_bedcategoryView'),
     path('create_bedcategory', views.create_bedcategoryView, name='create_bedcategoryView'),
     path('bedcategory_list', views.bedcategory_listView, name='bedcategory_listView'),
-
+    path('edit_bedcategory/<str:bedcategoryid>', views.edit_bedcategoryView, name='edit_bedcategoryView'),
+    path('update_bedcategory/<str:bedcategoryid>', views.update_bedcategoryView, name='update_bedcategoryView'),
+    path('delete_bedcategory/<str:bedcategoryid>', views.delete_bedcategoryView, name='delete_bedcategoryView'),
+    
 
     path('add_childbirth', views.add_childbirthView, name='add_childbirthView'),
     path('create_childbirth', views.create_childbirthView, name='create_childbirthView'),
@@ -73,6 +76,9 @@ urlpatterns = [
     path('add_donor', views.add_donorView, name='add_donorView'),
     path('create_donor', views.create_donorView, name='create_donorView'),
     path('donor_list', views.donor_listView, name='donor_listView'),
+    path('edit_donor/<str:donorid>', views.edit_donorView, name='edit_donorView'),
+    path('update_donor/<str:donorid>', views.update_donorView, name='update_donorView'),
+    path('delete_donor/<str:donorid>', views.delete_donorView, name='delete_donorView'),
 
 
     path('add_file', views.add_fileView, name='add_fileView'),
@@ -83,6 +89,9 @@ urlpatterns = [
     path('add_blood', views.add_bloodView, name='add_bloodView'),
     path('create_blood', views.create_bloodView, name='create_bloodView'),
     path('blood_list', views.blood_listView, name='blood_listView'),
+    path('edit_blood/<str:blood_id>', views.edit_bloodView, name='edit_bloodView'),
+    path('update_blood/<str:blood_id>', views.update_bloodView, name='update_bloodView'),
+    path('delete_blood/<str:blood_id>', views.delete_bloodView, name='delete_bloodView'),
 
    
     path('add_notice', views.add_noticeView, name='add_noticeView'),

@@ -19,20 +19,20 @@ class Appointment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
-class Medicine(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_medicine")
-    name =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    category =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    storebox =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    purchaseprice=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
-    saleprice=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
-    quantity =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    genericname =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    company =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    effects =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    expiredate = models.DateField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Medicines(models.Model):
+#     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_medicine")
+#     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     category =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     storebox =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     purchaseprice=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+#     saleprice=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+#     quantity =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     genericname =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     company =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     effects =  models.CharField(max_length=200,blank=True,null=True,default="None")
+#     expiredate = models.DateField(auto_now=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Prescription(models.Model):

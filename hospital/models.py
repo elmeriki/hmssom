@@ -202,10 +202,10 @@ class File(models.Model):
 
 class Donor(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_donor")
-    title = models.CharField(max_length=200,default=0,null=True,blank=True)
+    title = models.CharField(max_length=200,default="",null=True,blank=True)
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
-    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="")
     weight = models.CharField(max_length=200,default=0,null=True,blank=True)
     age =  models.CharField(max_length=200,blank=True,null=True,default="None")
     gender =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -217,7 +217,7 @@ class Donor(models.Model):
 
 class Blood(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
-    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="")
     quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

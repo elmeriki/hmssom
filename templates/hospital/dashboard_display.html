@@ -84,6 +84,10 @@
     <div class="dashboard_bar">
         Bed Category
     </div>
+    {% elif "/edit_bedcategory" in request.path %}
+    <div class="dashboard_bar">
+        Bed Category
+    </div>
     {% elif "/childbirth_list" in request.path %}
     <div class="dashboard_bar">
         Child Birth Record
@@ -132,6 +136,11 @@
     <div class="dashboard_bar">
         Prescription
     </div>
+    {% elif "/edit_prescription" in request.path %}
+    <div class="dashboard_bar">
+        Prescription
+    </div>
+
     {% elif "/add_medicine" in request.path %}
     <div class="dashboard_bar">
         Medicine
@@ -172,20 +181,6 @@
     <div class="dashboard_bar">
         Finance Department
     </div>
-<<<<<<< HEAD
-    {% elif "/add_prescription" in request.path %}
-    <div class="dashboard_bar">
-        Prescription 
-    </div>
-    {% elif "/priscription_list" in request.path %}
-    <div class="dashboard_bar">
-        Prescription 
-    </div>
-    {% elif "/edit_prescription" in request.path %}
-    <div class="dashboard_bar">
-        Prescription 
-    </div>  
-=======
     {% elif "/doctors_profile" in request.path %}
     <div class="dashboard_bar">
         Doctor's Details
@@ -194,7 +189,6 @@
     <div class="dashboard_bar">
         Patient's Details
     </div>
->>>>>>> c17157e0fb4d8440b7c0c7d14ace22ca471eab4a
     {% else %}
     <div class="dashboard_bar">
         Dashboard

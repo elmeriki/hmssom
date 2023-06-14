@@ -42,7 +42,7 @@ def create_medicineView(request):
         company = request.POST['company']
         effects = request.POST['effects']      
         id = random_id(length=9,character_set=string.digits)
-        save_medicine_details=Medicine(hospital=hospital_instance, id=id, name=name, category=category,
+        save_medicine_details=Medicines(hospital=hospital_instance, id=id, name=name, category=category,
                                                 storebox=storebox, purchaseprice=purchaseprice, saleprice=saleprice,
                                                 quantity=quantity, genericname=genericname, company=company, effects=effects)
         save_medicine_details.save()
@@ -64,7 +64,7 @@ def medicine_listView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        all_medicine_list=Medicine.objects.filter(hospital=hospital_instance)
+        all_medicine_list=Medicines.objects.filter(hospital=hospital_instance)
         medicine_data = {
             'all_medicine_list':all_medicine_list
         }
@@ -76,25 +76,25 @@ def medicine_by_categoryView(request,category):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         if category == "Capsules":
-            list_all_capsules=Medicine.objects.filter(hospital=hospital_instance,category=category)
+            list_all_capsules=Medicines.objects.filter(hospital=hospital_instance,category=category)
             data = {
                 'list_all_capsules':list_all_capsules
             }
             return render(request,'customer/medicine_list.html',context=data)
         if category == "Liquid":
-            list_all_liquid=Medicine.objects.filter(hospital=hospital_instance,category=category)
+            list_all_liquid=Medicines.objects.filter(hospital=hospital_instance,category=category)
             data = {
                 'list_all_liquid':list_all_liquid
             }
             return render(request,'customer/medicine_list.html',context=data)
         if category == "Topical":
-            list_all_topical=Medicine.objects.filter(hospital=hospital_instance,category=category)
+            list_all_topical=Medicines.objects.filter(hospital=hospital_instance,category=category)
             data = {
                 'list_all_topical':list_all_topical
             }
             return render(request,'customer/medicine_list.html',context=data)
         if category == "Injections":
-            list_all_injections=Medicine.objects.filter(hospital=hospital_instance,category=category)
+            list_all_injections=Medicines.objects.filter(hospital=hospital_instance,category=category)
             data = {
                 'list_all_injections':list_all_injections
             }
