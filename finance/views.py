@@ -175,6 +175,12 @@ def expense_listView(request):
     else:
         return redirect('/')
     
+
+
+
+
+    
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_expensecategoryView(request):

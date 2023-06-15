@@ -18,6 +18,11 @@ urlpatterns = [
 
     path('add_expense', views.add_expenseView, name='add_expenseView'),
     path('expense_list', views.expense_listView, name='expense_listView'),
+    # path('edit_expense/<str:expense_id>', views.edit_expenseView, name='edit_expenseView'),
+    # path('update_expense/<str:expense_id>', views.update_expenseView, name='update_expenseView'),
+    # path('delete_expense/<str:expense_id>', views.delete_expenseView, name='delete_expenseView'),
+
+
     path('expensecategory', views.expensecategoryView, name='expensecategoryView'),
     path('add_expensecategory', views.add_expensecategoryView, name='add_expensecategoryView'),
 

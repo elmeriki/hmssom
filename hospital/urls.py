@@ -66,11 +66,18 @@ urlpatterns = [
     path('add_childbirth', views.add_childbirthView, name='add_childbirthView'),
     path('create_childbirth', views.create_childbirthView, name='create_childbirthView'),
     path('childbirth_list', views.childbirth_listView, name='childbirth_listView'),
+    path('edit_childbirth/<str:childbirth_id>', views.edit_childbirthView, name='edit_childbirthView'),
+    path('update_childbirth/<str:childbirth_id>', views.update_childbirthView, name='update_childbirthView'),
+    path('delete_childbirth/<str:childbirth_id>', views.delete_childbirthView, name='delete_childbirthView'),
 
 
     path('add_deadthrecord', views.add_deadthrecordView, name='add_deadthrecordView'),
     path('create_deadthrecord', views.create_deadthrecordView, name='create_deadthrecordView'),
     path('deadthrecord_list', views.deadthrecord_listView, name='deadthrecord_listView'),
+    path('edit_deathrecord/<str:deathrecord_id>', views.edit_deathrecordView, name='edit_deathrecordView'),
+    path('update_deathrecord/<str:deathrecord_id>', views.update_deathrecordView, name='edit_deathrecordView'),
+    path('delete_deathrecord/<str:deathrecord_id>', views.delete_deathrecordView, name='edit_deathrecordView'),
+
 
 
     path('add_donor', views.add_donorView, name='add_donorView'),
@@ -84,6 +91,9 @@ urlpatterns = [
     path('add_file', views.add_fileView, name='add_fileView'),
     path('create_file', views.create_fileView, name='create_fileView'),
     path('file_list', views.file_listView, name='file_listView'),
+    path('edit_file/<str:file_id>', views.edit_fileView, name='edit_fileView'),
+    path('update_file/<str:file_id>', views.update_fileView, name='update_fileView'),
+    path('delete_file/<str:file_id>', views.delete_fileView, name='delete_fileView'),
 
 
     path('add_blood', views.add_bloodView, name='add_bloodView'),
@@ -97,6 +107,9 @@ urlpatterns = [
     path('add_notice', views.add_noticeView, name='add_noticeView'),
     path('create_notice', views.create_noticeView, name='create_noticeView'),
     path('notice_list', views.notice_listView, name='notice_listView'),
+    path('edit_notice/<str:notice_id>', views.edit_noticeView, name='edit_noticeView'),
+    path('update_notice/<str:notice_id>', views.update_noticeView, name='update_noticeView'),
+    path('delete_notice/<str:notice_id>', views.delete_noticeView, name='delete_noticeView'),
 
     path('doctors_profile/<str:doctor_id>', views.doctors_profileView, name='doctors_profileView'),
     

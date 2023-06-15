@@ -52,6 +52,14 @@
     <div class="dashboard_bar">
         Patient
         </div>
+    {% elif "/document_list" in request.path %}
+        <div class="dashboard_bar">
+        Patient
+        </div>
+    {% elif "/case_list" in request.path %}
+    <div class="dashboard_bar">
+        Patient
+        </div>
     {% elif "/humanresource_list" in request.path %}
     <div class="dashboard_bar">
         Human Resources
@@ -73,6 +81,18 @@
         Appointment
     </div>
     {% elif "/add_appointment" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
+    {% elif "/edit_appointment" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
+    {% elif "/todays_appointment_list" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
+    {% elif "/upcoming_appointment_list" in request.path %}
     <div class="dashboard_bar">
         Appointment
     </div>
@@ -159,27 +179,27 @@
     </div>
     {% elif "/add_payment" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/payment_list" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/edit_payment" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/paymentcategory" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/expensecategory" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/expense_list" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/doctors_profile" in request.path %}
     <div class="dashboard_bar">
