@@ -168,7 +168,7 @@ def create_new_payment_categoryView(request):
         description =request.POST['description']  
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        create_new_payment_category=Paymentcategory(hospital=hospital_instance,category=category_name,desc=description)
+        create_new_payment_category=Paymentcategory(hospital=hospital_instance,category=category_name,amount=description)
         if create_new_payment_category:
             create_new_payment_category.save()
             messages.success(request,'Payment Category created successfuly.')

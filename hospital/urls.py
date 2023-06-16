@@ -4,6 +4,14 @@ from hospital import views
 urlpatterns = [
     path('hospital_dashboard', views.hospital_dashboardView, name='hospital_dashboardView'),
     path('hospital_profile', views.hospital_profileView, name='hospital_profileView'),
+    
+    
+    path('doctorsdashboard', views.doctorsdashboardView, name='doctorsdashboardView'),
+    path('doctortreatment/<str:patientid>', views.doctortreatmentView, name='doctortreatmentView'),
+    path('add_patient_test/<str:patientid>', views.add_patient_testView, name='add_patient_testView'),
+    path('delete_patient_test/<str:patientid>/<str:test_id>', views.delete_patient_testView, name='delete_patient_testView'),
+
+    path('create_treatment/<str:patientid>', views.create_treatmentView, name='create_treatmentView'),
 
     path('compose_email', views.compose_emailView, name='compose_emailView'),
     path('send_bulk_email', views.send_bulk_emailView, name='send_bulk_emailView'),

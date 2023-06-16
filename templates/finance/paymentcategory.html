@@ -26,7 +26,7 @@
 						<thead>
 							<tr>
 								<th>Category</th>
-								<th>Description</th>
+								<th>Amount</th>
 								<th>Options</th>
 							</tr>
 						</thead>
@@ -35,7 +35,7 @@
 								{% for payment_category in payment_category %}
 			
 								<td>{{payment_category.category}}</td>
-								<td>{{payment_category.desc}}</td>
+								<td>{{payment_category.amount}}</td>
 								<td>
 									<a href="/edit_patient/{{hospital_patient.id}}"
 										onclick="if(!confirm('Are you sure you want to edit this Patient?')){return false;}">

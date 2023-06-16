@@ -84,7 +84,7 @@ def hospital_login_View(request):
         if userlog is not None:
             auth.login(request, userlog)
             if request.user.is_authenticated and request.user.is_dr:
-                return redirect('/')
+                return redirect('/doctorsdashboard')
         else:
             messages.info(request,"Incorrect credentials.")
             return redirect('/')

@@ -11,10 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e$7m83p@!-n8*+)hto+7mw&pqq%2i=^p6fska)*iy^zfi+igxx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG=True
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -130,17 +129,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 
 
-
-# STATIC_URL = '/static/'
-# STATIC_ROOT = '/home/primmyqr/m.primtask.com/static'
-
-
-# SESSION_EXPIRE_SECONDS =3628800
-# SESSION_TIMEOUT_REDIRECT = '/userlogin'
-
-# SESSION_COOKIE_SECURE = False
-
-
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
@@ -152,3 +140,5 @@ TIME_ZONE = 'Africa/Harare'
 USE_TZ =True
 
 DEFAULT_CHARSET = 'utf-8'
+
+

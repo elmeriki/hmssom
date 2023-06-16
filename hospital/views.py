@@ -150,7 +150,7 @@ def create_doctorView(request):
         message_about_dr = request.POST['message_about_dr']
         doctorsid = random_id(length=9,character_set=string.digits)
         department_instance = Department.objects.get(id=departmentid)
-        create_new_doctors_account=User.objects.create_user(username=email,first_name=name,last_name=name,password=password,is_dr=True,email=email,address=address,number=number,customerid=doctorsid)
+        create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_dr=True,email=email,address=address,number=number,customerid=doctorsid)
         create_new_doctors_account.save()
             
         save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
@@ -158,41 +158,7 @@ def create_doctorView(request):
         messages.info(request,'Doctors Profile created successfully')
         return render(request,'hospital/add_doctor.html',{})
 
-# @login_required(login_url='/')  
-# @transaction.atomic  #transactional 
-# def create_doctorView(request):
-#     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
-#         username=request.user.username
-#         hospital_instance=User.objects.get(username=username)
-#         if len(request.FILES) != 0:
-#             picture=request.FILES['picture']
-#             signature=request.FILES['signature']
-#             picturefilesize=picture.size
-#             signaturefilesize=signature.size
-#             if picturefilesize > 2621440 and signaturefilesize > 2621440:
-#                 messages.info(request,"The Dr Picture and Signature is Biger Than 2MB")
-#                 return redirect('/add_doctor')
-#         if User.objects.filter(email=request.POST['email']).exists():
-#             messages.info(request,"The Email address is used already")
-#             return redirect('/add_doctor')
-#         name = request.POST['name']
-#         email = request.POST['email']
-#         number = request.POST['phone']
-#         address = request.POST['address']
-#         password = request.POST['password']
-#         department = request.POST['department']
-#         message_about_dr = request.POST['message_about_dr']
-#         status = request.POST['status']
 
-#         doctorsid = random_id(length=9,character_set=string.digits)
-#         #department_instance = Department.objects.get(id=departmentid)
-#         create_new_doctors_account=User.objects.create_user(id=doctorsid, username=email, first_name=name,last_name=name, password=password,email=email,address=address,number=number,is_dr=True)
-#         create_new_doctors_account.save()
-            
-#         save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr,status=status)
-#         save_doctors_details.save()
-#         messages.info(request,'Doctors Profile created successfully')
-#         return render(request,'hospital/add_doctor.html',{})
     
 @login_required(login_url='/')  
 def add_doctorView(request):
@@ -999,3 +965,100 @@ def patient_detailsView(request,patient_id):
         'patient_appointment':patient_appointment,
         }
         return render(request,'hospital/patient_details.html',context=data)
+    
+    
+    
+@login_required(login_url='/')  
+def doctorsdashboardView(request):
+    if request.user.is_authenticated and request.user.is_dr:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        data={
+            'doctors_appointment':Appointment.objects.filter(dr=doctor_instance)
+        }
+        return render(request,'doctor/index.html',context=data) 
+    else:
+        return redirect('/')
+
+
+@login_required(login_url='/')  
+def doctortreatmentView(request,patientid):
+    if request.user.is_authenticated and request.user.is_dr:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        patient_instance=Patient.objects.get(id=patientid)
+        data={
+            'doctors_appointment':Appointment.objects.filter(dr=doctor_instance,status=0).filter(id=patientid),
+            'payment_categories':Paymentcategory.objects.filter(hospital=hospital_instance),
+            'Patienttest':Patienttest.objects.filter(patient=patient_instance,hospital=hospital_instance),
+            'patientid':patientid,
+            'treatmentlog':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=0).exists()
+        }
+        return render(request,'doctor/treatment.html',context=data) 
+    else:
+        return redirect('/')
+    
+
+@transaction.atomic  #transactional  
+@login_required(login_url='/')  
+def add_patient_testView(request,patientid):
+    if request.user.is_authenticated and request.user.is_dr and request.method=="POST":
+        categoryname = request.POST['categoryname']
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        patient_instance=Patient.objects.get(id=patientid)
+        category_amount=Paymentcategory.objects.values_list('amount', flat=True).get(category=categoryname)
+        if Patienttest.objects.filter(category=categoryname,patient=patient_instance).exists():
+            # messages.success(request,'Added already')
+            return redirect(f'/doctortreatment/{patientid}') 
+        else:
+            add_test=Patienttest(hospital=hospital_instance,category=categoryname,amount=category_amount,patient=patient_instance)
+            if add_test:
+                add_test.save()
+                return redirect(f'/doctortreatment/{patientid}') 
+            else:
+                return redirect(f'/doctortreatment/{patientid}')
+    else:
+        return redirect('/')
+    
+    
+@transaction.atomic  #transactional  
+@login_required(login_url='/')  
+def delete_patient_testView(request,patientid,test_id):
+    if request.user.is_authenticated and request.user.is_dr:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        Patienttest.objects.filter(hospital=hospital_instance,id=test_id).delete()
+        return redirect(f'/doctortreatment/{patientid}') 
+   
+    else:
+        return redirect('/')
+    
+
+@transaction.atomic  #transactional  
+@login_required(login_url='/')  
+def create_treatmentView(request,patientid):
+    if request.user.is_authenticated and request.user.is_dr and request.method=="POST":
+        patient_status = request.POST['status']
+        desc = request.POST['desc']
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        patient_instance=Patient.objects.get(id=patientid)
+        
+        create_patient_treatment=Treatment(hospital=hospital_instance,patient=patient_instance,dr=doctor_instance,desc=desc,pstate=patient_status)
+        if create_patient_treatment:
+            create_patient_treatment.save()
+            Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(dr=doctor_instance).update(status=1)
+            messages.success(request,'Patient has been consulted successfuly.')
+            return redirect(f'/doctortreatment/{patientid}') 
+    else:
+        return redirect('/')
