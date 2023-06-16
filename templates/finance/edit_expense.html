@@ -21,8 +21,9 @@
                     <form action="/update_expenses/{{expense_id}}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                             <div class="form-group col-md-12">
+                                <label for="category">Category</label>
                                 <select class="form-control" name="category" required>
-                                    <option value="">{{category}}</option>
+                                    <option value="">{{category.name}}</option>
                                     {% for all_expenses_categories in all_expenses_categories %}
                                     <option value="{{all_expenses_categories.id}}">{{all_expenses_categories.name}}</option>
                                     {% endfor %}
@@ -35,7 +36,7 @@
 
                             <div class="form-group col-md-12">
                                 <label for="visit desc">Description</label>
-                                <input type="text" class="form-control" name="description" value="{{description}}" required>
+                                <input type="text" class="form-control" name="decs" value="{{decs}}" required>
                             </div>
                         </div>
                       <button type="submit" class="btn btn-primary">Save</button>

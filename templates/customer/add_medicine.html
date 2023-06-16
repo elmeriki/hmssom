@@ -20,18 +20,7 @@
                     <div class="basic-form">
                         <form action="/create_medicine" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="form-row">                               
-                                    <!--<div class="form-group col-md-6">
-                                        <label for="title">Title</label>
-                                        <select class="form-control" name="title" required>
-                                            <option value="">Select Title</option>
-                                            <option value="Mr">Mr</option>
-                                            <option value="Mrs">Mrs</option>
-                                            <option value="Miss">Miss</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                    </div>-->
-                                    
+                            <div class="form-row">                                                
                                     <div class="form-group col-md-6">
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control" name="name" placeholder="Medicine"
@@ -41,10 +30,9 @@
                                         <label for="category">Category</label>
                                         <select class="form-control" name="category" required>
                                             <option value="">Select Category</option>
-                                            <option value="Capsules">Capsules</option>
-                                            <option value="Liquid">Liquid</option>
-                                            <option value="Topical">Topical</option>
-                                            <option value="Injections">Injections</option>
+                                            {% for all_medicine_categories in all_medicine_categories %}
+                                            <option value="{{all_medicine_categories.id}}">{{all_medicine_categories.categoryname}}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -77,9 +65,14 @@
                                         <input type="text" class="form-control" name="company" placeholder="Company"
                                             required>
                                     </div>
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label for="effects">Effects</label>
                                         <input type="text" class="form-control" name="effects" placeholder="Effects"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="expiredate">Expiry Date</label>
+                                        <input type="date" class="form-control" name="expiredate" placeholder="Expiry Date"
                                             required>
                                     </div>
                                      

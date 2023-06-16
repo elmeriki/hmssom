@@ -28,35 +28,84 @@ import threading
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def create_medicineView(request):
+def add_medicinecategoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital:        
+        return render(request,'customer/add_medicinecategory.html')
+    else:
+        return redirect('/')
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def medicinecategory_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)    
+        data = {
+            'medicine_category':Medicinecategory.objects.filter(hospital=hospital_instance)
+        }    
+        return render(request,'customer/medicinecategory_list.html',context=data)
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_medicinecategoryView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        categoryname = request.POST['categoryname'] 
+        desc = request.POST['desc'] 
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
+        create_new_medicine_category=Medicinecategory(hospital=hospital_instance,categoryname=categoryname,desc=desc)
+        if create_new_medicine_category:
+            create_new_medicine_category.save()
+            messages.success(request,'Medicine Category created successfuly.')
+            return redirect('/add_medicinecategory')
+        else:
+            return redirect('/add_medicinecategory')
+            #messages.error(request,'Sorry, Medicine Category could not be created.')
+    else:
+        return redirect('/')
+
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_medicineView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
         name = request.POST['name']
-        category = request.POST['category']
+        category = int(request.POST['category'])
         storebox = request.POST['storebox']  
         purchaseprice = request.POST['purchaseprice']
         saleprice = request.POST['saleprice']
         quantity = request.POST['quantity']
         genericname = request.POST['genericname']  
         company = request.POST['company']
-        effects = request.POST['effects']      
-        id = random_id(length=9,character_set=string.digits)
-        save_medicine_details=Medicines(hospital=hospital_instance, id=id, name=name, category=category,
-                                                storebox=storebox, purchaseprice=purchaseprice, saleprice=saleprice,
-                                                quantity=quantity, genericname=genericname, company=company, effects=effects)
-        save_medicine_details.save()
-                                             
-        messages.info(request,'Medicine created successfully')
-        return redirect('/add_medicine')
+        effects = request.POST['effects'] 
+        expiredate = request.POST['expiredate'] 
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username) 
+        category_instance=Medicinecategory.objects.get(id=category)
+        save_new_medicine=Medicinal(hospital=hospital_instance, category=category_instance, name=name,storebox=storebox, purchaseprice=purchaseprice, saleprice=saleprice,
+                                                quantity=quantity, genericname=genericname, company=company, effects=effects,expiredate=expiredate)
+        if save_new_medicine:
+            save_new_medicine.save()                                             
+            messages.info(request,'Medicine has been saved successfully')
+            return redirect('/add_medicine')
+        else:
+            return redirect('/')
     
-       
-@login_required(login_url='/')  
-@transaction.atomic  #transactional 
-def add_medicineView(request):
-    if request.user.is_authenticated and request.user.is_hospital:
-        return render(request,'customer/add_medicine.html')
 
+def add_medicineView(request):
+    if request.user.is_authenticated and request.user.is_hospital:  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+        'all_medicine_categories':Medicinecategory.objects.filter(hospital=hospital_instance)
+        }      
+        return render(request,'customer/add_medicine.html',context=data)
+    else:
+        return redirect('/')
+    
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -64,41 +113,42 @@ def medicine_listView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        all_medicine_list=Medicines.objects.filter(hospital=hospital_instance)
         medicine_data = {
-            'all_medicine_list':all_medicine_list
+            'all_medicine_list': Medicinal.objects.filter(hospital=hospital_instance)
         }
         return render(request,'customer/medicine_list.html',context=medicine_data)
+    else:
+        return redirect('/')
     
 
-def medicine_by_categoryView(request,category):
-    if request.user.is_authenticated and request.user.is_hospital:
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        if category == "Capsules":
-            list_all_capsules=Medicines.objects.filter(hospital=hospital_instance,category=category)
-            data = {
-                'list_all_capsules':list_all_capsules
-            }
-            return render(request,'customer/medicine_list.html',context=data)
-        if category == "Liquid":
-            list_all_liquid=Medicines.objects.filter(hospital=hospital_instance,category=category)
-            data = {
-                'list_all_liquid':list_all_liquid
-            }
-            return render(request,'customer/medicine_list.html',context=data)
-        if category == "Topical":
-            list_all_topical=Medicines.objects.filter(hospital=hospital_instance,category=category)
-            data = {
-                'list_all_topical':list_all_topical
-            }
-            return render(request,'customer/medicine_list.html',context=data)
-        if category == "Injections":
-            list_all_injections=Medicines.objects.filter(hospital=hospital_instance,category=category)
-            data = {
-                'list_all_injections':list_all_injections
-            }
-            return render(request,'customer/medicine_list.html',context=data)
+# def medicine_by_categoryView(request,category):
+#     if request.user.is_authenticated and request.user.is_hospital:
+#         username=request.user.username
+#         hospital_instance=User.objects.get(username=username)
+#         if category == "Capsules":
+#             list_all_capsules=Medicine.objects.filter(hospital=hospital_instance,category=category)
+#             data = {
+#                 'list_all_capsules':list_all_capsules
+#             }
+#             return render(request,'customer/medicine_list.html',context=data)
+#         if category == "Liquid":
+#             list_all_liquid=Medicine.objects.filter(hospital=hospital_instance,category=category)
+#             data = {
+#                 'list_all_liquid':list_all_liquid
+#             }
+#             return render(request,'customer/medicine_list.html',context=data)
+#         if category == "Topical":
+#             list_all_topical=Medicine.objects.filter(hospital=hospital_instance,category=category)
+#             data = {
+#                 'list_all_topical':list_all_topical
+#             }
+#             return render(request,'customer/medicine_list.html',context=data)
+#         if category == "Injections":
+#             list_all_injections=Medicine.objects.filter(hospital=hospital_instance,category=category)
+#             data = {
+#                 'list_all_injections':list_all_injections
+#             }
+#             return render(request,'customer/medicine_list.html',context=data)
         
 #=======================================PRESCRIPTION====================================
         

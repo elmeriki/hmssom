@@ -60,6 +60,14 @@
     <div class="dashboard_bar">
         Patient
         </div>
+    {% elif "/add_case" in request.path %}
+    <div class="dashboard_bar">
+        Patient
+        </div>
+    {% elif "/add_document" in request.path %}
+        <div class="dashboard_bar">
+        Patient
+        </div> 
     {% elif "/humanresource_list" in request.path %}
     <div class="dashboard_bar">
         Human Resources
@@ -169,6 +177,10 @@
     <div class="dashboard_bar">
         Medicine
     </div>
+    {% elif "/medicinecategory_list" in request.path %}
+    <div class="dashboard_bar">
+        Medicine Category
+    </div>
     {% elif "/add_notice" in request.path %}
     <div class="dashboard_bar">
         Notice
@@ -198,6 +210,14 @@
         Finance 
     </div>
     {% elif "/expense_list" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
+    </div>
+    {% elif "/edit_expense" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
+    </div>
+    {% elif "/add_expense" in request.path %}
     <div class="dashboard_bar">
         Finance 
     </div>

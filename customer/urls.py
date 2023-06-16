@@ -2,11 +2,16 @@ from django.urls import path,include
 from customer import views
 
 urlpatterns = [
+    path('add_medicinecategory', views.add_medicinecategoryView, name='add_medicinecategoryView'),
+    path('create_medicinecategory', views.create_medicinecategoryView, name='create_medicinecategoryView'),
+    path('medicinecategory_list', views.medicinecategory_listView, name='medicinecategory_listView'),
+    #path('medicine_by_category/<str:category>', views.medicine_by_categoryView, name='medicine_by_categoryView'),
+
+
     path('add_medicine', views.add_medicineView, name='add_medicineView'),
     path('create_medicine', views.create_medicineView, name='create_medicineView'),
     path('medicine_list', views.medicine_listView, name='prescriptions_listView'),
-    path('medicine_by_category/<str:category>', views.medicine_by_categoryView, name='medicine_by_categoryView'),
-
+    #path('medicine_by_category/<str:category>', views.medicine_by_categoryView, name='medicine_by_categoryView'),
 
     path('add_prescription', views.add_prescriptionView, name='add_prescriptionView'),
     path('create_prescription', views.create_prescriptionView, name='create_prescriptionView'),

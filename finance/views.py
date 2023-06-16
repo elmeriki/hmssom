@@ -161,6 +161,27 @@ def add_expenseView(request):
         return render(request,'finance/add_expense.html',context=data)
     else:
         return redirect('/')
+
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_new_expensesView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        category_id =int(request.POST['category'] )
+        amount =request.POST['amount'] 
+        desc =request.POST['description']  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        category_instance = Expensescategory.objects.get(id=category_id)
+        save_new_expenses=Expense(hospital=hospital_instance,category=category_instance,amount=amount,decs=desc)
+        if save_new_expenses:
+            save_new_expenses.save()
+            messages.success(request,'Expenses has been save successfuly.')
+            return redirect('/add_expense')
+        else:
+            return redirect('/add_expense')
+    else:
+        return redirect('/')
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -176,9 +197,40 @@ def expense_listView(request):
         return redirect('/')
     
 
+@login_required(login_url='/')  
+def edit_expenseView(request,expense_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_expense_instance = Expense.objects.get(id=expense_id)
+        data = {
+        'category':get_expense_instance.category,
+        'decs':get_expense_instance.decs,
+        'amount':get_expense_instance.amount,
+        'expense_id':get_expense_instance.id,
+        'expense_id':expense_id
+        }
+        return render(request,'finance/edit_expense.html',context=data)
 
 
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def update_expenseView(request,expense_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        category=request.POST['category']
+        decs=request.POST['decs']
+        amount=request.POST['amount']
+        Expense.objects.filter(pk=expense_id).update(category=category)
+        Expense.objects.filter(pk=expense_id).update(decs=decs)
+        Expense.objects.filter(pk=expense_id).update(amount=amount)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_expense/{expense_id}')
 
+
+@login_required(login_url='/')  
+def delete_expenseView(request, expense_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_expense = Expense.objects.get(id=expense_id)
+        delete_expense.delete()
+        return redirect('/expense_list')
     
     
 @login_required(login_url='/')  
@@ -220,27 +272,37 @@ def create_new_categoryView(request):
     else:
         return redirect('/')
     
+
+@login_required(login_url='/')  
+def edit_expensecategoryView(request,expensecategory_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        get_expensecategory_instance = Expensescategory.objects.get(id=expensecategory_id)
+        data = {
+        'name':get_expensecategory_instance.name,
+        'expensecategory_id':get_expensecategory_instance.id,
+        'expensecategory_id':expensecategory_id
+        }
+        return render(request,'finance/edit_expensecategory.html',context=data)
+
+
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def create_new_expensesView(request):
-    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
-        category_id =int(request.POST['category'] )
-        amount =request.POST['amount'] 
-        desc =request.POST['description']  
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        category_instance = Expensescategory.objects.get(id=category_id)
-        save_new_expenses=Expense(hospital=hospital_instance,category=category_instance,amount=amount,decs=desc)
-        if save_new_expenses:
-            save_new_expenses.save()
-            messages.success(request,'Expenses has been save successfuly.')
-            return redirect('/add_expense')
-        else:
-            return redirect('/add_expense')
-    else:
-        return redirect('/')
+def update_expensecategoryView(request,expensecategory_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        name=request.POST['name']
+        Expensescategory.objects.filter(pk=expensecategory_id).update(name=name)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_expensecategory/{expensecategory_id}')
+
+
+@login_required(login_url='/')  
+def delete_expensecategoryView(request, expensecategory_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_expensecategory = Expensescategory.objects.get(id=expensecategory_id)
+        delete_expensecategory.delete()
+        return redirect('/expensecategory')
     
-    
+   
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_new_payment_categoryView(request):

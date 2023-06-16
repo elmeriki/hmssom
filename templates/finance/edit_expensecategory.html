@@ -13,17 +13,17 @@
                 <h4 class="text-success">{{foreachmessage}}</h4>
                 {% endfor %}
                 {% else %}
-                <h4 class="">New Expense Category</h4>
+                <h4 class="">Edit Expense Category</h4>
                 {% endif %}            
             </div>
             <div class="card-body">
                 <div class="basic-form">
-                    <form action="/add_expensecategory" method="POST" enctype="multipart/form-data">
+                    <form action="/update_expensecategory/{{expensecategory_id}}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="category">Category Name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Category Name" required>
+                                <input type="text" class="form-control" name="name" value="{{name}}" required>
                             </div>
                                      
                         </div>
