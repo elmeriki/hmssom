@@ -12,6 +12,9 @@ urlpatterns = [
     path('delete_patient_test/<str:patientid>/<str:test_id>', views.delete_patient_testView, name='delete_patient_testView'),
 
     path('create_treatment/<str:patientid>', views.create_treatmentView, name='create_treatmentView'),
+    path('treatment_list', views.treatment_listView, name='treatment_listView'),
+    path('patient_test_list/<str:patientid>', views.patient_test_listView, name='patient_test_listView'),
+
 
     path('compose_email', views.compose_emailView, name='compose_emailView'),
     path('send_bulk_email', views.send_bulk_emailView, name='send_bulk_emailView'),

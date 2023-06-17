@@ -10,6 +10,7 @@ class Appointment(models.Model):
     visitdsc =  models.TextField(null=True,blank=True)
     remark =  models.TextField(null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
+    astatus = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     date =models.DateField(default=0,null=True,blank=True)
     paymenttype = models.CharField(max_length=200,default=0,null=True,blank=True)

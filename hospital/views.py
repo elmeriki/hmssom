@@ -1062,3 +1062,29 @@ def create_treatmentView(request,patientid):
             return redirect(f'/doctortreatment/{patientid}') 
     else:
         return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def treatment_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data={
+            'pending_treatment_log':Treatment.objects.filter(hospital=hospital_instance,status=0)
+        }
+        return render(request,'hospital/treatment_list.html',context=data) 
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def patient_test_listView(request,patientid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        patient_instance=Patient.objects.get(phone=patientid)
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data={
+            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance)
+        }
+        return render(request,'hospital/treatment_list.html',context=data) 
+    else:
+        return redirect('/')

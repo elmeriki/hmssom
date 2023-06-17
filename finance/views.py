@@ -28,13 +28,15 @@ import threading
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
-def add_paymentView(request):
+def add_paymentView(request,patien_id):
     if request.user.is_authenticated and request.user.is_hospital:    
         username=request.user.username
-        hospital_instance=User.objects.get(username=username)    
+        hospital_instance=User.objects.get(username=username)
+        patien_instance=Patient.objects.get(phone=patien_id) 
         data={
-        'payment_category':Paymentcategory.objects.filter(hospital=hospital_instance),
-        'doctor_list':Doctor.objects.filter(hospital=hospital_instance)
+        'patien_id':patien_id,
+        'patient_test_list':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=0),
+        'total_sum_of_test':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=0).aggregate(Sum('amount'))['amount__sum']
         }    
         return render(request,'finance/add_payment.html',context=data)
     else:
@@ -184,25 +186,20 @@ def create_new_payment_categoryView(request):
 def record_paymentView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
         phone =request.POST['phone']
-        category_id =int(request.POST['category_id'])
-        doctor_id =int(request.POST['doctor_id'])
         amount =request.POST['amount']
-        visitdsc =request.POST['visitdsc'] 
         paymenttype =request.POST['paymenttype'] 
         payment_status =request.POST['payment_status'] 
-        
         username=request.user.username
-        if not Patient.objects.filter(phone=phone).exists():
-            messages.info(request,'Patient Cellphone Number Does Not Exists')
-            return redirect('/add_payment')
+        hospital_instance=User.objects.get(username=username)   
+        patient_instance=Patient.objects.get(phone=phone)
+        if Payment.objects.filter().exists():
+            messages.info(request,'Previous Payment has not been settle.')
+            return redirect(f'/add_payment/{phone}')
         else:
-            hospital_instance=User.objects.get(username=username)   
-            patient_instance=Patient.objects.get(phone=phone)
-            doctor_instance=Doctor.objects.get(id=doctor_id)
-            payment_category_instance=Paymentcategory.objects.get(id=category_id)
-            create_apointment=Payment(hospital=hospital_instance,patient=patient_instance,category=payment_category_instance,treatedby_dr=doctor_instance,visitdsc=visitdsc,amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
-            create_apointment.save()
-            messages.info(request,'Patient has been save successfully')
-            return redirect('/add_payment')
+            save_bew_payment=Payment(hospital=hospital_instance,patient=patient_instance,category="Lab Test",amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
+            save_bew_payment.save()
+            Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(payment="Pending").update(payment=payment_status)
+            messages.info(request,'Payment hass been save successfully')
+            return redirect(f'/add_payment/{phone}')
     else:
         return redirect('/')
