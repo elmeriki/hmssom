@@ -52,6 +52,22 @@
     <div class="dashboard_bar">
         Patient
         </div>
+    {% elif "/document_list" in request.path %}
+        <div class="dashboard_bar">
+        Patient
+        </div>
+    {% elif "/case_list" in request.path %}
+    <div class="dashboard_bar">
+        Patient
+        </div>
+    {% elif "/add_case" in request.path %}
+    <div class="dashboard_bar">
+        Patient
+        </div>
+    {% elif "/add_document" in request.path %}
+        <div class="dashboard_bar">
+        Patient
+        </div> 
     {% elif "/humanresource_list" in request.path %}
     <div class="dashboard_bar">
         Human Resources
@@ -76,11 +92,27 @@
     <div class="dashboard_bar">
         Appointment
     </div>
+    {% elif "/edit_appointment" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
+    {% elif "/todays_appointment_list" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
+    {% elif "/upcoming_appointment_list" in request.path %}
+    <div class="dashboard_bar">
+        Appointment
+    </div>
     {% elif "/bedcategory_list" in request.path %}
     <div class="dashboard_bar">
         Bed Category
     </div>
     {% elif "/add_bedcategory" in request.path %}
+    <div class="dashboard_bar">
+        Bed Category
+    </div>
+    {% elif "/edit_bedcategory" in request.path %}
     <div class="dashboard_bar">
         Bed Category
     </div>
@@ -132,6 +164,11 @@
     <div class="dashboard_bar">
         Prescription
     </div>
+    {% elif "/edit_prescription" in request.path %}
+    <div class="dashboard_bar">
+        Prescription
+    </div>
+
     {% elif "/add_medicine" in request.path %}
     <div class="dashboard_bar">
         Medicine
@@ -139,6 +176,10 @@
     {% elif "/medicine_list" in request.path %}
     <div class="dashboard_bar">
         Medicine
+    </div>
+    {% elif "/medicinecategory_list" in request.path %}
+    <div class="dashboard_bar">
+        Medicine Category
     </div>
     {% elif "/add_notice" in request.path %}
     <div class="dashboard_bar">
@@ -150,15 +191,35 @@
     </div>
     {% elif "/add_payment" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
+    </div>
+    {% elif "/payment_list" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
+    </div>
+    {% elif "/edit_payment" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
+    </div>
+    {% elif "/paymentcategory" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
     </div>
     {% elif "/expensecategory" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
     </div>
     {% elif "/expense_list" in request.path %}
     <div class="dashboard_bar">
-        Finance Department
+        Finance 
+    </div>
+    {% elif "/edit_expense" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
+    </div>
+    {% elif "/add_expense" in request.path %}
+    <div class="dashboard_bar">
+        Finance 
     </div>
     {% elif "/doctors_profile" in request.path %}
     <div class="dashboard_bar">

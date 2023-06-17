@@ -2,6 +2,7 @@ from django.db import models
 from hmmauth.models import *
 from hospital.models import *
 
+
 # Create your models here.
 class Appointment(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_appointment_name")
@@ -17,12 +18,18 @@ class Appointment(models.Model):
     paymentstatus = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Medicinecategory(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_medicine_for_category")
+    categoryname = models.CharField(max_length=200,blank=True,null=True,default="")
+    desc = models.CharField(max_length=200,blank=True,null=True,default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)  
     
-    
-class Medicine(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_medicine")
+class Medicinal(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_medicine")
+    category = models.ForeignKey(Medicinecategory,on_delete=models.CASCADE,related_name="hospital_medicine_for_category")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    category =  models.CharField(max_length=200,blank=True,null=True,default="None")
     storebox =  models.CharField(max_length=200,blank=True,null=True,default="None")
     purchaseprice=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     saleprice=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
@@ -30,7 +37,7 @@ class Medicine(models.Model):
     genericname =  models.CharField(max_length=200,blank=True,null=True,default="None")
     company =  models.CharField(max_length=200,blank=True,null=True,default="None")
     effects =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    expiredate = models.DateField(auto_now=True)
+    expiredate = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

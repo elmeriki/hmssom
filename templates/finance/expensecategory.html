@@ -35,7 +35,7 @@
                                     </div>
                                 </th>
                                 <th>Category Name</th>
-                                <th>Options</th>
+                                <th>Edit</th>
                                 <th>Del</th>
                             </tr>
                         </thead>
@@ -53,8 +53,8 @@
                                 </td>
                                 <td>{{expenses_categories.name}}</td>
                                 <td>
-                                    <a href="/edit_patient/{{hospital_patient.id}}"
-                                        onclick="if(!confirm('Are you sure you want to edit this Patient?')){return false;}">
+                                    <a href="/edit_expensecategory/{{expenses_categories.id}}"
+                                        onclick="if(!confirm('Are you sure you want to edit this Expense Category?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -66,8 +66,8 @@
 
                                 </td>
                                 <td>
-                                    <a href="/delete_patient/{{hospital_patient.id}}"
-                                        onclick="if(!confirm('Are you sure you want to delete this Patient?')){return false;}">
+                                    <a href="/delete_expensecategory/{{expenses_categories.id}}"
+                                        onclick="if(!confirm('Are you sure you want to delete this Expense Category?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M3 6H5H21" stroke="#F46B68" stroke-width="2" stroke-linecap="round"
