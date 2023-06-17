@@ -27,6 +27,8 @@ class Department(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+
+    
 # Create your models here.
 class Doctor(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_belogs_to_hospital_names")
@@ -275,5 +277,23 @@ class Expense(models.Model):
     category = models.ForeignKey(Expensescategory,on_delete=models.CASCADE,related_name="expenses_for_categories")
     decs = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    
+    
+class Lapreport(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_lap_report")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_lap_report")
+    status=models.CharField(max_length=200,blank=True,null=True,default="Pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+class Labresult(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_lap_result")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_lap_result")
+    testname=models.CharField(max_length=200,blank=True,null=True,default="None")
+    testreport=models.CharField(max_length=200,blank=True,null=True,default="None")
+    status=models.CharField(max_length=200,blank=True,null=True,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
