@@ -60,7 +60,7 @@ def hospital_login_View(request):
         password =request.POST['password']
                 
         if not User.objects.filter(username=username).exists():
-            messages.info(request,'Incorrect credentials.')
+            messages.info(request,'Incorrect login credentials.')
             return redirect('/')  
         
         userlog = auth.authenticate(username=username,password=password)
@@ -72,7 +72,7 @@ def hospital_login_View(request):
             if request.user.is_authenticated and request.user.is_hospital:
                 return redirect('/hospital_dashboard')
         else:
-            messages.info(request,"Incorrect credentials.")
+            messages.info(request,"Incorrect login credentials.")
             return redirect('/')
                 
         if userlog is not None:
@@ -86,7 +86,15 @@ def hospital_login_View(request):
             if request.user.is_authenticated and request.user.is_dr:
                 return redirect('/doctorsdashboard')
         else:
-            messages.info(request,"Incorrect credentials.")
+            messages.info(request,"Incorrect login credentials.")
+            return redirect('/')
+        
+        if userlog is not None:
+            auth.login(request, userlog)
+            if request.user.is_authenticated and request.user.is_lab:
+                return redirect('/labdashboard')
+        else:
+            messages.info(request,"Incorrect login credentials.")
             return redirect('/')
             
         if userlog is not None:
@@ -94,7 +102,7 @@ def hospital_login_View(request):
             if request.user.is_authenticated and request.user.is_customer:
                 return redirect('/')
         else:
-            messages.info(request,"Incorrect credentials.")
+            messages.info(request,"Incorrect login credentials.")
             return redirect('/')
     else:
         return redirect('/')  

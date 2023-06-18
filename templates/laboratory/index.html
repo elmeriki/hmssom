@@ -1,4 +1,4 @@
-{% extends "doctor/menu.html" %}
+{% extends "laboratory/menu.html" %}
 {% block title %} Hospital Dashboard |   {% endblock %}
 {% load static %}
 {% block content %}
@@ -32,9 +32,9 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body">
-                                <p class="mb-1">Appointment</p>
+                                <p class="mb-1">Laboratory</p>
                                 <div class="d-flex flex-wrap">
-                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{doctors_appoint_count}}</h2>
+                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{labtest_count}}</h2>
                                     <div>	
                                         <svg width="28" height="19" viewBox="0 0 28 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M8.56244 9.25C6.35869 11.6256 2.26214 16.0091 0.999939 17.5H26.4374V1L16.8124 13.375L8.56244 9.25Z" fill="url(#paint0_linear4)"/>
@@ -46,7 +46,7 @@
                                             </linearGradient>
                                             </defs>
                                         </svg>
-                                        <div class="fs-14">Total Appointments</div>
+                                        <div class="fs-14">Total Test count</div>
                                     </div>
                                 </div>
                             </div>
@@ -64,9 +64,9 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body">
-                                <p class="mb-1">Completed Treatment</p>
+                                <p class="mb-1">Completed Report</p>
                                 <div class="d-flex flex-wrap">
-                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{com_treatment_count}}</h2>
+                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{completed_report_count}}</h2>
                                     <div>	
                                         <svg width="28" height="19" viewBox="0 0 28 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M18.875 9.25C21.0787 11.6256 25.1753 16.0091 26.4375 17.5H1V1L10.625 13.375L18.875 9.25Z" fill="url(#paint0_linear1)"/>
@@ -78,7 +78,7 @@
                                             </linearGradient>
                                             </defs>
                                         </svg>
-                                        <div class="fs-14">Treated Patient</div>
+                                        <div class="fs-14">Completed laboratory Report</div>
                                     </div>
                                 </div>
                             </div>
@@ -96,9 +96,9 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body">
-                                <p class="mb-1">Pending Treatment</p>
+                                <p class="mb-1">Pending Report</p>
                                 <div class="d-flex flex-wrap">
-                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{pend_treatment_count}}</h2>
+                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{pending_report_count}}</h2>
                                     <div>	
                                         <svg width="28" height="19" viewBox="0 0 28 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M18.875 9.25C21.0787 11.6256 25.1753 16.0091 26.4375 17.5H1V1L10.625 13.375L18.875 9.25Z" fill="url(#paint0_linear2)"/>
@@ -110,7 +110,7 @@
                                             </linearGradient>
                                             </defs>
                                         </svg>
-                                        <div class="fs-14">Unprocess Patient</div>
+                                        <div class="fs-14">Pending Laboratory Report</div>
                                     </div>
                                 </div>
                             </div>
@@ -128,9 +128,9 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body">
-                                <p class="mb-1">Todays Appointment</p>
+                                <p class="mb-1">Laboratory Report</p>
                                 <div class="d-flex flex-wrap">
-                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{todaysappointment}}</h2>
+                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{pending_report_count}}</h2>
                                     <div>	
                                         <svg width="28" height="19" viewBox="0 0 28 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M8.56244 9.25C6.35869 11.6256 2.26214 16.0091 0.999939 17.5H26.4374V1L16.8124 13.375L8.56244 9.25Z" fill="url(#paint0_linear3)"/>
@@ -142,7 +142,7 @@
                                             </linearGradient>
                                             </defs>
                                         </svg>
-                                        <div class="fs-14">My Todays Appointment</div>
+                                        <div class="fs-14">All Laboratory Report</div>
                                         
                                     </div>
                                 </div>
@@ -220,7 +220,7 @@
             <div class="col-xl-3 col-xxl-4 col-lg-5">
                 <div class="card border-0 pb-0">
                     <div class="card-header flex-wrap border-0 pb-0">
-                        <h3 class="fs-20 mb-0 text-black">Completed Treatment</h3>
+                        <h3 class="fs-20 mb-0 text-black">Completed Lab Report</h3>
                         {% comment %} <a href="/patient_list" class="text-primary font-w500">More >></a> {% endcomment %}
                     </div>
                     <div class="card-body"> 
@@ -236,7 +236,7 @@
                                             <h5 class="mb-1"><a class="text-black" href="patient-details.html">{{completed_treatment_log.patient.name}}</a></h5>
                                             <span class="fs-14">{{completed_treatment_log.created_at | timesince}}</span>
                                         </div>
-                                        <a href="/my_doctors_com_treatment" class="text-warning mt-2">View</a>
+                                        <a href="/completed_treatment_list" class="text-warning mt-2">View</a>
                                     </div>
                                 </li>
                                 {% endfor %}

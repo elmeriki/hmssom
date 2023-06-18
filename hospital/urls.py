@@ -5,7 +5,13 @@ urlpatterns = [
     path('hospital_dashboard', views.hospital_dashboardView, name='hospital_dashboardView'),
     path('hospital_profile', views.hospital_profileView, name='hospital_profileView'),
     
+    path('labdashboard', views.labdashboardView, name='labdashboardView'),
+
+    path('doctor_profile', views.doctor_profileView, name='doctor_profileView'),
     
+    path('lab_profile', views.lab_profileView, name='lab_profileView'),
+
+
     path('doctorsdashboard', views.doctorsdashboardView, name='doctorsdashboardView'),
     path('doctortreatment/<str:patientid>/<str:apoint_id>', views.doctortreatmentView, name='doctortreatmentView'),
     path('add_patient_test/<str:patientid>', views.add_patient_testView, name='add_patient_testView'),
@@ -19,7 +25,7 @@ urlpatterns = [
     
     path('patient_test_list/<str:patientid>', views.patient_test_listView, name='patient_test_listView'),
 
-    path('labtest/', views.labtestView, name='labtestView'),
+    path('labtest', views.labtestView, name='labtestView'),
 
     path('record_report/<str:patient_id>', views.record_reportView, name='record_reportView'),
     path('record_result/<str:patient_id>', views.record_resultView, name='record_resultView'),
@@ -139,7 +145,9 @@ urlpatterns = [
     
     path('my_doctors_appointment', views.my_doctors_appointmentView, name='my_doctors_appointmentView'),
     path('my_doctors_com_appointment', views.my_doctors_com_appointmentView, name='my_doctors_com_appointmentView'),
-    
+    path('my_doctors_com_treatment', views.my_doctors_com_treatmentView, name='my_doctors_com_treatmentView'),
+    path('my_doctors_pend_treatment', views.my_doctors_pend_treatmentView, name='my_doctors_pend_treatmentView'),
+
 ]
 
 
