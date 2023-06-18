@@ -361,15 +361,11 @@ def delete_appointmentView(request, appointmentid):
         return redirect('/appointment_list')
 
 
-
-
-
-
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def todays_appointment_listView(request):
-    if request.user.is_authenticated and request.user.is_hospital: 
+    if request.user.is_authenticated and request.user.is_hospital or request.user.is_authenticated and request.user.is_dr: 
         todays_date = date.today()
         username=request.user.username
         hospital_instance=User.objects.get(username=username) 
@@ -383,7 +379,7 @@ def todays_appointment_listView(request):
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def upcoming_appointment_listView(request):
-    if request.user.is_authenticated and request.user.is_hospital: 
+    if request.user.is_authenticated and request.user.is_hospital or request.user.is_authenticated and request.user.is_dr: 
         todays_date = date.today()
         username=request.user.username
         hospital_instance=User.objects.get(username=username) 

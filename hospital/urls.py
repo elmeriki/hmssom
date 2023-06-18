@@ -7,13 +7,24 @@ urlpatterns = [
     
     
     path('doctorsdashboard', views.doctorsdashboardView, name='doctorsdashboardView'),
-    path('doctortreatment/<str:patientid>', views.doctortreatmentView, name='doctortreatmentView'),
+    path('doctortreatment/<str:patientid>/<str:apoint_id>', views.doctortreatmentView, name='doctortreatmentView'),
     path('add_patient_test/<str:patientid>', views.add_patient_testView, name='add_patient_testView'),
     path('delete_patient_test/<str:patientid>/<str:test_id>', views.delete_patient_testView, name='delete_patient_testView'),
 
     path('create_treatment/<str:patientid>', views.create_treatmentView, name='create_treatmentView'),
     path('treatment_list', views.treatment_listView, name='treatment_listView'),
+    path('completed_treatment_list', views.completed_treatment_listView, name='completed_treatment_listView'),
+    
+    path('prescribe_treatment/<str:patient_id>/<str:apoint_id>', views.prescribe_treatmentView, name='prescribe_treatmentView'),
+    
     path('patient_test_list/<str:patientid>', views.patient_test_listView, name='patient_test_listView'),
+
+    path('labtest/', views.labtestView, name='labtestView'),
+
+    path('record_report/<str:patient_id>', views.record_reportView, name='record_reportView'),
+    path('record_result/<str:patient_id>', views.record_resultView, name='record_resultView'),
+    path('delete_result/<str:patient_id>/<str:result_id>', views.delete_resultView, name='delete_resultView'),
+    path('record_report_status/<str:patient_id>', views.record_report_statusView, name='record_report_statusView'),
 
 
     path('compose_email', views.compose_emailView, name='compose_emailView'),
@@ -125,7 +136,10 @@ urlpatterns = [
     path('doctors_profile/<str:doctor_id>', views.doctors_profileView, name='doctors_profileView'),
     
     path('patient_details/<str:patient_id>', views.patient_detailsView, name='patient_detailsView'),
-
+    
+    path('my_doctors_appointment', views.my_doctors_appointmentView, name='my_doctors_appointmentView'),
+    path('my_doctors_com_appointment', views.my_doctors_com_appointmentView, name='my_doctors_com_appointmentView'),
+    
 ]
 
 

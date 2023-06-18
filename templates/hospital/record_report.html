@@ -1,0 +1,106 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Lab Report |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="/record_result/{{patientid}}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="">Select Test </label>
+                                <select class="form-control" name="testname" required>
+                                    <option value="">Select Test</option>
+                                    {% for patient_test_list in patient_test_list %}
+                                    <option value="{{patient_test_list.category}}">{{patient_test_list.category}} Biir {{payment_categories.amount}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                    <label for="amount">Enter Report</label>
+                                    <input type="text" class="form-control" name="result" placeholder="Type Report outcome" required>
+                            </div>
+                            
+                                <button type="submit" class="btn btn-dark">Save</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if patient_lab_report %}
+        <div class="col-lg-12">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Test Type</th>
+                                <th scope="col">Report</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patient_lab_report in patient_lab_report %}
+                            <tr>
+                                <td>{{patient_lab_report.testname}}</td>
+                                <td>{{patient_lab_report.testreport}}</td>
+                                <td>{{patient_lab_report.created_at}}</td>
+                                </td>
+                                <td><span>
+                                        <a href="/delete_result/{{patientid}}/{{patient_lab_report.id}}" data-toggle="tooltip"
+                                            data-placement="top" title="Close"><i
+                                                class="fa fa-close color-danger"></i></a></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+
+        {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Finalise Laboratory Report</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/record_report_status/{{patientid}}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="">Select Report Status</label>
+                                    <select class="form-control" name="labstatus" required>
+                                        <option value="">Select Status</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Processing">Processing</option>
+                                    </select>
+                                </div>
+                                <br>
+                            </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

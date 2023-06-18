@@ -276,9 +276,8 @@ def save_add_patientView(request):
         paymenttype = request.POST['paymenttype']
         status = request.POST['status']
         username=request.user.username
-        patientid = random_id(length=9,character_set=string.digits)
         hospital_instance=User.objects.get(username=username)
-        create_patient=Patient(hospital=hospital_instance, id=patientid, title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype,status=status)
+        create_patient=Patient(hospital=hospital_instance,title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype,status=status)
         if create_patient:
             create_patient.save()
             messages.info(request,'Patient Created successfully')
@@ -1282,7 +1281,7 @@ def doctorsdashboardView(request):
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         data={
-            'doctors_appointment':Appointment.objects.filter(dr=doctor_instance)
+            'doctors_appointment':Appointment.objects.filter(dr=doctor_instance,astatus=0)
         }
         return render(request,'doctor/index.html',context=data) 
     else:
@@ -1290,19 +1289,22 @@ def doctorsdashboardView(request):
 
 
 @login_required(login_url='/')  
-def doctortreatmentView(request,patientid):
+def doctortreatmentView(request,patientid,apoint_id):
     if request.user.is_authenticated and request.user.is_dr:
         username=request.user.username
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
-        patient_instance=Patient.objects.get(id=patientid)
+        patient_instance=Patient.objects.get(phone=patientid)
         data={
             'doctors_appointment':Appointment.objects.filter(dr=doctor_instance,status=0).filter(id=patientid),
             'payment_categories':Paymentcategory.objects.filter(hospital=hospital_instance),
             'Patienttest':Patienttest.objects.filter(patient=patient_instance,hospital=hospital_instance),
+            'patient_lab_report':Labresult.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=0),
             'patientid':patientid,
-            'treatmentlog':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=0).exists()
+            'treatmentlog':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=0).count(),
+            'lab_report_status':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=1).count(),
+            'apoint_id':apoint_id
         }
         return render(request,'doctor/treatment.html',context=data) 
     else:
@@ -1318,7 +1320,7 @@ def add_patient_testView(request,patientid):
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
-        patient_instance=Patient.objects.get(id=patientid)
+        patient_instance=Patient.objects.get(phone=patientid)
         category_amount=Paymentcategory.objects.values_list('amount', flat=True).get(category=categoryname)
         if Patienttest.objects.filter(category=categoryname,patient=patient_instance).exists():
             # messages.success(request,'Added already')
@@ -1359,7 +1361,7 @@ def create_treatmentView(request,patientid):
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
-        patient_instance=Patient.objects.get(id=patientid)
+        patient_instance=Patient.objects.get(phone=patientid)
         
         create_patient_treatment=Treatment(hospital=hospital_instance,patient=patient_instance,dr=doctor_instance,desc=desc,pstate=patient_status)
         if create_patient_treatment:
@@ -1384,6 +1386,18 @@ def treatment_listView(request):
         return redirect('/')
     
 @login_required(login_url='/')  
+def completed_treatment_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data={
+            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,status=1)
+        }
+        return render(request,'hospital/completed_treatment_list.html',context=data) 
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
 def patient_test_listView(request,patientid):
     if request.user.is_authenticated and request.user.is_hospital:
         patient_instance=Patient.objects.get(phone=patientid)
@@ -1393,5 +1407,144 @@ def patient_test_listView(request,patientid):
             'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance)
         }
         return render(request,'hospital/treatment_list.html',context=data) 
+    else:
+        return redirect('/')
+
+    
+@login_required(login_url='/')  
+def labtestView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data={
+            'labtest':Lapreport.objects.filter(hospital=hospital_instance)
+        }
+        return render(request,'hospital/labtest.html',context=data) 
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+def record_reportView(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(phone=patient_id)
+        data={
+            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0),
+            'patientid':patient_id,
+            'patient_lab_report':Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0)
+        }
+        return render(request,'hospital/record_report.html',context=data) 
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def record_resultView(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        testname=request.POST['testname']
+        result=request.POST['result']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(phone=patient_id)
+        if Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(testname=testname,testreport=result).exists():
+            messages.success(request,'Result has been captured already.')
+            return redirect(f'/record_report/{patient_id}')
+        else:
+            create_result=Labresult(hospital=hospital_instance,patient=patient_instance,testname=testname,testreport=result)
+            create_result.save()
+            return redirect(f'/record_report/{patient_id}')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def delete_resultView(request,patient_id,result_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(phone=patient_id)
+        if Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(id=result_id).delete():
+            return redirect(f'/record_report/{patient_id}')
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+def record_report_statusView(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        labstatus=request.POST['labstatus']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(phone=patient_id)
+        Lapreport.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=labstatus)
+        Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=1)
+        return redirect(f'/record_report/{patient_id}')
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional  
+def prescribe_treatmentView(request,patient_id,apoint_id):
+    if request.user.is_authenticated and request.user.is_dr and request.method=="POST":
+        patient_status=request.POST['patient_status']
+        dname=request.POST['dname']
+        prescription=request.POST['prescription']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(phone=patient_id)
+        Appointment.objects.filter(id=apoint_id).update(astatus=1)
+        create_patient_treatment=Treatment.objects.get(patient=patient_instance)
+        create_patient_treatment.remark=prescription
+        create_patient_treatment.dname=dname
+        create_patient_treatment.pstate=patient_status
+        create_patient_treatment.save()
+        return redirect(f'/doctorsdashboard')
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def my_doctors_appointmentView(request):
+    if request.user.is_authenticated and request.user.is_dr: 
+        todays_date = date.today()
+        username=request.user.username
+        user_instance = User.objects.get(username=username)
+        dr_instance=Doctor.objects.get(user=user_instance) 
+        data = {
+        'my_appointment_list':Appointment.objects.filter(dr=dr_instance,date=todays_date).filter(astatus=0),
+        'my_upcoming_appointment_list':Appointment.objects.filter(dr=dr_instance,astatus=0),
+
+        }       
+        return render(request,'doctor/appointment_list.html',context=data)
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def my_doctors_com_appointmentView(request):
+    if request.user.is_authenticated and request.user.is_dr: 
+        todays_date = date.today()
+        username=request.user.username
+        user_instance = User.objects.get(username=username)
+        dr_instance=Doctor.objects.get(user=user_instance) 
+        data = {
+        'my_completed_appointment_list':Appointment.objects.filter(dr=dr_instance,astatus=1)
+        }       
+        return render(request,'doctor/appointment_list.html',context=data)
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def completed_treatment_listView(request):
+    if request.user.is_authenticated and request.user.is_dr:
+        username=request.user.username
+        user_instance = User.objects.get(username=username)
+        dr_instance=Doctor.objects.get(user=user_instance) 
+        data={
+            'completed_treatment_log':Treatment.objects.filter(dr=dr_instance,status=1)
+        }
+        return render(request,'doctor/completed_treatment_list.html',context=data) 
     else:
         return redirect('/')

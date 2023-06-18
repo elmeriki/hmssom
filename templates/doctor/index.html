@@ -196,11 +196,11 @@
                                             </div>
                                             {% if doctors_appointment.status == "0" %}
                                             <div class="edit ml-auto">
-                                                <a href="/doctortreatment/{{doctors_appointment.patient.id}}" class="text-primary font-w600 mr-4">FIRST CONSULATION</a>
+                                                <a href="/doctortreatment/{{doctors_appointment.patient.phone}}/{{doctors_appointment.id}}" class="text-primary font-w600 mr-4">FIRST CONSULATION</a>
                                             </div>
                                             {% else %}
                                             <div class="edit ml-auto">
-                                                <a href="/doctortreatment/{{doctors_appointment.patient.id}}" class="text-primary font-w600 mr-4">FINALISE CONSULATION </a>
+                                                <a href="/doctortreatment/{{doctors_appointment.patient.phone}}/{{doctors_appointment.id}}" class="text-primary font-w600 mr-4">FINALISE CONSULATION </a>
                                             </div>
                                             {% endif %}
                                         </div>
