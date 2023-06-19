@@ -36,8 +36,12 @@ class Emailthread(threading.Thread):
     def run(self):
         self.msg.send(fail_silently=False)
         
-
+        
 def welcomeView(request):
+    return render(request,'web/index.html',context={})
+
+
+def sysView(request):
     return render(request,'hospital/login.html',context={})
 
 
