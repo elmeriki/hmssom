@@ -396,3 +396,9 @@ def app_homeView(request):
     return render(request,'app/index.html')
 
 
+def app_loginView(request):
+    return render(request,'app/login.html')
+
+
+def app_registerView(request):
+    return render(request,'app/register.html')
