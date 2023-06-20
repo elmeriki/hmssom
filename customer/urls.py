@@ -41,5 +41,6 @@ urlpatterns = [
     path('app_home', views.app_homeView, name='app_homeView'),
     path('app_login', views.app_loginView, name='app_loginView'),
     path('app_register', views.app_registerView, name='app_registerView'),
+    path('app_hospital_list/<str:city_names>', views.app_hospital_listView, name='app_hospital_listView'),
 
 ]

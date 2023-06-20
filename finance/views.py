@@ -196,8 +196,8 @@ def record_paymentView(request):
             messages.info(request,'Previous Payment has not been settle.')
             return redirect(f'/add_payment/{phone}')
         else:
-            save_bew_payment=Payment(hospital=hospital_instance,patient=patient_instance,category="Lab Test",amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
-            save_bew_payment.save()
+            save_new_payment=Payment(hospital=hospital_instance,patient=patient_instance,category="Lab Test",amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
+            save_new_payment.save()
             Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(payment="Pending").update(payment=payment_status)
             create_lap_report=Lapreport(hospital=hospital_instance,patient=patient_instance,status="Processing")
             create_lap_report.save()

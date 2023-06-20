@@ -18,6 +18,12 @@ class Appointment(models.Model):
     paymentstatus = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural = "Appoint List"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Medicinecategory(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_medicine_for_category")
@@ -25,6 +31,12 @@ class Medicinecategory(models.Model):
     desc = models.CharField(max_length=200,blank=True,null=True,default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)  
+    
+    class Meta:
+        verbose_name_plural = "Medicinecategory"
+        
+    def __str__(self):
+        return self.categoryname
     
 class Medicinal(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_medicine")
@@ -40,13 +52,18 @@ class Medicinal(models.Model):
     expiredate = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural = "Medicinal"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 
 class Prescription(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_dr_patient_prescription")
     dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,related_name="hospital_dr_gives_prescription")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="hospital_patient_receives_prescription")
-    #medicine = models.ForeignKey(Medicine,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_department")
     history =  models.CharField(max_length=200,default=0,null=True,blank=True)
     note =  models.CharField(max_length=200,default=0,null=True,blank=True)
     advice =  models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -55,7 +72,11 @@ class Prescription(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
 
-
+    class Meta:
+        verbose_name_plural = "Prescription"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 
 

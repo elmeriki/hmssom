@@ -20,6 +20,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.views.generic import View
 from hmmauth.models import *
 from customer.models import *
+from administrator.models import *
 from django.db.models import Sum
 from random_id import random_id
 import string 
@@ -393,7 +394,10 @@ def upcoming_appointment_listView(request):
     
     
 def app_homeView(request):
-    return render(request,'app/index.html')
+    data = {
+        'region_list':Region.objects.all()
+    }
+    return render(request,'app/index.html',context=data)
 
 
 def app_loginView(request):
@@ -402,3 +406,9 @@ def app_loginView(request):
 
 def app_registerView(request):
     return render(request,'app/register.html')
+
+def app_hospital_listView(request,city_names):
+    data = {
+        'hospital_list_base_on_city':User.objects.filter(city=city_names)
+    }
+    return render(request,'app/hospital_list.html',context=data)

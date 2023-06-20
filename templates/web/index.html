@@ -11,7 +11,7 @@
         <meta content="support@hmssom.com" name="Email" />
         <meta content="https://hmssom.com/" name="Website" />
         <meta content="1.1.0" name="version" />
-        <link rel="shortcut icon" href="{% static 'assets/web/images/favicon.ico' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
         <link href="{% static 'assets/web/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'assets/web/css/tiny-slider.css' %}" rel="stylesheet" />
         <link href="{% static 'assets/web/css/tobii.min.css' %}" rel="stylesheet" />
@@ -101,7 +101,7 @@
                             <p class="text-white-50 para-desc">We are committed to delivering exceptional healthcare services with our Hospital Management System</p>
 
                             <div class="subcribe-form mt-4 pt-2">
-                                <form class="m-0" style="max-width: 550px;">
+                                <form class="m-0" action="/register_hospital" style="max-width: 550px;">
                                     <input type="text" id="course" name="name" class="rounded-lg bg-white opacity-4" placeholder="Search assets...">
                                     <button type="submit" class="btn btn-pills btn-primary">Get Started</button>
                                 </form>
@@ -619,7 +619,8 @@
                     <div class="col-12">
                         <div class="card border-0" style="z-index: 1">
                             <div class="card-body p-0">
-                                <form class="login-form">
+                                <form class="login-form" action="/hospital_login_" method="POST">
+                                    {% csrf_token %}
                                     <div class="row">
                                         <div class="col-12">
                                             <img src="{% static 'assets/web/images/logo-dark.png' %}" width="160px" alt="">
@@ -630,7 +631,7 @@
                                                 <label class="form-label">Your Email <span class="text-danger">*</span></label>
                                                 <div class="form-icon position-relative">
                                                     <i data-feather="user" class="fea icon-sm icons"></i>
-                                                    <input type="email" class="form-control ps-5" placeholder="Email" name="email" required="">
+                                                    <input type="email" class="form-control ps-5" placeholder="Email" name="username" required="">
                                                 </div>
                                             </div>
                                         </div><!--end col-->
@@ -640,7 +641,7 @@
                                                 <label class="form-label">Password <span class="text-danger">*</span></label>
                                                 <div class="form-icon position-relative">
                                                     <i data-feather="key" class="fea icon-sm icons"></i>
-                                                    <input type="password" class="form-control ps-5" placeholder="Password" required="">
+                                                    <input type="password" class="form-control ps-5" name="password" placeholder="Password" required="">
                                                 </div>
                                             </div>
                                         </div><!--end col-->

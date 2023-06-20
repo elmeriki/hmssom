@@ -49,10 +49,9 @@
                             <div class="form-group col-md-12">
                                 <select id="inputState" name="country" class="form-control">
                                     <option selected>Choose Province...</option>
-                                    <option value="Afar">Afar</option>
-                                    <option value="Amhara">Amhara</option>
-                                    <option value="Oromia">Oromia</option>
-                                    <option value="Harari">Harari</option>
+                                    {% for list_of_regions in list_of_regions %}
+                                    <option value="{{list_of_regions.name}}">{{list_of_regions.name}}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             

@@ -15,10 +15,12 @@ class Hospital(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        verbose_name_plural ="Hospital"
+        
     def __str__(self):
         return self.hospital.first_name
     
-
     
 class Department(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_diff_departments")
@@ -27,7 +29,11 @@ class Department(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-
+    class Meta:
+        verbose_name_plural ="Department"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 # Create your models here.
 class Doctor(models.Model):
@@ -48,7 +54,11 @@ class Doctor(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    
+    class Meta:
+        verbose_name_plural ="Doctor"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 # Create your models here.
 class Humanresource(models.Model):
@@ -65,6 +75,11 @@ class Humanresource(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        verbose_name_plural ="Humanresource"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Patient(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admitted")
@@ -78,6 +93,12 @@ class Patient(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    class Meta:
+        verbose_name_plural ="Patient"
+        
+    def __str__(self):
+        return self.hospital.first_name
+    
 class Treatment(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_patient_treatment_log")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_treatment_name")
@@ -90,7 +111,11 @@ class Treatment(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    class Meta:
+        verbose_name_plural ="Treatment"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Labtest(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_lab_test")
@@ -103,7 +128,11 @@ class Labtest(models.Model):
     reporttest =  models.TextField(null=True,blank=True,default="N/A")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Labtest"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Bedcategory(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_bed_category")
@@ -112,7 +141,11 @@ class Bedcategory(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    class Meta:
+        verbose_name_plural ="Bedcategory"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Notices(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
@@ -122,7 +155,11 @@ class Notices(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Notices"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Leavetypes(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leave")
@@ -131,6 +168,12 @@ class Leavetypes(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural ="Leavetypes"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Leave(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leave_list")
@@ -141,7 +184,11 @@ class Leave(models.Model):
     reason =  models.TextField(null=True,blank=True,default="N/A")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Leave"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Chat(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="chat_to_hospital")
@@ -151,6 +198,11 @@ class Chat(models.Model):
     response =  models.TextField(null=True,blank=True,default="N/A")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Chat"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Childbirth(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_birth")
@@ -161,10 +213,14 @@ class Childbirth(models.Model):
     dob = models.DateField() 
     gender = models.CharField(max_length=200,default=0,null=True,blank=True)
     weight = models.CharField(max_length=200,default=0,null=True,blank=True)
-    #status = models.CharField(max_length=200,default=0,null=True,blank=True)
     remark =  models.TextField(null=True,blank=True,default="N/A")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Childbirth"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Deadthrecord(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_was_birthed")
@@ -180,7 +236,11 @@ class Deadthrecord(models.Model):
     remark =  models.TextField(null=True,blank=True,default="N/A")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Deadthrecord"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Document(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_who_owns_document")
@@ -190,7 +250,11 @@ class Document(models.Model):
     document = models.ImageField(null=True, upload_to="document/",)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Document"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 
 class Email(models.Model):
@@ -201,7 +265,11 @@ class Email(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Email"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class File(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_files")
@@ -209,6 +277,11 @@ class File(models.Model):
     document = models.ImageField(null=True, upload_to="document/",)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural ="File"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Donor(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_donor")
@@ -224,6 +297,11 @@ class Donor(models.Model):
     lastdonationdate = models.DateField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Donor"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Blood(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
@@ -232,7 +310,11 @@ class Blood(models.Model):
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    class Meta:
+        verbose_name_plural ="Blood"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 # Create your models here.
 
@@ -242,8 +324,11 @@ class Paymentcategory(models.Model):
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    
+    class Meta:
+        verbose_name_plural ="Paymentcategory"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Patienttest(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name='hospital_patient_test_name')
@@ -253,7 +338,11 @@ class Patienttest(models.Model):
     status=models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Patienttest"
+        
+    def __str__(self):
+        return self.hospital.first_name
 
 class Payment(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name='payment_category_for_hospital')
@@ -264,13 +353,23 @@ class Payment(models.Model):
     paymentstatus = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    class Meta:
+        verbose_name_plural ="Payment"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Expensescategory(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="expenses_for_category")
     name = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural ="Expensescategory"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Expense(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="expenses_for_hospital")
@@ -280,7 +379,11 @@ class Expense(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    
+    class Meta:
+        verbose_name_plural ="Expense"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Lapreport(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_lap_report")
@@ -288,6 +391,12 @@ class Lapreport(models.Model):
     status=models.CharField(max_length=200,blank=True,null=True,default="Pending")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural ="Lapreport"
+        
+    def __str__(self):
+        return self.hospital.first_name
     
 class Labresult(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_lap_result")
@@ -297,3 +406,8 @@ class Labresult(models.Model):
     status=models.CharField(max_length=200,blank=True,null=True,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Labresult"
+        
+    def __str__(self):
+        return self.hospital.first_name

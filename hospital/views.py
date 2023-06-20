@@ -1437,7 +1437,7 @@ def treatment_listView(request):
     
 @login_required(login_url='/')  
 def completed_treatment_listView(request):
-    if request.user.is_authenticated and request.user.is_lab:
+    if request.user.is_authenticated and request.user.is_lab or request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)

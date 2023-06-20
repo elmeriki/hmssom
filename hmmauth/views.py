@@ -50,7 +50,10 @@ def hospital_loginView(request):
     
 
 def register_loginView(request):
-    return render(request,'hospital/register.html')
+    data = {
+     'list_of_regions':Region.objects.filter(status=0)
+    }
+    return render(request,'hospital/register.html',context=data)
 
 def logoutView(request):
     auth.logout(request)
@@ -65,7 +68,7 @@ def hospital_login_View(request):
                 
         if not User.objects.filter(username=username).exists():
             messages.info(request,'Incorrect login credentials.')
-            return redirect('/')  
+            return redirect('/sys')  
         
         userlog = auth.authenticate(username=username,password=password)
         # checking if it is an existing user in the database
@@ -77,13 +80,13 @@ def hospital_login_View(request):
                 return redirect('/hospital_dashboard')
         else:
             messages.info(request,"Incorrect login credentials.")
-            return redirect('/')
+            return redirect('/sys')
                 
         if userlog is not None:
             auth.login(request, userlog)
             if request.user.is_authenticated and not request.user.is_activation:
                 messages.info(request,"Account is not yet activated")
-                return redirect('/')
+                return redirect('/sys')
             
         if userlog is not None:
             auth.login(request, userlog)
@@ -91,7 +94,7 @@ def hospital_login_View(request):
                 return redirect('/doctorsdashboard')
         else:
             messages.info(request,"Incorrect login credentials.")
-            return redirect('/')
+            return redirect('/sys')
         
         if userlog is not None:
             auth.login(request, userlog)
@@ -99,12 +102,12 @@ def hospital_login_View(request):
                 return redirect('/labdashboard')
         else:
             messages.info(request,"Incorrect login credentials.")
-            return redirect('/')
+            return redirect('/sys')
             
         if userlog is not None:
             auth.login(request, userlog)
             if request.user.is_authenticated and request.user.is_customer:
-                return redirect('/')
+                return redirect('/sys')
         else:
             messages.info(request,"Incorrect login credentials.")
             return redirect('/')

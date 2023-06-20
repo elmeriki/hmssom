@@ -147,7 +147,6 @@ urlpatterns = [
     path('my_doctors_com_appointment', views.my_doctors_com_appointmentView, name='my_doctors_com_appointmentView'),
     path('my_doctors_com_treatment', views.my_doctors_com_treatmentView, name='my_doctors_com_treatmentView'),
     path('my_doctors_pend_treatment', views.my_doctors_pend_treatmentView, name='my_doctors_pend_treatmentView'),
-
 ]
 
 
