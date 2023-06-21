@@ -1,4 +1,4 @@
-{% extends "doctor/menu.html" %}
+{% extends "hospital/main_menu.html" %}
 {% block title %} Completed Treament Log | {% endblock %}
 {% load static %}
 {% block content %}
@@ -65,10 +65,13 @@
 					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>Patient ID</th>
-								<th>Patient Name</th>
-								<th>Test Name</th>
-								<th>Test Result</th>
+								<th>P ID</th>
+								<th>AS Doctor</th>
+								<th>Desc</th>
+								<th>Remarks</th>
+								<th>T Name</th>
+								<th>Patient Status</th>
+                                <th>Payment Status</th>
 								<th>Date</th>
 							</tr>
 						</thead>
@@ -83,7 +86,11 @@
 								<td>{{completed_treatment_log.pstate}}</td>
                                 <td>{{completed_treatment_log.payment}}</td>
 								<td>{{completed_treatment_log.created_at.date}}</td>
-								
+								<td>
+									<a href="/patient_test_list/{{completed_treatment_log.patient.phone}}"  target="_blank">
+									View
+									</a>
+								</td>
 							</tr>
 							{% endfor %}
 						</tbody>

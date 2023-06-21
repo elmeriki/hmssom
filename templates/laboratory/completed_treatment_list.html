@@ -65,13 +65,10 @@
 					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>P ID</th>
-								<th>AS Doctor</th>
-								<th>Desc</th>
-								<th>Remarks</th>
-								<th>T Name</th>
-								<th>Patient Status</th>
-                                <th>Payment Status</th>
+								<th>Patient ID</th>
+								<th>Patient Name</th>
+								<th>Test Status</th>
+                                <th>Print Test Result</th>
 								<th>Date</th>
 							</tr>
 						</thead>
@@ -79,18 +76,10 @@
 							<tr>
 								{% for completed_treatment_log in completed_treatment_log %}
 								<td>{{completed_treatment_log.patient.phone}}</td>
-								<td>Dr.{{completed_treatment_log.dr.name}}</td>
-								<td>{{completed_treatment_log.desc}}</td>
-								<td>{{completed_treatment_log.remark}}</td>
-								<td>{{completed_treatment_log.dname}}</td>
-								<td>{{completed_treatment_log.pstate}}</td>
-                                <td>{{completed_treatment_log.payment}}</td>
+								<td>{{completed_treatment_log.patient.name}}</td>
+								<td class="text-success">Completed</td>
+								<td>Print</td>
 								<td>{{completed_treatment_log.created_at.date}}</td>
-								<td>
-									<a href="/patient_test_list/{{completed_treatment_log.patient.phone}}"  target="_blank">
-									View
-									</a>
-								</td>
 							</tr>
 							{% endfor %}
 						</tbody>

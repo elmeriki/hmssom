@@ -8,7 +8,7 @@
         <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
             <div class="mr-auto d-none d-lg-block">
                 <h3 class="text-black font-w600">Welcome to {{request.user.first_name}}</h3>
-                <p class="mb-0 fs-18">Hospital Admin Dashboard Template</p>
+                <p class="mb-0 fs-18">Revolutionize Healthcare Management</p>
             </div>
             
             <div class="input-group search-area ml-auto d-inline-flex">
@@ -153,7 +153,7 @@
                      {% if doctors_appointment %}
                      <ul class="nav nav-pills review-tab">
                         <li class="nav-item">
-                            <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">Patient List</a>
+                            <a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false">Pending Consultation</a>
                         </li>
                     </ul>
                       {% else %}
@@ -174,12 +174,16 @@
                                         <img class="mr-3 img-fluid rounded" width="90" src="{% static 'assets/images/user.png' %}" alt="DexignZone">
                                         <div class="media-body d-lg-flex d-block row align-items-center">
                                             <div class="col-xl-4 col-xxl-5 col-lg-6 review-bx">
-                                                <h3 class="fs-20 font-w600 mb-1"><a class="text-black" href="javascript:void(0);">{{doctors_appointment.patient.name}}</a></h3>
+                                                {% if doctors_appointment.status == "0" %}
+                                                <h3 class="fs-20 font-w600 mb-1"><a class="text-black" href="/doctortreatment/{{doctors_appointment.patient.phone}}/{{doctors_appointment.id}}">{{doctors_appointment.patient.name}}</a></h3>
+                                                {% else %}
+                                                <h3 class="fs-20 font-w600 mb-1"><a class="text-black" href="/doctortreatment/{{doctors_appointment.patient.phone}}/{{doctors_appointment.id}}">{{doctors_appointment.patient.name}}</a></h3>
+                                                {% endif %}
                                                 <span class="fs-15 d-block">{{doctors_appointment.created_at}}</span>
-                                                <span class="text-primary d-block font-w600 mt-sm-2 mt-3"><i class="las la-stethoscope scale5 mr-3"></i>Pending</span>
+                                                <span class="text-primary d-block font-w600 mt-sm-2 mt-3"> <i class="las la-phone-alt"></i> {{doctors_appointment.patient.phone}}</span>
                                             </div>
                                             <div class="col-xl-7 col-xxl-7 col-lg-6 text-dark mb-lg-0 mb-2">
-                                                {{doctors_appointment.visitdsc}}
+                                              <strong>Appointment Description</strong>:  {{doctors_appointment.visitdsc}}
                                             </div>
                                         </div>
                                         <div class="media-footer d-sm-flex d-block align-items-center">
@@ -194,7 +198,7 @@
                                             </div>
                                             {% if doctors_appointment.status == "0" %}
                                             <div class="edit ml-auto">
-                                                <a href="/doctortreatment/{{doctors_appointment.patient.phone}}/{{doctors_appointment.id}}" class="text-primary font-w600 mr-4">FIRST CONSULATION</a>
+                                                <a href="/doctortreatment/{{doctors_appointment.patient.phone}}/{{doctors_appointment.id}}" class="text-danger font-w600 mr-4">FIRST CONSULATION</a>
                                             </div>
                                             {% else %}
                                             <div class="edit ml-auto">
@@ -214,7 +218,7 @@
                 <div class="card border-0 pb-0">
                     <div class="card-header flex-wrap border-0 pb-0">
                         <h3 class="fs-20 mb-0 text-black">Completed Treatment</h3>
-                        {% comment %} <a href="/patient_list" class="text-primary font-w500">More >></a> {% endcomment %}
+                        <a href="/patient_list" class="text-primary font-w500">More >></a>
                     </div>
                     <div class="card-body"> 
                         <div id="DZ_W_Todo2" class="widget-media dz-scroll ps ps--active-y height320">
@@ -242,7 +246,6 @@
 
         </div>
     </div>
-    <!--**********************************
         </div>
     </div>
 </div>

@@ -192,7 +192,7 @@ def record_paymentView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)   
         patient_instance=Patient.objects.get(phone=phone)
-        if Payment.objects.filter().exists():
+        if Payment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(paymentstatus="Pending").exists():
             messages.info(request,'Previous Payment has not been settle.')
             return redirect(f'/add_payment/{phone}')
         else:
@@ -201,7 +201,9 @@ def record_paymentView(request):
             Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(payment="Pending").update(payment=payment_status)
             create_lap_report=Lapreport(hospital=hospital_instance,patient=patient_instance,status="Processing")
             create_lap_report.save()
-            messages.info(request,'Payment hass been save successfully')
-            return redirect(f'/add_payment/{phone}')
+            # messages.info(request,'Payment hass been save successfully')
+            # return redirect(f'/add_payment/{phone}')
+            return redirect(f'/treatment_list')
+
     else:
         return redirect('/')

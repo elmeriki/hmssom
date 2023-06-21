@@ -1312,8 +1312,8 @@ def doctorsdashboardView(request):
             'pend_treatment_count':Treatment.objects.filter(dr=doctor_instance,status=0).count(),
             'com_treatment_count':Treatment.objects.filter(dr=doctor_instance,status=1).count(),
             'todaysappointment':Appointment.objects.filter(dr=doctor_instance,date=todays_date).count(),
-            'completed_treatment_log':Treatment.objects.filter(dr=doctor_instance,status=1)
-
+            'completed_treatment_log':Treatment.objects.filter(dr=doctor_instance,status=1),
+            'doctor_instance_to_display_profile_picture':doctor_instance
         }
         return render(request,'doctor/index.html',context=data) 
     else:
@@ -1354,7 +1354,9 @@ def doctortreatmentView(request,patientid,apoint_id):
             'patientid':patientid,
             'treatmentlog':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=0).count(),
             'lab_report_status':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=1).count(),
-            'apoint_id':apoint_id
+            'apoint_id':apoint_id,
+            'doctor_instance_to_display_profile_picture':doctor_instance
+
         }
         return render(request,'doctor/treatment.html',context=data) 
     else:
@@ -1363,7 +1365,7 @@ def doctortreatmentView(request,patientid,apoint_id):
 
 @transaction.atomic  #transactional  
 @login_required(login_url='/')  
-def add_patient_testView(request,patientid):
+def add_patient_testView(request,patientid,apoint_id):
     if request.user.is_authenticated and request.user.is_dr and request.method=="POST":
         categoryname = request.POST['categoryname']
         username=request.user.username
@@ -1374,36 +1376,35 @@ def add_patient_testView(request,patientid):
         category_amount=Paymentcategory.objects.values_list('amount', flat=True).get(category=categoryname)
         if Patienttest.objects.filter(category=categoryname,patient=patient_instance).exists():
             # messages.success(request,'Added already')
-            return redirect(f'/doctortreatment/{patientid}') 
+            return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
         else:
             add_test=Patienttest(hospital=hospital_instance,category=categoryname,amount=category_amount,patient=patient_instance)
             if add_test:
                 add_test.save()
-                return redirect(f'/doctortreatment/{patientid}') 
+                return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
             else:
-                return redirect(f'/doctortreatment/{patientid}')
+                return redirect(f'/doctortreatment/{patientid}/{apoint_id}')
     else:
         return redirect('/')
     
     
 @transaction.atomic  #transactional  
 @login_required(login_url='/')  
-def delete_patient_testView(request,patientid,test_id):
+def delete_patient_testView(request,patientid,test_id,apoint_id):
     if request.user.is_authenticated and request.user.is_dr:
         username=request.user.username
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         Patienttest.objects.filter(hospital=hospital_instance,id=test_id).delete()
-        return redirect(f'/doctortreatment/{patientid}') 
-   
+        return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
     else:
         return redirect('/')
     
 
 @transaction.atomic  #transactional  
 @login_required(login_url='/')  
-def create_treatmentView(request,patientid):
+def create_treatmentView(request,patientid,apoint_id):
     if request.user.is_authenticated and request.user.is_dr and request.method=="POST":
         patient_status = request.POST['status']
         desc = request.POST['desc']
@@ -1418,7 +1419,7 @@ def create_treatmentView(request,patientid):
             create_patient_treatment.save()
             Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(dr=doctor_instance).update(status=1)
             messages.success(request,'Patient has been consulted successfuly.')
-            return redirect(f'/doctortreatment/{patientid}') 
+            return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
     else:
         return redirect('/')
     
@@ -1437,15 +1438,24 @@ def treatment_listView(request):
     
 @login_required(login_url='/')  
 def completed_treatment_listView(request):
-    if request.user.is_authenticated and request.user.is_lab or request.user.is_authenticated and request.user.is_hospital:
+    if request.user.is_authenticated and request.user.is_lab:
         username=request.user.username
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         data={
-            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,status=1)
+            'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status=0)
         }
         return render(request,'laboratory/completed_treatment_list.html',context=data) 
+    
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        user_instance=User.objects.get(username=username)
+        hospital_instance=User.objects.get(username=user_instance)
+        data={
+            'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status=0)
+        }
+        return render(request,'hospital/completed_treatment_list.html',context=data) 
     else:
         return redirect('/')
     
@@ -1459,6 +1469,16 @@ def patient_test_listView(request,patientid):
             'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance)
         }
         return render(request,'hospital/treatment_list.html',context=data) 
+    if request.user.is_authenticated and request.user.is_lab:
+        patient_instance=Patient.objects.get(phone=patientid)
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        data={
+            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance)
+        }
+        return render(request,'laboratory/treatment_list.html',context=data) 
     else:
         return redirect('/')
 
@@ -1467,38 +1487,56 @@ def patient_test_listView(request,patientid):
 def labtestView(request):
     if request.user.is_authenticated and request.user.is_lab:
         username=request.user.username
-        hospital_instance=User.objects.get(username=username)
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
         data={
-            'labtest':Lapreport.objects.filter(hospital=hospital_instance)
+            'labtest':Lapreport.objects.filter(hospital=hospital_instance,status="Processing")
         }
         return render(request,'laboratory/labtest.html',context=data) 
+    
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        user_instance=User.objects.get(username=username)
+        hospital_instance=User.objects.get(username=user_instance)
+        data={
+            'labtest':Lapreport.objects.filter(hospital=hospital_instance,status="Processing")
+        }
+        return render(request,'hospital/labtest.html',context=data) 
     else:
         return redirect('/')
     
 
 @login_required(login_url='/')  
 def record_reportView(request,patient_id):
-    if request.user.is_authenticated and request.user.is_hospital:
+    if request.user.is_authenticated and request.user.is_lab:
         username=request.user.username
-        hospital_instance=User.objects.get(username=username)
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
         patient_instance=Patient.objects.get(phone=patient_id)
         data={
             'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0),
             'patientid':patient_id,
             'patient_lab_report':Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0)
         }
-        return render(request,'hospital/record_report.html',context=data) 
+        return render(request,'laboratory/record_report.html',context=data) 
     else:
         return redirect('/')
     
     
 @login_required(login_url='/')  
 def record_resultView(request,patient_id):
-    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+    if request.user.is_authenticated and request.user.is_lab and request.method=="POST":
         testname=request.POST['testname']
         result=request.POST['result']
         username=request.user.username
-        hospital_instance=User.objects.get(username=username)
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
         patient_instance=Patient.objects.get(phone=patient_id)
         if Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(testname=testname,testreport=result).exists():
             messages.success(request,'Result has been captured already.')
@@ -1512,9 +1550,12 @@ def record_resultView(request,patient_id):
     
 @login_required(login_url='/')  
 def delete_resultView(request,patient_id,result_id):
-    if request.user.is_authenticated and request.user.is_hospital:
+    if request.user.is_authenticated and request.user.is_lab:
         username=request.user.username
-        hospital_instance=User.objects.get(username=username)
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
         patient_instance=Patient.objects.get(phone=patient_id)
         if Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(id=result_id).delete():
             return redirect(f'/record_report/{patient_id}')
@@ -1524,14 +1565,17 @@ def delete_resultView(request,patient_id,result_id):
 
 @login_required(login_url='/')  
 def record_report_statusView(request,patient_id):
-    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+    if request.user.is_authenticated and request.user.is_lab and request.method=="POST":
         labstatus=request.POST['labstatus']
         username=request.user.username
-        hospital_instance=User.objects.get(username=username)
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
         patient_instance=Patient.objects.get(phone=patient_id)
         Lapreport.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=labstatus)
         Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=1)
-        return redirect(f'/record_report/{patient_id}')
+        return redirect(f'/completed_treatment_list')
     else:
         return redirect('/')
     
@@ -1592,10 +1636,12 @@ def my_doctors_com_appointmentView(request):
 def my_doctors_com_treatmentView(request):
     if request.user.is_authenticated and request.user.is_dr:
         username=request.user.username
-        user_instance = User.objects.get(username=username)
-        dr_instance=Doctor.objects.get(user=user_instance) 
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
         data={
-            'completed_treatment_log':Treatment.objects.filter(dr=dr_instance,status=1)
+           'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status="Processing")
         }
         return render(request,'doctor/completed_treatment_list.html',context=data) 
     else:

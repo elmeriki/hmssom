@@ -109,7 +109,7 @@
         <div class="col-xl-12 col-lg-12">
             <div class="card-body">
                 <div class="basic-form">
-                    <form action="/add_patient_test/{{patientid}}" method="POST" enctype="multipart/form-data">
+                    <form action="/add_patient_test/{{patientid}}/{{apoint_id}}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-row">
                             <div class="form-group col-md-12">
@@ -121,7 +121,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Add Lab Test</button>
+                            <button type="submit" class="btn btn-danger">Save</button>
                     </form>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                                 <td>Biir {{Patienttest.amount}}</td>
                                 </td>
                                 <td><span>
-                                        <a href="/delete_patient_test/{{patientid}}/{{Patienttest.id}}" data-toggle="tooltip"
+                                        <a href="/delete_patient_test/{{patientid}}/{{Patienttest.id}}/{{apoint_id}}" data-toggle="tooltip"
                                             data-placement="top" title="Close"><i
                                                 class="fa fa-close color-danger"></i></a></span>
                                 </td>
@@ -171,25 +171,21 @@
                 </div>
                 <div class="card-body">
                     <div class="basic-form">
-                        <form action="/create_treatment/{{patientid}}" method="POST">
+                        <form action="/create_treatment/{{patientid}}/{{apoint_id}}" method="POST">
                             {% csrf_token %}
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="">Patient State</label>
                                     <select class="form-control" name="status" required>
                                         <option value="">Select Status</option>
-                                        <option value="Refere to Laboratory">Refere to Laboratory</option>
-                                        <option value="Purchase Medication">Purchase Medication</option>
                                         <option value="Treated">Treated</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Payment Pending">Payment Pending</option>
-                                        <option value="Waiting Result">Waiting Result</option>
+                                        <option value="Refere to Laboratory">Refere to Laboratory</option>
                                     </select>
                                 </div>
                                 <br>
                                 <div class="form-group col-md-12">
                                 <div class="input-group">
-									<textarea class="form-control" name="desc" placeholder="Patient Note..."></textarea>
+									<textarea class="form-control" name="desc" placeholder="Description patient note..."></textarea>
 									
 								</div>
                             </div>

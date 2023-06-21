@@ -11,13 +11,12 @@ urlpatterns = [
     
     path('lab_profile', views.lab_profileView, name='lab_profileView'),
 
-
     path('doctorsdashboard', views.doctorsdashboardView, name='doctorsdashboardView'),
     path('doctortreatment/<str:patientid>/<str:apoint_id>', views.doctortreatmentView, name='doctortreatmentView'),
-    path('add_patient_test/<str:patientid>', views.add_patient_testView, name='add_patient_testView'),
-    path('delete_patient_test/<str:patientid>/<str:test_id>', views.delete_patient_testView, name='delete_patient_testView'),
+    path('add_patient_test/<str:patientid>/<str:apoint_id>', views.add_patient_testView, name='add_patient_testView'),
+    path('delete_patient_test/<str:patientid>/<str:test_id>/<str:apoint_id>', views.delete_patient_testView, name='delete_patient_testView'),
 
-    path('create_treatment/<str:patientid>', views.create_treatmentView, name='create_treatmentView'),
+    path('create_treatment/<str:patientid>/<str:apoint_id>', views.create_treatmentView, name='create_treatmentView'),
     path('treatment_list', views.treatment_listView, name='treatment_listView'),
     path('completed_treatment_list', views.completed_treatment_listView, name='completed_treatment_listView'),
     
