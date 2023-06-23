@@ -47,7 +47,7 @@ def hospital_dashboardView(request):
         'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
         'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
         'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
-        'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10]
+        'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10],
         }
         return render(request,'hospital/dashboard.html',context=data)
     
@@ -64,12 +64,30 @@ def departmentView(request):
         }
         return render(request,'hospital/department.html',context=data)
     
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        hospital_department =Department.objects.filter(hospital=hospital_instance)
+        data = {
+        'hospital_department':hospital_department,
+        'reception_instance_to_display_profile_picture':recep_instance
+
+        }
+        return render(request,'receptionist/department.html',context=data)
+    
     
 @login_required(login_url='/')  
 def add_departmentView(request):
-    return render(request,'hospital/add_department.html')
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_department.html')
 
-
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_department.html')
+    else:
+        return redirect('/')
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def save_add_departmentView(request):
@@ -100,6 +118,16 @@ def edit_departmentView(request,departmentid):
         'departmentid':departmentid
         }
         return render(request,'hospital/edit_department.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep:
+        get_department_instance=Department.objects.get(id=departmentid)
+        data = {
+        'department':get_department_instance.name,
+        'departmentdesc':get_department_instance.desc,
+        'departmentid':get_department_instance.id,
+        'departmentid':departmentid,
+
+        }
+        return render(request,'receptionist/edit_department.html',context=data)
 
 
 @login_required(login_url='/')  
@@ -120,7 +148,10 @@ def delete_departmentView(request, departmentid):
         delete_department = Department.objects.get(id=departmentid)
         delete_department.delete()
         return redirect('/department')
-
+    if request.user.is_authenticated and request.user.is_rep:
+        delete_department = Department.objects.get(id=departmentid)
+        delete_department.delete()
+        return redirect('/department')
 
 #=======================================DOCTOR====================================
 @login_required(login_url='/')  
@@ -309,8 +340,11 @@ def add_doctor_visitView(request):
 #===========================================PATIENT========================================
 @login_required(login_url='/')  
 def add_patientView(request):
-    return render(request,'hospital/add_patient.html')
-
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/add_patient.html')
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_patient.html')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -325,6 +359,33 @@ def save_add_patientView(request):
         status = request.POST['status']
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
+        if Patient.objects.filter(hospital=hospital_instance,phone=phone).exists():
+            messages.info(request,'Patient Number already used')
+            return redirect('/add_patient')
+        
+        if Patient.objects.filter(hospital=hospital_instance,non=non).exists():
+            messages.info(request,'Next of king Number already used')
+            return redirect('/add_patient')
+        
+        create_patient=Patient(hospital=hospital_instance,title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype,status=status)
+        if create_patient:
+            create_patient.save()
+            messages.info(request,'Patient Created successfully')
+            return redirect('/add_patient')
+        else:
+            return redirect('/patient_list')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        title = request.POST['title']
+        patientname = request.POST['patientname']
+        nok = request.POST['nok']
+        non = request.POST['non']
+        phone = request.POST['phone']        
+        paymenttype = request.POST['paymenttype']
+        status = request.POST['status']
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
         if Patient.objects.filter(hospital=hospital_instance,phone=phone).exists():
             messages.info(request,'Patient Number already used')
             return redirect('/add_patient')
@@ -355,6 +416,16 @@ def patient_listView(request):
         'hospital_patient':hospital_patient
         }
         return render(request,'hospital/patient_list.html',context=data)    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        hospital_patient =Patient.objects.filter(hospital=hospital_instance)
+        data = {
+        'hospital_patient':hospital_patient
+        }
+        return render(request,'receptionist/patient_list.html',context=data)    
 
 
 @login_required(login_url='/')  
@@ -427,17 +498,22 @@ def add_caseView(request):
 
 @login_required(login_url='/')  
 def document_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/document_list.html') 
-
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/document_list.html') 
 
 @login_required(login_url='/')  
 def add_documentView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_document.html') 
-
-
-
-
     
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_document.html') 
+    
+
+
 
 #===========================================HOSPITAL PROFILE========================================
 @login_required(login_url='/')  
@@ -454,6 +530,39 @@ def hospital_profileView(request):
 
         }
         return render(request,'hospital/profile.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        about_the_hospital_text=Hospital.objects.get(hospital=hospital_instance)
+
+        data = {
+        'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
+        'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
+        'about_the_hospital_text':about_the_hospital_text.desc,
+        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+
+        }
+        return render(request,'receptionist/profile.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_lab:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        lab_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=lab_instance.hospital.username)
+        about_the_hospital_text=Hospital.objects.get(hospital=hospital_instance)
+
+        data = {
+        'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
+        'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
+        'about_the_hospital_text':about_the_hospital_text.desc,
+        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+
+        }
+        return render(request,'laboratory/profile.html',context=data)
+    
 
 @login_required(login_url='/')  
 def doctor_profileView(request):
@@ -474,6 +583,7 @@ def lab_profileView(request):
         data = {
         }
         return render(request,'laboratory/profile.html',context=data)
+
 
 #===========================================EMAIL========================================
 @login_required(login_url='/')  
@@ -1325,6 +1435,26 @@ def doctors_profileView(request,doctor_id):
         'doctorsappointment':Appointment.objects.filter(hospital=hospital_instance,status=0).filter(dr=doctors_instance)
         }
         return render(request,'hospital/doctorsprofile.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        doctors_instance = Doctor.objects.get(id=doctor_id)
+        data = {
+        'doctorsnames':doctors_instance.name,
+        'department':doctors_instance.department.name,
+        'departmentdec':doctors_instance.department.desc,
+        'phone':doctors_instance.phone,
+        'address':doctors_instance.address,
+        'email':doctors_instance.email,
+        'departmentid':doctors_instance.departmentid,
+        'picture':doctors_instance.picture,
+        'message_about_dr':doctors_instance.message_about_dr,
+        'doctorsappointment':Appointment.objects.filter(hospital=hospital_instance,status=0).filter(dr=doctors_instance)
+        }
+        return render(request,'receptionist/doctorsprofile.html',context=data)
 
 
 @login_required(login_url='/')  
@@ -1346,6 +1476,25 @@ def patient_detailsView(request,patient_id):
         'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
         }
         return render(request,'hospital/patient_details.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        patient_instance=Patient.objects.get(id=patient_id)
+        data = {
+        'patient_id':patient_instance.id,
+        'title':patient_instance.title,
+        'name':patient_instance.name,
+        'nok':patient_instance.nok,
+        'non':patient_instance.non,
+        'phone':patient_instance.phone,
+        'created_at':patient_instance.created_at,
+        'patient_appointment':Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)[:1],
+        'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
+        }
+        return render(request,'receptionist/patient_details.html',context=data)
     
     
     
@@ -1393,15 +1542,17 @@ def recepdashboardView(request):
     if request.user.is_authenticated and request.user.is_rep:
         username=request.user.username
         customer_instance=User.objects.get(username=username)
-        doctor_instance=Doctor.objects.get(user=customer_instance)
-        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
-        data={
-            'labtest_count':Lapreport.objects.filter(hospital=hospital_instance).count(),
-            'completed_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=1).count(),
-            'pending_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=0).count(),
-            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=1)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        data = {
+        'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
+        'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
+        'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
+        'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10],
+        'reception_instance_to_display_profile_picture':recep_instance
         }
-        return render(request,'receptionist/index.html',context=data) 
+        return render(request,'receptionist/index.html',context=data)
     else:
         return redirect('/')
     
@@ -1558,6 +1709,15 @@ def completed_treatment_listView(request):
             'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status=0)
         }
         return render(request,'hospital/completed_treatment_list.html',context=data) 
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
+        data={
+            'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status=0)
+        }
+        return render(request,'receptionist/completed_treatment_list.html',context=data) 
     else:
         return redirect('/')
     
@@ -1605,6 +1765,16 @@ def labtestView(request):
             'labtest':Lapreport.objects.filter(hospital=hospital_instance,status="Processing")
         }
         return render(request,'hospital/labtest.html',context=data) 
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
+        data={
+            'labtest':Lapreport.objects.filter(hospital=hospital_instance,status="Processing")
+        }
+        return render(request,'receptionist/labtest.html',context=data) 
     else:
         return redirect('/')
     

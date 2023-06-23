@@ -1,12 +1,12 @@
 {% load static %}
 <div class="header-left">
-    {% if "/labdashboard" in request.path %}
+    {% if "/recepdashboard" in request.path %}
     <div class="dashboard_bar">
-        Hi Dr.{{request.user.first_name}}
+        Receptionist Dashboard
     </div>
     {% else %}
     <div class="dashboard_bar">
-        Laboratory Dashboard
+        Receptionist Dashboard
     </div>
     {% endif %}
 </div>

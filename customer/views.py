@@ -261,6 +261,16 @@ def add_appointmentView(request):
         }
         return render(request,'customer/add_appointment.html',context=data)
     
+    if request.user.is_authenticated and request.user.is_rep:     
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)       
+        data= {
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0)
+        }
+        return render(request,'customer/add_appointment.html',context=data)
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_patient_appointmentView(request):
@@ -290,11 +300,36 @@ def create_patient_appointmentView(request):
             create_apointment.save()
             messages.info(request,'Patient Appointment has been created successfully')
             return redirect('/add_appointment')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        phone =request.POST['phone']
+        doctor_id =int(request.POST['doctor_id'])
+        apointmentdate =request.POST['apointmentdate']
+        charges =request.POST['charges']
+        remarks =request.POST['remarks']
+        visitdesc =request.POST['visitdesc'] 
+        paymenttype =request.POST['paymenttype'] 
+        payment_status =request.POST['payment_status'] 
+        username=request.user.username
+  
+        if not Patient.objects.filter(phone=phone).exists():
+            messages.info(request,'Patient Cellphone Number Does Not Exists')
+            return redirect('/add_appointment')
+        patient_instance=Patient.objects.get(phone=phone)
+        hospital_instance=User.objects.get(username=username) 
+        
+        if Appointment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=0).exists():
+            messages.info(request,'Please cancel first Appointment before you can create another Appointment')
+            return redirect('/add_appointment')
+        else:
+            doctor_instance=Doctor.objects.get(id=doctor_id)
+            create_apointment=Appointment(hospital=hospital_instance,date=apointmentdate,patient=patient_instance,dr=doctor_instance,visitdsc=visitdesc,remark=remarks,amount=charges,paymenttype=paymenttype,paymentstatus=payment_status) 
+            create_apointment.save()
+            messages.info(request,'Patient Appointment has been created successfully')
+            return redirect('/add_appointment')
     else:
         return redirect('/')
 
 @login_required(login_url='/')  
-@transaction.atomic  #transactional 
 def appointment_listView(request):
     if request.user.is_authenticated and request.user.is_hospital: 
         username=request.user.username
@@ -303,6 +338,16 @@ def appointment_listView(request):
         'appointment_list':Appointment.objects.filter(hospital=hospital_instance)
         }       
         return render(request,'customer/appointment_list.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep: 
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        data = {
+        'appointment_list':Appointment.objects.filter(hospital=hospital_instance)
+        }       
+        return render(request,'receptionist/appointment_list.html',context=data)
     else:
         return redirect('/')
     
@@ -313,7 +358,6 @@ def edit_appointmentView(request,appointmentid):
         get_appointment_instance = Appointment.objects.get(id=appointmentid)
         data = {
         'phone' : get_appointment_instance.patient.phone,
-        #'doctor_id' : get_appointment_instance.doctor_id,
         'date' : get_appointment_instance.date,
         'amount' : get_appointment_instance.amount,
         'remark' : get_appointment_instance.remark,
@@ -374,6 +418,16 @@ def todays_appointment_listView(request):
         'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date=todays_date)
         }       
         return render(request,'customer/appointment_list.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep: 
+        todays_date = date.today()
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        data = {
+        'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date=todays_date)
+        }       
+        return render(request,'receptionist/appointment_list.html',context=data)
     else:
         return redirect('/')
     
@@ -388,6 +442,16 @@ def upcoming_appointment_listView(request):
         'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date__gt=todays_date)
         }       
         return render(request,'customer/appointment_list.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep: 
+        todays_date = date.today()
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        data = {
+        'todaysappointment_list':Appointment.objects.filter(hospital=hospital_instance,date__gt=todays_date)
+        }       
+        return render(request,'receptionist/appointment_list.html',context=data)
     else:
         return redirect('/')
     

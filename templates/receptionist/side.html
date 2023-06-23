@@ -2,24 +2,102 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
-            <li><a href="/labdashboard" aria-expanded="false">
+            <li><a href="/recepdashboard" aria-expanded="false">
                 <i class="bi bi-house-add-fill"></i>
                 <span class="nav-text">Home</span>
                 </a>
             </li>
 
         </li>
+        <li><a class="#" href="/department" aria-expanded="false">
+            <i class="bi bi-person-vcard"></i>
+            <span class="nav-text">Departments</span>
+        </a>
+        </li>
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                <i class="bi bi-person-fill-down"></i>
-                    <span class="nav-text">Laboratory</span>
+                <i class="bi bi-calendar-event"></i>
+                    <span class="nav-text">Appointment</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="/laboratory_test">Pending</a></li>
-                    <li><a href="/completed_treatment_list">Completed</a></li>
+                    <li><a href="/appointment_list">All</a></li>
+                    <li><a href="/add_appointment">Add</a></li>
+                    <li><a href="/todays_appointment_list">Todays</a></li>
+                    <li><a href="/upcoming_appointment_list">Upcoming</a></li>
                 </ul>
             </li>
 
         </li>
+        <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+            <i class="bi bi-person-fill-down"></i>
+                <span class="nav-text">Patient</span>
+            </a>
+            <ul aria-expanded="false">
+                <li><a href="/patient_list">Patient List</a></li>
+                <li><a href="/add_patient">Add Patient</a></li>
+                <li><a href="/document_list">Documents</a></li>
+            </ul>
+        </li>
+        <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+            <i class="bi bi-cash-coin"></i>
+            <span class="nav-text">Expenses Record</span>
+        </a>
+        <ul aria-expanded="false">
+            <li><a href="/payment_list">Payments</a></li>                    
+            <li><a href="/expense_list">Expense</a></li>
+            <li><a href="/add_expense">Add Expense</a></li>
+            <li><a href="expensecategory">Add Expense Categories</a></li>
+            <li><a href="/paymentcategory">Add Payment Categories</a></li>
+
+        </ul>
+    </li>
+    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+        <i class="bi bi-person-fill-down"></i>
+        <span class="nav-text">Lab Confirmation</span>
+    </a>
+    <ul aria-expanded="false">
+        <li><a href="/laboratory_test">Pending</a></li>
+        <li><a href="/completed_treatment_list">Completed</a></li>
+    </ul>
+    </li>
+    {% comment %} <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+        <i class="bi bi-hospital"></i>
+            <span class="nav-text">Admission & Bed</span>
+        </a>
+        <ul aria-expanded="false">
+            <li><a href="/add_bedcategory">Add Bed</a></li>
+            <li><a href="/bedcategory_list">Bed List</a></li>
+            <li><a href="#">All Admissions</a></li>
+            <li><a href="#">Add Admission</a></li>
+        </ul>
+    </li> {% endcomment %}
+    <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+        <i class="bi bi-person-fill-down"></i>
+            <span class="nav-text">Donor</span>
+        </a>
+        <ul aria-expanded="false">
+            <li><a href="/donor_list">All Donor</a></li>
+            <li><a href="/add_donor">Add Donor</a></li>
+            <li><a href="/blood_list">Bloodbank</a></li>
+        </ul>
+    </li>
+    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+        <i class="bi bi-person-plus-fill"></i>
+        <span class="nav-text">Birth Record</span>
+    </a>
+    <ul aria-expanded="false">
+        <li><a href="/add_childbirth">Add New</a></li>
+        <li><a href="/childbirth_list">All Record</a></li>
+    </ul>
+</li>
+    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+        <i class="bi bi-person-fill-dash"></i>
+        <span class="nav-text">Death Record</span>
+    </a>
+    <ul aria-expanded="false">
+        <li><a href="/add_deadthrecord">Add New</a></li>
+        <li><a href="/deadthrecord_list">All Record</a></li>
+    </ul>
+</li>
      
 </ul>
 

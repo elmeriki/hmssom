@@ -1,0 +1,44 @@
+{% extends "receptionist/menu.html" %}
+{% block title %} Hospital Department |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+<div class="container-fluid">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">Edit Hospital Department</h4>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <form  action="/update_department/{{departmentid}}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Department Name</label>
+                                <input type="text" class="form-control" name="departmentname" value="{{department}}" >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Department Desc </label>
+                                <input type="text" class="form-control" name="departmentdesc" value="{{departmentdesc}}">
+                            </div>
+                        </div>
+                            
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+

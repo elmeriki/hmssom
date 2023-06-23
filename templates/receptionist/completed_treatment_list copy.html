@@ -1,5 +1,5 @@
-{% extends "hospital/main_menu.html" %}
-{% block title %} Treatment Log | {% endblock %}
+{% extends "receptionist/menu.html" %}
+{% block title %} Completed Treament Log | {% endblock %}
 {% load static %}
 {% block content %}
 {% if patient_test_list %}
@@ -77,23 +77,18 @@
 						</thead>
 						<tbody>
 							<tr>
-								{% for pending_treatment_log in pending_treatment_log %}
-								<td>{{pending_treatment_log.patient.phone}}</td>
-								<td>Dr.{{pending_treatment_log.dr.name}}</td>
-								<td>{{pending_treatment_log.desc}}</td>
-								<td>{{pending_treatment_log.remark}}</td>
-								<td>{{pending_treatment_log.dname}}</td>
-								<td>{{pending_treatment_log.pstate}}</td>
-                                <td>{{pending_treatment_log.payment}}</td>
-								<td>{{pending_treatment_log.created_at.date}}</td>
+								{% for completed_treatment_log in completed_treatment_log %}
+								<td>{{completed_treatment_log.patient.phone}}</td>
+								<td>Dr.{{completed_treatment_log.dr.name}}</td>
+								<td>{{completed_treatment_log.desc}}</td>
+								<td>{{completed_treatment_log.remark}}</td>
+								<td>{{completed_treatment_log.dname}}</td>
+								<td>{{completed_treatment_log.pstate}}</td>
+                                <td>{{completed_treatment_log.payment}}</td>
+								<td>{{completed_treatment_log.created_at.date}}</td>
 								<td>
-									<a href="/patient_test_list/{{pending_treatment_log.patient.phone}}"  target="_blank">
+									<a href="/patient_test_list/{{completed_treatment_log.patient.phone}}"  target="_blank">
 									View
-									</a>
-								</td>
-                                <td>
-									<a href="/add_payment/{{pending_treatment_log.patient.phone}}">
-									Payment
 									</a>
 								</td>
 							</tr>

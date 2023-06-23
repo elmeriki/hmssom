@@ -1,0 +1,80 @@
+{% extends "receptionist/menu.html" %}
+{% block title %} Hospital Department |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+<div class="container-fluid">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">New Patient</h4>
+                {% endif %}            
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="/save_add_patient" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                    <select class="form-control" name="title" required>
+                                        <option value="">Select Title</option>
+                                        <option value="Mr">Mr</option>
+                                        <option value="Mrs">Mrs</option>
+                                        <option value="Miss">Miss</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="patientname" placeholder="Patient Full Names" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="tel" class="form-control" name="phone" placeholder="Patient Cell Phone" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" name="nok" placeholder="Next Of Kin Names" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="tel" class="form-control" name="non" placeholder="Next Of Kin Phone" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <select class="form-control" name="paymenttype" required>
+                                    <option value="">Payment Type</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <select class="form-control" name="status" required>
+                                    <option value="">Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                        </div>
+                
+                        </div>
+                            
+                        <button type="submit" class="btn btn-primary">Save</button>
+
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+

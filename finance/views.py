@@ -43,7 +43,6 @@ def add_paymentView(request,patien_id):
         return redirect('/')
     
 @login_required(login_url='/')  
-@transaction.atomic  #transactional 
 def payment_listView(request):
     if request.user.is_authenticated and request.user.is_hospital: 
         username=request.user.username
@@ -52,6 +51,15 @@ def payment_listView(request):
          'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10]
         }       
         return render(request,'finance/payment_list.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep: 
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)   
+        data = {
+         'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10]
+        }       
+        return render(request,'receptionist/payment_list.html',context=data)
     else:
         return redirect('/')
     
@@ -60,6 +68,9 @@ def payment_listView(request):
 def add_paymentcategoryView(request):
     if request.user.is_authenticated and request.user.is_hospital:        
         return render(request,'finance/add_paymentcategory.html')
+    
+    if request.user.is_authenticated and request.user.is_rep:        
+        return render(request,'receptionist/add_paymentcategory.html')
     else:
         return redirect('/')
 
@@ -73,6 +84,13 @@ def paymentcategoryView(request):
             'payment_category':Paymentcategory.objects.filter(hospital=hospital_instance)
         }    
         return render(request,'finance/paymentcategory.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)    
+        data = {
+            'payment_category':Paymentcategory.objects.filter(hospital=hospital_instance)
+        }    
+        return render(request,'receptionist/paymentcategory.html',context=data)
     else:
         return redirect('/')
     
@@ -86,6 +104,15 @@ def add_expenseView(request):
         'all_expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
         }      
         return render(request,'finance/add_expense.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep:  
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
+        data = {
+        'all_expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
+        }      
+        return render(request,'receptionist/add_expense.html',context=data)
     else:
         return redirect('/')
     
@@ -95,6 +122,15 @@ def expense_listView(request):
     if request.user.is_authenticated and request.user.is_hospital: 
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
+        data = { 
+        'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15]
+        }       
+        return render(request,'finance/expense_list.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep: 
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
         data = { 
         'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15]
         }       
@@ -111,7 +147,6 @@ def add_expensecategoryView(request):
         return redirect('/')
 
 @login_required(login_url='/')  
-@transaction.atomic  #transactional 
 def expensecategoryView(request):
     if request.user.is_authenticated and request.user.is_hospital:  
         username=request.user.username
@@ -120,6 +155,15 @@ def expensecategoryView(request):
         'expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
         }      
         return render(request,'finance/expensecategory.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep:  
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)  
+        data = {
+        'expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
+        }      
+        return render(request,'receptionist/expensecategory.html',context=data)
     else:
         return redirect('/')
     
