@@ -10,7 +10,7 @@
             <div class="card-header">
                 {% if messages %}
                 {% for foreachmessage in messages %}
-                <h4 class="text-danger">{{foreachmessage}}</h4>
+                <h4 class="text-success">{{foreachmessage}}</h4>
                 {% endfor %}
                 {% else %}
                 <h4 class="">New Patient</h4>
@@ -51,8 +51,15 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <select class="form-control" name="status" required>
-                                    <option value="">Select status</option>
-                                    <option value="New">New</option>
+                                    <option value="">Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
                                 </select>
                         </div>
                 

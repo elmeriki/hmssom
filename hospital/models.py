@@ -7,7 +7,7 @@ from customer.models import *
 
 # Create your models here.
 class Hospital(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_names")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_names")
     hospitalid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     package =  models.CharField(max_length=200,blank=True,null=True,default="None")
     desc=models.TextField(null=True,blank=True)
@@ -62,7 +62,7 @@ class Doctor(models.Model):
 
 # Create your models here.
 class Humanresource(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_human_resource")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_human_resource")
     category = models.CharField(max_length=200,blank=True,null=True,default="None")
     #employeeid =  models.CharField(max_length=200,blank=True,null=True,default="None")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -82,7 +82,7 @@ class Humanresource(models.Model):
         return self.hospital.first_name
 
 class Patient(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_patient_is_admitted")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_patient_is_admitted")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     name =  models.CharField(max_length=200,blank=True,null=True,default="None")
     nok =  models.CharField(max_length=200,blank=True,null=True,default="None")
@@ -104,22 +104,22 @@ class Treatment(models.Model):
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_treatment_name")
     dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,blank=True,null=True,related_name="doctor_treatment_log")
     desc =  models.TextField(null=True,blank=True,default="Pending")
+    tstatus =models.CharField(max_length=200,default=0,null=True,blank=True)
     remark =  models.TextField(null=True,blank=True,default="Pending")
     dname =  models.TextField(null=True,blank=True,default="Pending")
     pstate = models.CharField(max_length=200,default=0,null=True,blank=True)
-    payment =  models.TextField(null=True,blank=True,default="Pending")
-    status = models.CharField(max_length=200,default=0,null=True,blank=True)
+    treatmentid =models.CharField(max_length=200,default="Pending",null=True,blank=True)
+    payment =models.TextField(null=True,blank=True,default="Pending")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
-        verbose_name_plural ="Treatment"
-        
+        verbose_name_plural ="Treatment Log"
     def __str__(self):
         return self.hospital.first_name
 
 class Labtest(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hostital_lab_test")
-    patient=models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_lab_test")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hostital_lab_test")
+    patient=models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_lab_test")
     dr = models.ForeignKey(User,on_delete=models.CASCADE, related_name="dr_lab_test")
     testname =  models.CharField(max_length=200,blank=True,null=True,default="None")
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
@@ -135,7 +135,7 @@ class Labtest(models.Model):
         return self.hospital.first_name
     
 class Bedcategory(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_bed_category")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_bed_category")
     categoryname =  models.CharField(max_length=200,blank=True,null=True,default="None")
     bednumber =  models.CharField(max_length=200,blank=True,null=True,default="None")
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -148,9 +148,9 @@ class Bedcategory(models.Model):
         return self.hospital.first_name
 
 class Notices(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_notice")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_notice")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    noticfor =  models.ForeignKey(Department,on_delete=models.CASCADE, related_name="department_notice")
+    noticfor =  models.ForeignKey(Department,on_delete=models.CASCADE,null=True,blank=True, related_name="department_notice")
     noticemsg = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -162,7 +162,7 @@ class Notices(models.Model):
         return self.hospital.first_name
     
 class Leavetypes(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leave")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_leave")
     types = models.CharField(max_length=200,default=0,null=True,blank=True)
     duration = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -176,8 +176,8 @@ class Leavetypes(models.Model):
         return self.hospital.first_name
     
 class Leave(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_leave_list")
-    staff = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_staffs")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_leave_list")
+    staff = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_staffs")
     typeofleave =  models.ForeignKey(Leavetypes,on_delete=models.CASCADE)
     date = models.DateField()
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -191,8 +191,8 @@ class Leave(models.Model):
         return self.hospital.first_name
     
 class Chat(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="chat_to_hospital")
-    staff = models.ForeignKey(User,on_delete=models.CASCADE,related_name="chat_to_staffs")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="chat_to_hospital")
+    staff = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="chat_to_staffs")
     messagesent =  models.TextField(null=True,blank=True,default="N/A")
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     response =  models.TextField(null=True,blank=True,default="N/A")
@@ -205,7 +205,7 @@ class Chat(models.Model):
         return self.hospital.first_name
 
 class Childbirth(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_birth")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_child_birth")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -223,7 +223,7 @@ class Childbirth(models.Model):
         return self.hospital.first_name
     
 class Deadthrecord(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_child_was_birthed")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_child_was_birthed")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -243,7 +243,7 @@ class Deadthrecord(models.Model):
         return self.hospital.first_name
     
 class Document(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_who_owns_document")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_who_owns_document")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="patient_document")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -258,7 +258,7 @@ class Document(models.Model):
     
 
 class Email(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_email")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_email")
     title =  models.CharField(max_length=200,blank=True,null=True,default="None")
     type_sent = models.CharField(max_length=200,default=0,null=True,blank=True)
     message = models.TextField(null=True,blank=True)
@@ -272,7 +272,7 @@ class Email(models.Model):
         return self.hospital.first_name
     
 class File(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_files")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_files")
     title = models.CharField(max_length=200,default=0,null=True,blank=True)
     document = models.ImageField(null=True, upload_to="document/",)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -284,7 +284,7 @@ class File(models.Model):
         return self.hospital.first_name
 
 class Donor(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_donor")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_donor")
     title = models.CharField(max_length=200,default="",null=True,blank=True)
     firstname = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastname = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -304,7 +304,7 @@ class Donor(models.Model):
         return self.hospital.first_name
 
 class Blood(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_blood_grou")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_blood_grou")
     bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="")
     quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -319,7 +319,7 @@ class Blood(models.Model):
 # Create your models here.
 
 class Paymentcategory(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name='hospital_category_name')
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name='hospital_category_name')
     category = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -336,6 +336,7 @@ class Patienttest(models.Model):
     category = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     status=models.CharField(max_length=200,default=0,null=True,blank=True)
+    testid = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
@@ -345,7 +346,7 @@ class Patienttest(models.Model):
         return self.hospital.first_name
 
 class Payment(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name='payment_category_for_hospital')
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name='payment_category_for_hospital')
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="payment_for_patient")
     category = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
@@ -360,7 +361,7 @@ class Payment(models.Model):
         return self.hospital.first_name
     
 class Expensescategory(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="expenses_for_category")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="expenses_for_category")
     name = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -372,7 +373,7 @@ class Expensescategory(models.Model):
         return self.hospital.first_name
     
 class Expense(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="expenses_for_hospital")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="expenses_for_hospital")
     category = models.ForeignKey(Expensescategory,on_delete=models.CASCADE,related_name="expenses_for_categories")
     decs = models.CharField(max_length=200,default=0,null=True,blank=True)
     amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
@@ -389,6 +390,7 @@ class Lapreport(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_lap_report")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_lap_report")
     status=models.CharField(max_length=200,blank=True,null=True,default="Pending")
+    testid = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -403,6 +405,7 @@ class Labresult(models.Model):
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_lap_result")
     testname=models.CharField(max_length=200,blank=True,null=True,default="None")
     testreport=models.CharField(max_length=200,blank=True,null=True,default="None")
+    testid=models.CharField(max_length=200,blank=True,null=True,default="None")
     status=models.CharField(max_length=200,blank=True,null=True,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -411,3 +414,5 @@ class Labresult(models.Model):
         
     def __str__(self):
         return self.hospital.first_name
+    
+    

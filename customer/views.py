@@ -282,7 +282,7 @@ def create_patient_appointmentView(request):
         hospital_instance=User.objects.get(username=username) 
         
         if Appointment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=0).exists():
-            messages.info(request,'Please cancel first appointmet before you can create another for patient')
+            messages.info(request,'Please cancel first Appointment before you can create another Appointment')
             return redirect('/add_appointment')
         else:
             doctor_instance=Doctor.objects.get(id=doctor_id)

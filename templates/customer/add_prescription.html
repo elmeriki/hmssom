@@ -21,7 +21,6 @@
                         <form action="/create_prescription" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-row">
-                                <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <input type="number" class="form-control" name="phone"
                                             placeholder="Enter patient cell phone number" required>
@@ -30,18 +29,11 @@
                                         <select class="form-control" name="doctor_id" required>
                                             <option value="">Assign Doctor</option>
                                             {% for doctor_list in doctor_list %}
-                                            <option value="{{doctor_list.id}}">{{doctor_list.user.first_name}}
-                                                {{doctor_list.department.desc}}</option>
+                                            <option value="{{doctor_list.id}}">{{doctor_list.user.first_name}} {{doctor_list.department.desc}} </option>
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <!--<div class="form-group col-md-6">
-                                    <input type="date" class="form-control" name="date" placeholder="Date" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <input type="number" class="form-control" name="charges"
-                                        placeholder="Visit Charge" required>
-                                </div>-->
+
                                     <div class="form-group col-md-6">
                                         <input type="text" class="form-control" name="history" placeholder="History"
                                             required>
@@ -50,12 +42,11 @@
                                         <input type="text" class="form-control" name="note" placeholder="Note" required>
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <input type="text" class="form-control" name="advice" placeholder="Advice"
-                                            required>
+                                        <input type="text" class="form-control" name="advice" placeholder="Advice" required>
                                     </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
 
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
                 </div>

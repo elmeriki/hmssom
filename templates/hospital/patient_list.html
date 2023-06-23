@@ -25,80 +25,37 @@
 					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>
-									<div class="checkbox text-right align-self-center">
-										<div class="custom-control custom-checkbox ">
-											<input type="checkbox" class="custom-control-input" id="checkAll"
-												required="">
-											<label class="custom-control-label" for="checkAll"></label>
-										</div>
-									</div>
-								</th>
 								<th>Patient ID</th>
 								<th>Title</th>
 								<th>Fullname</th>
 								<th>Patient Phone</th>
-								<th>Next of kin</th>
-								<th>Next of kin Number</th>
+								<th>NOK Names</th>
+								<th>NOK Number</th>
 								<th>Payment Type</th>
-								<th>Status</th>
-								<th>Options</th>
+								<th>Blood Group</th>
+								<th>Action</th>
 								<th>Del</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								{% for hospital_patient in hospital_patient %}
-								<td>
-									<div class="checkbox text-right align-self-center">
-										<div class="custom-control custom-checkbox ">
-											<input type="checkbox" class="custom-control-input" id="customCheckBox"
-												required="">
-											<label class="custom-control-label" for="customCheckBox"></label>
-										</div>
-									</div>
-								</td>
 								<td>{{hospital_patient.id}}</td>
 								<td>{{hospital_patient.title}}</td>
 								<td><a href="/patient_details/{{hospital_patient.id}}">{{hospital_patient.name}}</a></td>
 								<td><span class="font-w500">{{hospital_patient.phone}}</span></td>
 								<td><a href="/patient_details/{{hospital_patient.id}}">{{hospital_patient.nok}}</a></td>
 								<td><a href="/patient_details/{{hospital_patient.id}}">{{hospital_patient.non}}</a></td>
-								<td>{{hospital_patient.paymenttype}}</td>
-
-								
-								{% if hospital_patient.status == 1 %}
-								<td>
-									<span class="text-nowrap">
-										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
-											xmlns="http://www.w3.org/2000/svg">
-											<circle cx="4.5" cy="4.5" r="4.5" fill="#FFB800" />
-										</svg>
-										<span class="text-warning">Active</span>
-									</span>
-								</td>
-								{% elif hospital_patient.status == 2%}
-								<td>
-									<span class="text-nowrap">
-										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
-											xmlns="http://www.w3.org/2000/svg">
-											<circle cx="4.5" cy="4.5" r="4.5" fill="#369DC9" />
-										</svg>
-										<span class="text-info">Active</span>
-									</span>
-								</td>
-								{% else %}
+								<td>{{hospital_patient.paymenttype}}</td>		
 								<td>
 									<span class="text-nowrap">
 										<svg class="mr-2" width="9" height="9" viewBox="0 0 9 9" fill="none"
 											xmlns="http://www.w3.org/2000/svg">
 											<circle cx="4.5" cy="4.5" r="4.5" fill="#2BC155" />
 										</svg>
-										<span class="text-primary">Active</span>
+										<span class="text-primary">{{hospital_patient.status}}</span>
 									</span>
 								</td>
-								{% endif %}
-
 								<td>
 									<a href="/edit_patient/{{hospital_patient.id}}"
 										onclick="if(!confirm('Are you sure you want to edit this Patient?')){return false;}">

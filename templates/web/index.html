@@ -622,9 +622,9 @@
                                 <form class="login-form" action="/hospital_login_" method="POST">
                                     {% csrf_token %}
                                     <div class="row">
-                                        <div class="col-12">
-                                            <img src="{% static 'assets/web/images/logo-dark.png' %}" width="160px" alt="">
-                                        </div><!--end col-->
+                                        {% comment %} <div class="col-12">
+                                            <img src="{% static 'assets/web/images/logo-white.png' %}" width="160px" alt="">
+                                        </div><!--end col--> {% endcomment %}
                                         
                                         <div class="col-lg-12 mt-4">
                                             <div class="mb-3">

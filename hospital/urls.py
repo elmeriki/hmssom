@@ -24,7 +24,7 @@ urlpatterns = [
     
     path('patient_test_list/<str:patientid>', views.patient_test_listView, name='patient_test_listView'),
 
-    path('labtest', views.labtestView, name='labtestView'),
+    path('laboratory_test', views.labtestView, name='labtestView'),
 
     path('record_report/<str:patient_id>', views.record_reportView, name='record_reportView'),
     path('record_result/<str:patient_id>', views.record_resultView, name='record_resultView'),
@@ -146,6 +146,10 @@ urlpatterns = [
     path('my_doctors_com_appointment', views.my_doctors_com_appointmentView, name='my_doctors_com_appointmentView'),
     path('my_doctors_com_treatment', views.my_doctors_com_treatmentView, name='my_doctors_com_treatmentView'),
     path('my_doctors_pend_treatment', views.my_doctors_pend_treatmentView, name='my_doctors_pend_treatmentView'),
+    
+    
+    path('lab_report/<str:patient_id>/<str:testid>', views.lab_reportView, name='lab_reportView'),
+
 ]
 
 

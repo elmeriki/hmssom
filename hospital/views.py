@@ -284,6 +284,14 @@ def save_add_patientView(request):
         status = request.POST['status']
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
+        if Patient.objects.filter(hospital=hospital_instance,phone=phone).exists():
+            messages.info(request,'Patient Number already used')
+            return redirect('/add_patient')
+        
+        if Patient.objects.filter(hospital=hospital_instance,non=non).exists():
+            messages.info(request,'Next of king Number already used')
+            return redirect('/add_patient')
+        
         create_patient=Patient(hospital=hospital_instance,title=title,name=patientname,nok=nok,non=non,phone=phone,paymenttype=paymenttype,status=status)
         if create_patient:
             create_patient.save()
@@ -1266,6 +1274,7 @@ def doctors_profileView(request,doctor_id):
         data = {
         'doctorsnames':doctors_instance.name,
         'department':doctors_instance.department.name,
+        'departmentdec':doctors_instance.department.desc,
         'phone':doctors_instance.phone,
         'address':doctors_instance.address,
         'email':doctors_instance.email,
@@ -1284,7 +1293,6 @@ def patient_detailsView(request,patient_id):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         patient_instance=Patient.objects.get(id=patient_id)
-        patient_appointment=Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0)
         data = {
         'patient_id':patient_instance.id,
         'title':patient_instance.title,
@@ -1293,7 +1301,8 @@ def patient_detailsView(request,patient_id):
         'non':patient_instance.non,
         'phone':patient_instance.phone,
         'created_at':patient_instance.created_at,
-        'patient_appointment':patient_appointment,
+        'patient_appointment':Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)[:1],
+        'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
         }
         return render(request,'hospital/patient_details.html',context=data)
     
@@ -1309,10 +1318,10 @@ def doctorsdashboardView(request):
         data={
             'doctors_appointment':Appointment.objects.filter(dr=doctor_instance,astatus=0),
             'doctors_appoint_count':Appointment.objects.filter(dr=doctor_instance).count(),
-            'pend_treatment_count':Treatment.objects.filter(dr=doctor_instance,status=0).count(),
-            'com_treatment_count':Treatment.objects.filter(dr=doctor_instance,status=1).count(),
+            'pend_treatment_count':Treatment.objects.filter(dr=doctor_instance,tstatus=0).count(),
+            'com_treatment_count':Treatment.objects.filter(dr=doctor_instance,tstatus=1).count(),
             'todaysappointment':Appointment.objects.filter(dr=doctor_instance,date=todays_date).count(),
-            'completed_treatment_log':Treatment.objects.filter(dr=doctor_instance,status=1),
+            'completed_treatment_log':Treatment.objects.filter(dr=doctor_instance,tstatus=1),
             'doctor_instance_to_display_profile_picture':doctor_instance
         }
         return render(request,'doctor/index.html',context=data) 
@@ -1329,15 +1338,15 @@ def labdashboardView(request):
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         data={
             'labtest_count':Lapreport.objects.filter(hospital=hospital_instance).count(),
-            'completed_report_count':Treatment.objects.filter(hospital=hospital_instance,status=1).count(),
-            'pending_report_count':Treatment.objects.filter(hospital=hospital_instance,status=0).count(),
-            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,status=1)
+            'completed_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=1).count(),
+            'pending_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=0).count(),
+            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=1)
         }
         return render(request,'laboratory/index.html',context=data) 
     else:
         return redirect('/')
   
-
+from django.db.models import Q
 @login_required(login_url='/')  
 def doctortreatmentView(request,patientid,apoint_id):
     if request.user.is_authenticated and request.user.is_dr:
@@ -1349,14 +1358,13 @@ def doctortreatmentView(request,patientid,apoint_id):
         data={
             'doctors_appointment':Appointment.objects.filter(dr=doctor_instance,status=0).filter(id=patientid),
             'payment_categories':Paymentcategory.objects.filter(hospital=hospital_instance),
-            'Patienttest':Patienttest.objects.filter(patient=patient_instance,hospital=hospital_instance),
-            'patient_lab_report':Labresult.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=0),
+            'Patienttest':Patienttest.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(Q(status=0) | Q(status=2)),
+            'patient_lab_report':Labresult.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=1),
             'patientid':patientid,
-            'treatmentlog':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=0).count(),
-            'lab_report_status':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,status=1).count(),
+            'treatmentlog':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,tstatus=0).count(),
+            'lab_report_status':Treatment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(dr=doctor_instance,tstatus=1).count(),
             'apoint_id':apoint_id,
             'doctor_instance_to_display_profile_picture':doctor_instance
-
         }
         return render(request,'doctor/treatment.html',context=data) 
     else:
@@ -1374,16 +1382,22 @@ def add_patient_testView(request,patientid,apoint_id):
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         patient_instance=Patient.objects.get(phone=patientid)
         category_amount=Paymentcategory.objects.values_list('amount', flat=True).get(category=categoryname)
-        if Patienttest.objects.filter(category=categoryname,patient=patient_instance).exists():
-            # messages.success(request,'Added already')
+        unique_test_id=random_id(length=8,character_set=string.digits)
+        
+        if Patienttest.objects.filter(category=categoryname,patient=patient_instance).filter(status=0).exists():
+            return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
+        
+        if Patienttest.objects.filter(hospital=hospital_instance,status=0).filter(patient=patient_instance).count() > 0:
+            existing_test_id=Patienttest.objects.filter(patient=patient_instance,status=0).values_list('testid', flat=True)
+            add_test=Patienttest(hospital=hospital_instance,category=categoryname,amount=category_amount,patient=patient_instance,testid=existing_test_id)
+            add_test.save()
+            Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(treatmentid=0).update(treatmentid=existing_test_id)
             return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
         else:
-            add_test=Patienttest(hospital=hospital_instance,category=categoryname,amount=category_amount,patient=patient_instance)
-            if add_test:
-                add_test.save()
-                return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
-            else:
-                return redirect(f'/doctortreatment/{patientid}/{apoint_id}')
+            add_test=Patienttest(hospital=hospital_instance,category=categoryname,amount=category_amount,patient=patient_instance,testid=unique_test_id)
+            add_test.save()
+            Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(treatmentid=0).update(treatmentid=unique_test_id)
+            return redirect(f'/doctortreatment/{patientid}/{apoint_id}')
     else:
         return redirect('/')
     
@@ -1413,13 +1427,25 @@ def create_treatmentView(request,patientid,apoint_id):
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         patient_instance=Patient.objects.get(phone=patientid)
+        unique_test_id=random_id(length=8,character_set=string.digits)
         
-        create_patient_treatment=Treatment(hospital=hospital_instance,patient=patient_instance,dr=doctor_instance,desc=desc,pstate=patient_status)
-        if create_patient_treatment:
-            create_patient_treatment.save()
-            Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(dr=doctor_instance).update(status=1)
-            messages.success(request,'Patient has been consulted successfuly.')
-            return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
+        if Patienttest.objects.filter(hospital=hospital_instance,status=0).filter(patient=patient_instance).count() > 0:
+            existing_test_id=Patienttest.objects.filter(hospital=hospital_instance,status=0).filter(patient=patient_instance).latest('testid')
+            create_patient_treatment=Treatment(hospital=hospital_instance,patient=patient_instance,dr=doctor_instance,desc=desc,pstate=patient_status,treatmentid=existing_test_id)
+            if create_patient_treatment:
+                create_patient_treatment.save()
+                Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(dr=doctor_instance).update(status=1)
+                Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0).update(status=1)
+                # messages.success(request,'Patient has been consulted successfuly.')
+                return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
+        else:
+            create_patient_treatment=Treatment(hospital=hospital_instance,patient=patient_instance,dr=doctor_instance,desc=desc,pstate=patient_status,treatmentid=unique_test_id)
+            if create_patient_treatment:
+                create_patient_treatment.save()
+                Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(dr=doctor_instance).update(status=1)
+                Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0).update(status=1)
+                # messages.success(request,'Patient has been consulted successfuly.')
+                return redirect(f'/doctortreatment/{patientid}/{apoint_id}') 
     else:
         return redirect('/')
     
@@ -1430,7 +1456,7 @@ def treatment_listView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         data={
-            'pending_treatment_log':Treatment.objects.filter(hospital=hospital_instance,status=0)
+            'pending_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=0)
         }
         return render(request,'hospital/treatment_list.html',context=data) 
     else:
@@ -1444,7 +1470,7 @@ def completed_treatment_listView(request):
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         data={
-            'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status=0)
+            'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status=1)
         }
         return render(request,'laboratory/completed_treatment_list.html',context=data) 
     
@@ -1466,7 +1492,7 @@ def patient_test_listView(request,patientid):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         data={
-            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance)
+            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)
         }
         return render(request,'hospital/treatment_list.html',context=data) 
     if request.user.is_authenticated and request.user.is_lab:
@@ -1476,7 +1502,7 @@ def patient_test_listView(request,patientid):
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         data={
-            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance)
+            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)
         }
         return render(request,'laboratory/treatment_list.html',context=data) 
     else:
@@ -1487,10 +1513,9 @@ def patient_test_listView(request,patientid):
 def labtestView(request):
     if request.user.is_authenticated and request.user.is_lab:
         username=request.user.username
-        user_instance=User.objects.get(username=username)
-        doctor_instance=Doctor.objects.get(user=user_instance)
-        hospital_user_name=doctor_instance.hospital.username
-        hospital_instance=User.objects.get(username=hospital_user_name)
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         data={
             'labtest':Lapreport.objects.filter(hospital=hospital_instance,status="Processing")
         }
@@ -1518,7 +1543,7 @@ def record_reportView(request,patient_id):
         hospital_instance=User.objects.get(username=hospital_user_name)
         patient_instance=Patient.objects.get(phone=patient_id)
         data={
-            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0),
+            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1),
             'patientid':patient_id,
             'patient_lab_report':Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0)
         }
@@ -1542,7 +1567,8 @@ def record_resultView(request,patient_id):
             messages.success(request,'Result has been captured already.')
             return redirect(f'/record_report/{patient_id}')
         else:
-            create_result=Labresult(hospital=hospital_instance,patient=patient_instance,testname=testname,testreport=result)
+            patient_test_id=Patienttest.objects.filter(patient=patient_instance,status=1).values_list('testid', flat=True)
+            create_result=Labresult(hospital=hospital_instance,patient=patient_instance,testname=testname,testreport=result,testid=patient_test_id)
             create_result.save()
             return redirect(f'/record_report/{patient_id}')
     else:
@@ -1564,6 +1590,7 @@ def delete_resultView(request,patient_id,result_id):
     
 
 @login_required(login_url='/')  
+@transaction.atomic  #transactional  
 def record_report_statusView(request,patient_id):
     if request.user.is_authenticated and request.user.is_lab and request.method=="POST":
         labstatus=request.POST['labstatus']
@@ -1574,7 +1601,9 @@ def record_report_statusView(request,patient_id):
         hospital_instance=User.objects.get(username=hospital_user_name)
         patient_instance=Patient.objects.get(phone=patient_id)
         Lapreport.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=labstatus)
-        Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=1)
+        Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).update(tstatus=1)
+        Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status=2)
+        Labresult.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0).update(status=1)
         return redirect(f'/completed_treatment_list')
     else:
         return redirect('/')
@@ -1641,7 +1670,7 @@ def my_doctors_com_treatmentView(request):
         hospital_user_name=doctor_instance.hospital.username
         hospital_instance=User.objects.get(username=hospital_user_name)
         data={
-           'completed_treatment_log':Labresult.objects.filter(hospital=hospital_instance,status="Processing")
+           'completed_treatment_log':Treatment.objects.filter(dr=doctor_instance,tstatus=1).filter(hospital=hospital_instance)
         }
         return render(request,'doctor/completed_treatment_list.html',context=data) 
     else:
@@ -1655,8 +1684,30 @@ def my_doctors_pend_treatmentView(request):
         user_instance = User.objects.get(username=username)
         dr_instance=Doctor.objects.get(user=user_instance) 
         data={
-            'pending_treatment_log':Treatment.objects.filter(dr=dr_instance,status=0)
+            'pending_treatment_log':Treatment.objects.filter(dr=dr_instance,tstatus=0)
         }
         return render(request,'doctor/treatment_list.html',context=data) 
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def lab_reportView(request,patient_id,testid):
+    if request.user.is_authenticated and request.user.is_lab:
+        username=request.user.username
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)   
+        patient_instance=Patient.objects.get(phone=patient_id)
+          
+        data = {
+           'hospital_instance':hospital_instance,
+           'doctor_instance':doctor_instance,
+           'patient_instance':patient_instance,
+           'patient_com_test_list':Labresult.objects.filter(testid=testid),
+           'todaysdate':date.today()
+        }
+        return render(request,'laboratory/lab_report.html',context=data) 
     else:
         return redirect('/')

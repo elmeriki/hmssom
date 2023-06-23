@@ -75,12 +75,15 @@
 						<tbody>
 							<tr>
 								{% for completed_treatment_log in completed_treatment_log %}
+								{% ifchanged %}
 								<td>{{completed_treatment_log.patient.phone}}</td>
 								<td>{{completed_treatment_log.patient.name}}</td>
 								<td class="text-success">Completed</td>
-								<td>Print</td>
+								<td><a href="/lab_report/{{completed_treatment_log.patient.phone}}/{{completed_treatment_log.testid}}">Print Report</a></td>
 								<td>{{completed_treatment_log.created_at.date}}</td>
 							</tr>
+							{% endifchanged %}
+
 							{% endfor %}
 						</tbody>
 					</table>

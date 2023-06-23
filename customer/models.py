@@ -61,8 +61,8 @@ class Medicinal(models.Model):
 
 
 class Prescription(models.Model):
-    hospital = models.ForeignKey(User,on_delete=models.CASCADE,related_name="hospital_dr_patient_prescription")
-    dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,related_name="hospital_dr_gives_prescription")
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_dr_patient_prescription")
+    dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_dr_gives_prescription")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name="hospital_patient_receives_prescription")
     history =  models.CharField(max_length=200,default=0,null=True,blank=True)
     note =  models.CharField(max_length=200,default=0,null=True,blank=True)

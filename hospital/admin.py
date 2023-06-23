@@ -6,3 +6,6 @@ from hospital.models import *
 admin.site.register(Department)
 admin.site.register(Hospital)
 admin.site.register(Notices)
+admin.site.register(Treatment)
+admin.site.register(Lapreport)
+admin.site.register(Labresult)

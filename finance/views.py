@@ -35,8 +35,8 @@ def add_paymentView(request,patien_id):
         patien_instance=Patient.objects.get(phone=patien_id) 
         data={
         'patien_id':patien_id,
-        'patient_test_list':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=0),
-        'total_sum_of_test':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=0).aggregate(Sum('amount'))['amount__sum']
+        'patient_test_list':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=1),
+        'total_sum_of_test':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=1).aggregate(Sum('amount'))['amount__sum']
         }    
         return render(request,'finance/add_payment.html',context=data)
     else:
@@ -198,12 +198,10 @@ def record_paymentView(request):
         else:
             save_new_payment=Payment(hospital=hospital_instance,patient=patient_instance,category="Lab Test",amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
             save_new_payment.save()
+            existing_test_id=Treatment.objects.filter(hospital=hospital_instance,payment="Pending").values_list('treatmentid', flat=True).get(patient=patient_instance)
             Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(payment="Pending").update(payment=payment_status)
-            create_lap_report=Lapreport(hospital=hospital_instance,patient=patient_instance,status="Processing")
+            create_lap_report=Lapreport(hospital=hospital_instance,patient=patient_instance,status="Processing",testid=existing_test_id)
             create_lap_report.save()
-            # messages.info(request,'Payment hass been save successfully')
-            # return redirect(f'/add_payment/{phone}')
             return redirect(f'/treatment_list')
-
     else:
         return redirect('/')
