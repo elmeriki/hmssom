@@ -1,0 +1,210 @@
+{% extends "laboratory/menu.html" %}
+{% block title %} Patient Treatment | {% endblock %}
+{% load static %}
+{% block content %}
+
+{% if treatmentlog == 1  %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card-body">
+                <div class="alert alert-primary solid alert-dismissible fade show">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                    <strong>HI Dr.</strong> THIS PATIENT IS PENDING REPORT FROM THE LABORATORY
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+{% elif lab_report_status == 1 %}
+<div class="content-body">
+    <div class="container-fluid">
+        {% if Patienttest %}
+        <div class="col-lg-12">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Test Type</th>
+                                <th scope="col">Report</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patient_lab_report in patient_lab_report %}
+                            <tr>
+                                <td>{{patient_lab_report.testname}}</td>
+                                <td>{{patient_lab_report.testreport}}</td>
+                                <td>{{patient_lab_report.created_at}}</td>
+                                </td>
+            
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+
+        {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="#">Prescribe Patient Treatment</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/prescribe_treatment/{{patientid}}/{{apoint_id}}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                <div class="input-group">
+                                <textarea class="form-control" name="dname" placeholder="Disease name..."></textarea>
+                                </div>
+                            </div>
+                                <div class="form-group col-md-12">
+                                    <label for="">Patient State</label>
+                                    <select class="form-control" name="patient_status" required>
+                                        <option value="">Select Status</option>
+                                        <option value="Refere to Laboratory">Refere to Laboratory</option>
+                                        <option value="Prescribe Medication">Prescribe Medication</option>
+                                        <option value="Treated">Treated</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Payment Pending">Payment Pending</option>
+                                        <option value="Waiting Result">Waiting Result</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <div class="form-group col-md-12">
+                                <div class="input-group">
+									<textarea class="form-control" name="prescription" placeholder="Prescribe Medication to Patient..."></textarea>
+								</div>
+                            </div>
+                               
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="/add_patient_test/{{patientid}}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="">Patient State</label>
+                                <select class="form-control" name="categoryname" required>
+                                    <option value="">Select Status</option>
+                                    {% for payment_categories in payment_categories %}
+                                    <option value="{{payment_categories.category}}">{{payment_categories.category}} Biir {{payment_categories.amount}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Lab Test</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if Patienttest %}
+        <div class="col-lg-12">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Test Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for Patienttest in Patienttest %}
+                            <tr>
+                                <td>{{Patienttest.category}}</td>
+                                <td>Biir {{Patienttest.amount}}</td>
+                                </td>
+                                <td><span>
+                                        <a href="/delete_patient_test/{{patientid}}/{{Patienttest.id}}/{{apoint_id}}" data-toggle="tooltip"
+                                            data-placement="top" title="Close"><i
+                                                class="fa fa-close color-danger"></i></a></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+
+        {% endif %}
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Patient Proceedure</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/create_treatment/{{patientid}}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="">Patient State</label>
+                                    <select class="form-control" name="status" required>
+                                        <option value="">Select Status</option>
+                                        <option value="Refere to Laboratory">Refere to Laboratory</option>
+                                        <option value="Purchase Medication">Purchase Medication</option>
+                                        <option value="Treated">Treated</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Payment Pending">Payment Pending</option>
+                                        <option value="Waiting Result">Waiting Result</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <div class="form-group col-md-12">
+                                <div class="input-group">
+									<textarea class="form-control" name="desc" placeholder="Patient Note..."></textarea>
+									
+								</div>
+                            </div>
+                               
+                                <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}

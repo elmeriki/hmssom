@@ -7,6 +7,8 @@ class User(AbstractUser):
     is_hospital = models.BooleanField(default=False,blank=True,null=True)
     is_dr = models.BooleanField(default=False,blank=True,null=True)
     is_lab = models.BooleanField(default=False,blank=True,null=True)
+    is_rep = models.BooleanField(default=False,blank=True,null=True)
+    is_pha = models.BooleanField(default=False,blank=True,null=True)
     is_customer = models.BooleanField(default=False,blank=True,null=True)
     is_activation = models.BooleanField(default=False,blank=True,null=True)
     customerid =  models.CharField(max_length=200,blank=True,null=True,default="None")

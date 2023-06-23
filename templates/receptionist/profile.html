@@ -1,0 +1,125 @@
+{% extends "laboratory/menu.html" %}
+{% block title %} Hospital Profile |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile card card-body px-3 pt-3 pb-0">
+                    <div class="profile-head">
+                        <div class="photo-content">
+                            <div class="cover-photo"></div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-photo">
+                                <img src="images/profile/profile.png" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-name px-3 pt-2">
+                                    <h4 class="text-primary mb-0">Dr.{{request.user.first_name | upper }}</h4>
+                                </div>
+                                <div class="profile-email px-2 pt-2">
+                                    <h4 class="text-muted mb-0">Dr ID: {{request.user.customerid }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="profile-tab">
+                            <div class="custom-tab-1">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link active show">My Informations</a>
+                                    </li>
+                                    <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Setting</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="about-me" class="tab-pane fade">
+                                        <div class="profile-about-me">
+                                            <div class="pt-4 border-bottom-1 pb-3">
+                                                {% comment %} <h4 class="text-dark"></h4> {% endcomment %}
+                                            </div>
+                                        </div>
+                                        <div class="profile-personal-info">
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">Name <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9"><span>{{request.user.first_name}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">Email <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9"><span>{{request.user.email}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">City <span class="pull-right">:</span></h5>
+                                                </div>
+                                                <div class="col-9"><span>{{request.user.city}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">Telephone <span class="pull-right">:</span>
+                                                    </h5>
+                                                </div>
+                                                <div class="col-9"><span>{{request.user.number}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <h5 class="f-w-500">Location <span class="pull-right">:</span></h5>
+                                                </div>
+                                                <div class="col-9"><span>{{request.user.address}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="profile-settings" class="tab-pane fade">
+                                        <div class="pt-3">
+                                            <div class="settings-form">
+                                                <br>
+                                                <form>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <input type="email" placeholder="{{request.user.email}}" disabled class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <input type="password" placeholder="Enter new password" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                  
+                                                    </div>
+                                                    <button class="btn btn-primary" type="submit">Update
+                                                        </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

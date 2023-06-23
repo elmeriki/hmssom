@@ -13,7 +13,7 @@
                 <h4 class="text-success">{{foreachmessage}}</h4>
                 {% endfor %}
                 {% else %}
-                <h4 class="">Add Doctor</h4>
+                <h4 class="">Add Administrator</h4>
                 {% endif %}            
             </div>
             <div class="card-body">
@@ -26,8 +26,11 @@
                                     <label for="">Select Doctor Type</label>
                                     <select class="form-control" name="type" required>
                                         <option value="">Choose Type</option>
+                                        <option disabled value="Management">Management</option>
                                         <option value="Dr">Doctor</option>
                                         <option value="Lab">Laboratory</option>
+                                        <option value="Rep">Receptionist</option>
+                                        <option value="Pha">Phamarcist</option>
                                     </select>
                                 </div>
                             </div>

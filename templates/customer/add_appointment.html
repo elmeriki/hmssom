@@ -28,7 +28,11 @@
                                         <select class="form-control" name="doctor_id" required>
                                             <option value="">Assign Doctor</option>
                                             {% for doctor_list in doctor_list %}
+                                            {% if doctor_list.user.is_dr %}
                                             <option value="{{doctor_list.id}}">{{doctor_list.user.first_name}} {{doctor_list.department.desc}} {{doctor_list.department.name}}</option>
+                                            {% else %}
+
+                                            {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>

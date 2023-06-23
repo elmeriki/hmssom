@@ -164,10 +164,36 @@ def create_doctorView(request):
             save_doctors_details.save()
             messages.info(request,'Laboratory Profile has been created successfully')
             return render(request,'hospital/add_doctor.html',{}) 
+        elif type == "Rep":
+            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_rep=True,email=email,address=address,number=number,customerid=doctorsid)
+            create_new_doctors_account.save()
+            save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
+            save_doctors_details.save()
+            messages.info(request,'Receptionist Profile has been created successfully')
+            return render(request,'hospital/add_doctor.html',{}) 
+        elif type == "Pha":
+            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_pha=True,email=email,address=address,number=number,customerid=doctorsid)
+            create_new_doctors_account.save()
+            save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
+            save_doctors_details.save()
+            messages.info(request,'Phamarcist Profile has been created successfully')
+            return render(request,'hospital/add_doctor.html',{}) 
 
     
 @login_required(login_url='/')  
 def add_doctorView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        get_all_hospital_department_list = Department.objects.filter(hospital=hospital_instance)
+        data = {
+            'get_all_hospital_department_list':get_all_hospital_department_list
+        }
+        return render(request,'hospital/add_doctor.html',context=data)
+    
+    
+@login_required(login_url='/')  
+def add_adminView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
@@ -189,6 +215,15 @@ def doctor_listView(request):
         }
         return render(request,'hospital/doctor_list.html',context=data)
 
+@login_required(login_url='/')  
+def administrator_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+            'administrator_list':Doctor.objects.filter(hospital=hospital_instance)
+        }
+        return render(request,'hospital/administrator_list.html',context=data)
 
 @login_required(login_url='/')  
 def edit_doctorView(request,doctorsid):
@@ -253,7 +288,13 @@ def delete_doctorView(request, doctorsid):
 
 @login_required(login_url='/')  
 def doctor_treatment_recordView(request):
-    return render(request,'hospital/doctor_treatment_record.html')
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+            'hospital_doctor_treatment_log':Treatment.objects.filter(hospital=hospital_instance,pstate="Treated")[:20]
+        }
+    return render(request,'hospital/doctor_treatment_record.html',context=data)
 
 @login_required(login_url='/')  
 def doctor_visitView(request):
@@ -1343,6 +1384,41 @@ def labdashboardView(request):
             'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=1)
         }
         return render(request,'laboratory/index.html',context=data) 
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def recepdashboardView(request):
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        data={
+            'labtest_count':Lapreport.objects.filter(hospital=hospital_instance).count(),
+            'completed_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=1).count(),
+            'pending_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=0).count(),
+            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=1)
+        }
+        return render(request,'receptionist/index.html',context=data) 
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def phamardashboardView(request):
+    if request.user.is_authenticated and request.user.is_pha:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        data={
+            'labtest_count':Lapreport.objects.filter(hospital=hospital_instance).count(),
+            'completed_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=1).count(),
+            'pending_report_count':Treatment.objects.filter(hospital=hospital_instance,tstatus=0).count(),
+            'completed_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=1)
+        }
+        return render(request,'phamarcy/index.html',context=data) 
     else:
         return redirect('/')
   

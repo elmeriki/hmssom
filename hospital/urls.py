@@ -6,6 +6,10 @@ urlpatterns = [
     path('hospital_profile', views.hospital_profileView, name='hospital_profileView'),
     
     path('labdashboard', views.labdashboardView, name='labdashboardView'),
+    
+    path('recepdashboard', views.recepdashboardView, name='recepdashboardView'),
+    
+    path('phamardashboard', views.phamardashboardView, name='phamardashboardView'),
 
     path('doctor_profile', views.doctor_profileView, name='doctor_profileView'),
     
@@ -46,6 +50,7 @@ urlpatterns = [
     
     
     path('add_doctor', views.add_doctorView, name='add_doctorView'),
+    path('add_admin', views.add_adminView, name='add_adminView'),
     path('doctor_list', views.doctor_listView, name='doctor_listView'),
     path('create_doctor', views.create_doctorView, name='create_doctorView'),
     path('edit_doctor/<str:doctorsid>', views.edit_doctorView, name='edit_doctorView'),
@@ -55,6 +60,7 @@ urlpatterns = [
     path('doctor_visit', views.doctor_visitView, name='doctor_visitView'),
     path('add_doctor_visit', views.add_doctor_visitView, name='add_doctor_visitView'),
 
+    path('administrator_list', views.administrator_listView, name='administrator_listView'),
 
     
     path('add_patient', views.add_patientView, name='dd_patientView'),

@@ -103,6 +103,22 @@ def hospital_login_View(request):
         else:
             messages.info(request,"Incorrect login credentials.")
             return redirect('/sys')
+        
+        if userlog is not None:
+            auth.login(request, userlog)
+            if request.user.is_authenticated and request.user.is_rep:
+                return redirect('/recepdashboard')
+        else:
+            messages.info(request,"Incorrect login credentials.")
+            return redirect('/sys')
+        
+        if userlog is not None:
+            auth.login(request, userlog)
+            if request.user.is_authenticated and request.user.is_pha:
+                return redirect('/phamardashboard')
+        else:
+            messages.info(request,"Incorrect login credentials.")
+            return redirect('/sys')
             
         if userlog is not None:
             auth.login(request, userlog)
