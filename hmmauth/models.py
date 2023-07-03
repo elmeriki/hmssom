@@ -9,13 +9,15 @@ class User(AbstractUser):
     is_lab = models.BooleanField(default=False,blank=True,null=True)
     is_rep = models.BooleanField(default=False,blank=True,null=True)
     is_pha = models.BooleanField(default=False,blank=True,null=True)
-    is_customer = models.BooleanField(default=False,blank=True,null=True)
-    is_activation = models.BooleanField(default=False,blank=True,null=True)
-    customerid =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    address =  models.CharField(max_length=200,blank=True,null=True,default="None")
-    country =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    is_customer =models.BooleanField(default=False,blank=True,null=True)
+    is_paid =models.BooleanField(default=False,blank=True,null=True)
+    is_activation =models.BooleanField(default=False,blank=True,null=True)
+    customerid =models.CharField(max_length=200,blank=True,null=True,default="None")
+    address =models.CharField(max_length=200,blank=True,null=True,default="None")
+    country =models.CharField(max_length=200,blank=True,null=True,default="None")
     city =  models.CharField(max_length=200,blank=True,null=True,default="None")
     number =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    hospital_id =models.CharField(max_length=200,blank=True,null=True,default="None")
     def __str__(self):
         return self.username
     

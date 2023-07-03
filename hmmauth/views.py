@@ -37,6 +37,19 @@ class Emailthread(threading.Thread):
         self.msg.send(fail_silently=False)
         
         
+        
+@login_required(login_url='/')  
+def superadminView(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data = {
+            'general_hospital_appointment':Appointment.objects.all().count(),
+            'total_hospital_count':User.objects.filter(is_hospital=True).count(),
+            'total_user_count':User.objects.all().count(),
+            'total_doctor_count':User.objects.filter(is_dr=True).count(),
+            'active_hospital_list':User.objects.filter(is_hospital=True,is_activation=True),
+        }
+        return render(request,'superadmin/index.html',context=data)
+    
 def welcomeView(request):
     return render(request,'web/index.html',context={})
 
@@ -58,7 +71,7 @@ def register_loginView(request):
 def logoutView(request):
     auth.logout(request)
     messages.info(request,"Logout Successfully")
-    return redirect('/') 
+    return redirect('/sys') 
 
 
 def hospital_login_View(request):
@@ -76,10 +89,14 @@ def hospital_login_View(request):
         # customise error messages handler
         if userlog is not None:
             auth.login(request, userlog)
-            if request.user.is_authenticated and request.user.is_hospital:
+            if request.user.is_authenticated and request.user.is_hospital and request.user.is_paid:
                 return redirect('/hospital_dashboard')
+            
+            if request.user.is_authenticated and request.user.is_hospital and not request.user.is_paid:
+                messages.info(request,"Your account is suspended for none payment of your licence fees")
+                return redirect('/sys')
         else:
-            messages.info(request,"Incorrect login credentials.")
+            messages.info(request,"Incorrect login credentials")
             return redirect('/sys')
                 
         if userlog is not None:
@@ -92,6 +109,14 @@ def hospital_login_View(request):
             auth.login(request, userlog)
             if request.user.is_authenticated and request.user.is_dr:
                 return redirect('/doctorsdashboard')
+        else:
+            messages.info(request,"Incorrect login credentials.")
+            return redirect('/sys')
+        
+        if userlog is not None:
+            auth.login(request, userlog)
+            if request.user.is_authenticated and request.user.is_superuser:
+                return redirect('/superadmin')
         else:
             messages.info(request,"Incorrect login credentials.")
             return redirect('/sys')

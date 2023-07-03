@@ -155,6 +155,15 @@ urlpatterns = [
     
     
     path('lab_report/<str:patient_id>/<str:testid>', views.lab_reportView, name='lab_reportView'),
+    
+    path('active_hospital_list', views.active_hospital_listView, name='active_hospital_listView'),
+    path('inactive_hospital_list', views.inactive_hospital_listView, name='inactive_hospital_listView'),
+    path('suspend_hospital/<str:hospital_id>', views.suspend_hospitalView, name='suspend_hospitalView'),
+    path('unsuspend_hospital/<str:hospital_id>', views.unsuspend_hospitalView, name='unsuspend_hospitalView'),
+    path('paid_hospital_list', views.paid_hospital_listView, name='paid_hospital_listView'),
+    path('unpaid_hospital_list', views.unpaid_hospital_listView, name='unpaid_hospital_listView'),
+    
+    path('superadmin_payment', views.superadmin_paymentView, name='superadmin_paymentView'),
 
 ]
 

@@ -28,7 +28,6 @@ urlpatterns = [
     path('update_appointment/<str:appointmentid>', views.update_appointmentView, name='update_pappointmentView'),
     path('delete_appointment/<str:appointmentid>', views.delete_appointmentView, name='delete_appointmentView'),
 
-
     
     path('todays_appointment_list', views.todays_appointment_listView, name='todays_appointment_listView'),
 

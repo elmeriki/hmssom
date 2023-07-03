@@ -315,8 +315,10 @@ def create_patient_appointmentView(request):
             messages.info(request,'Patient Cellphone Number Does Not Exists')
             return redirect('/add_appointment')
         patient_instance=Patient.objects.get(phone=phone)
-        hospital_instance=User.objects.get(username=username) 
-        
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
         if Appointment.objects.filter(patient=patient_instance,hospital=hospital_instance).filter(status=0).exists():
             messages.info(request,'Please cancel first Appointment before you can create another Appointment')
             return redirect('/add_appointment')

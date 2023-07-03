@@ -159,6 +159,7 @@ def delete_departmentView(request, departmentid):
 def create_doctorView(request):
     if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
         username=request.user.username
+        hospital_email_address = request.user.email
         hospital_instance=User.objects.get(username=username)
         if len(request.FILES) != 0:
             picture=request.FILES['picture']
@@ -182,28 +183,28 @@ def create_doctorView(request):
         doctorsid = random_id(length=9,character_set=string.digits)
         department_instance = Department.objects.get(id=departmentid)
         if type == "Dr":
-            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_dr=True,email=email,address=address,number=number,customerid=doctorsid)
+            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_dr=True,email=email,address=address,number=number,customerid=doctorsid,hospital_id=hospital_email_address)
             create_new_doctors_account.save()
             save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
             save_doctors_details.save()
             messages.info(request,'Doctors Profile has been created successfully')
             return render(request,'hospital/add_doctor.html',{})
         elif type == "Lab":
-            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_lab=True,email=email,address=address,number=number,customerid=doctorsid)
+            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_lab=True,email=email,address=address,number=number,customerid=doctorsid,hospital_id=hospital_email_address)
             create_new_doctors_account.save()
             save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
             save_doctors_details.save()
             messages.info(request,'Laboratory Profile has been created successfully')
             return render(request,'hospital/add_doctor.html',{}) 
         elif type == "Rep":
-            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_rep=True,email=email,address=address,number=number,customerid=doctorsid)
+            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_rep=True,email=email,address=address,number=number,customerid=doctorsid,hospital_id=hospital_email_address)
             create_new_doctors_account.save()
             save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
             save_doctors_details.save()
             messages.info(request,'Receptionist Profile has been created successfully')
             return render(request,'hospital/add_doctor.html',{}) 
         elif type == "Pha":
-            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_pha=True,email=email,address=address,number=number,customerid=doctorsid)
+            create_new_doctors_account=User.objects.create_user(username=email,first_name=name,is_activation=True,last_name=name,password=password,is_pha=True,email=email,address=address,number=number,customerid=doctorsid,hospital_id=hospital_email_address)
             create_new_doctors_account.save()
             save_doctors_details=Doctor(user=create_new_doctors_account,hospital=hospital_instance,department=department_instance,name=name,email=email,phone=number,address=address,signature=signature,picture=picture,message_about_dr=message_about_dr)
             save_doctors_details.save()
@@ -1955,5 +1956,74 @@ def lab_reportView(request,patient_id,testid):
            'todaysdate':date.today()
         }
         return render(request,'laboratory/lab_report.html',context=data) 
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+def active_hospital_listView(request):
+    if request.user.is_authenticated and request.user.is_superuser: 
+        data = {
+        'active_hospital_list':User.objects.filter(is_hospital=True,is_activation=True),
+        }       
+        return render(request,'superadmin/hospital_list.html',context=data)
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+def inactive_hospital_listView(request):
+    if request.user.is_authenticated and request.user.is_superuser: 
+        data = {
+        'inactive_hospital_list':User.objects.filter(is_hospital=True,is_activation=False),
+        }       
+        return render(request,'superadmin/hospital_list.html',context=data)
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+def suspend_hospitalView(request,hospital_id):
+    if request.user.is_authenticated and request.user.is_superuser:  
+        User.objects.filter(id=hospital_id).update(is_activation=False)    
+        return redirect('/active_hospital_list')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def unsuspend_hospitalView(request,hospital_id):
+    if request.user.is_authenticated and request.user.is_superuser:  
+        User.objects.filter(id=hospital_id).update(is_activation=True)    
+        return redirect('/inactive_hospital_list')
+    else:
+        return redirect('/')
+    
+
+
+@login_required(login_url='/')  
+def paid_hospital_listView(request):
+    if request.user.is_authenticated and request.user.is_superuser: 
+        data = {
+        'paid_hospital_list':User.objects.filter(is_hospital=True,is_activation=True).filter(is_paid=True),
+        }       
+        return render(request,'superadmin/payment_list.html',context=data)
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def unpaid_hospital_listView(request):
+    if request.user.is_authenticated and request.user.is_superuser: 
+        data = {
+        'unpaid_hospital_list':User.objects.filter(is_hospital=True,is_activation=True).filter(is_paid=False),
+        }       
+        return render(request,'superadmin/payment_list.html',context=data)
+    else:
+        return redirect('/')
+    
+
+@login_required(login_url='/')  
+def superadmin_paymentView(request):
+    if request.user.is_authenticated and request.user.is_superuser:      
+        return render(request,'superadmin/payment.html')
     else:
         return redirect('/')

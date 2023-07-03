@@ -1,0 +1,20 @@
+{% load static %}
+<div class="header-left">
+    {% if "/superadmin" in request.path %}
+    <div class="dashboard_bar">
+        Hi Superuser
+    </div>
+    {% elif "/paid_hospital_list" in request.path %}
+    <div class="dashboard_bar">
+        Paid Hospital List
+    </div>
+    {% elif "/unpaid_hospital_list" in request.path %}
+    <div class="dashboard_bar">
+        Unpaid Hospital List
+    </div>
+    {% else %}
+    <div class="dashboard_bar">
+        Superuser Dashboard
+    </div>
+    {% endif %}
+</div>

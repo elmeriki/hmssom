@@ -1,0 +1,47 @@
+{% load static %}
+<div class="deznav">
+    <div class="deznav-scroll">
+        <ul class="metismenu" id="menu">
+            <li><a href="/superadmin" aria-expanded="false">
+                <i class="bi bi-house-add-fill"></i>
+                <span class="nav-text">Home</span>
+                </a>
+            </li>
+
+        </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <i class="bi bi-hospital-fill"></i>
+                    <span class="nav-text">Register Hospital</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="/active_hospital_list">Active</a></li>
+                    <li><a href="/inactive_hospital_list" >Inactive</a></li>
+
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <i class="bi bi-cash-coin"></i>
+                    <span class="nav-text">Licence Payment</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="/paid_hospital_list">Paid</a></li>
+                    <li><a href="/unpaid_hospital_list">Unpaid</a></li>
+                </ul>
+            </li>
+
+        </li>
+     
+</ul>
+
+        {% comment %} <div class="plus-box">
+            <p class="fs-16 font-w500 mb-1">Check your job schedule</p>
+            <a class="text-white fs-26" href="javascript:;"><i class="las la-long-arrow-alt-right"></i></a>
+        </div> {% endcomment %}
+        <br><br>
+        <div class="copyright">
+            <p class="fs-14 font-w200"><strong class="font-w400">Hospital Management System </strong> © 2023 All
+                Rights Reserved</p>
+            <p>Made with <i class="fa fa-heart"></i> by IT Solutions</p>
+        </div>
+    </div>
+</div>

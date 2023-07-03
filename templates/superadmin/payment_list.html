@@ -1,0 +1,122 @@
+{% extends "superadmin/menu.html" %}
+{% block title %} Register Hospital List | {% endblock %}
+{% load static %}
+{% block content %}
+
+{% if paid_hospital_list %}
+
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+
+            <div class="input-group search-area ml-auto d-inline-flex mr-3">
+                <input type="text" class="form-control" placeholder="Search here">
+                <div class="input-group-append">
+                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                </div>
+            </div>
+            <a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="table-responsive">
+                    <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                        <thead>
+                            <tr>
+                    
+                                <th>Hospital Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>City</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for paid_hospital_list in paid_hospital_list %}
+                            <tr>
+                                <td>{{paid_hospital_list.first_name}}</td>
+                                <td>{{paid_hospital_list.email}}</td>
+                                <td>{{paid_hospital_list.number}}</td>
+                                <td>{{paid_hospital_list.city}}</td>
+                                <td>{{paid_hospital_list.date_joined.date}}</td>
+                                {% if paid_hospital_list.is_paid == True %}
+								<!--<td><span class="font-w500">Available</span></td>-->
+								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i>Paid</div></td>
+
+								{% else %}
+								<!--<td><span class="font-w500">Unvailable</span></td>-->
+								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i>Owing</div></td>
+								{% endif %}
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+
+            <div class="input-group search-area ml-auto d-inline-flex mr-3">
+                <input type="text" class="form-control" placeholder="Search here">
+                <div class="input-group-append">
+                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                </div>
+            </div>
+            <a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="table-responsive">
+                    <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                        <thead>
+                            <tr>
+                    
+                                <th>Hospital Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>City</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for unpaid_hospital_list in unpaid_hospital_list %}
+                            <tr>
+                                <td>{{unpaid_hospital_list.first_name}}</td>
+                                <td>{{unpaid_hospital_list.email}}</td>
+                                <td>{{unpaid_hospital_list.number}}</td>
+                                <td>{{unpaid_hospital_list.city}}</td>
+                                <td>{{unpaid_hospital_list.date_joined.date}}</td>
+                                {% if unpaid_hospital_list.is_paid == True %}
+								<!--<td><span class="font-w500">Available</span></td>-->
+								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i>Paid</div></td>
+
+								{% else %}
+								<!--<td><span class="font-w500">Unvailable</span></td>-->
+								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-danger mr-1"></i>Suspended</div></td>
+								{% endif %}
+                                <td><a href="/superadmin_payment" class="text-danger">Pay Now</a></td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
+{% endblock %}
