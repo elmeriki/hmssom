@@ -467,7 +467,60 @@ def app_homeView(request):
     }
     return render(request,'app/index.html',context=data)
 
+def book_nowView(request,hospital_id):
+    data = {
+        'hospital_id':hospital_id
+    }
+    return render(request,'app/book.html',context=data)
 
+def app_hospital_detailView(request,hospital_id):
+    hospital_detail = User.objects.get(id=hospital_id)
+    data = {
+        'hospital_id':hospital_id,
+        'hospital_detail':hospital_detail,
+        'hospital_more_detail':Hospital.objects.get(hospital=hospital_detail),
+        'hospital_doctors_count':Doctor.objects.filter(hospital=hospital_detail).count(),
+        'hospital_staff_count':Humanresource.objects.filter(hospital=hospital_detail).count(),
+        'hospital_treated_count':Treatment.objects.filter(hospital=hospital_detail).count()
+    }
+    return render(request,'app/hospital_detail.html',context=data)
+
+
+def create_book_nowView(request,hospital_id):
+    if request.method=="POST" and request.POST['cellphone'] and request.POST['names'] and request.POST['message'] and request.POST['checks']:
+        cellphone = request.POST['cellphone']
+        names = request.POST['names']
+        message = request.POST['message']
+        checks = int(request.POST['checks'])
+        hospital_instance=User.objects.get(id=hospital_id)
+        if Messages.objects.filter(hospital=hospital_instance,status=0).filter(phone=cellphone).exists:
+            messages.success(request,'Your previous booking is pending')
+            return redirect(f'/book_now/{hospital_id}') 
+            
+        if not checks == 20:
+            messages.success(request,'Incorrect security checks')
+            return redirect(f'/book_now/{hospital_id}')
+        else:
+            create_new_booking=Messages(hospital=hospital_instance,names=names,phone=cellphone,message=message)
+            create_new_booking.save()  
+            messages.success(request,'You request has been successfully submited')
+            return redirect(f'/book_now/{hospital_id}')
+    else:
+        return redirect(f'/app_home')
+    
+    
+def app_query_searchView(request):
+    if request.method=="POST" and request.POST['query']:
+        query = request.POST['query']
+        hospital_list_base_on_city=User.objects.filter(is_hospital=True).filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))
+        data={
+        'hospital_list_base_on_city':hospital_list_base_on_city 
+        }
+        return render(request,'app/hospital_search.html',context=data)
+    else:
+        return redirect(f'/app_home')
+    
+            
 def app_loginView(request):
     return render(request,'app/login.html')
 

@@ -39,6 +39,19 @@ def add_paymentView(request,patien_id):
         'total_sum_of_test':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=1).aggregate(Sum('amount'))['amount__sum']
         }    
         return render(request,'finance/add_payment.html',context=data)
+
+    if request.user.is_authenticated and request.user.is_rep:    
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        patien_instance=Patient.objects.get(phone=patien_id) 
+        data={
+        'patien_id':patien_id,
+        'patient_test_list':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=1),
+        'total_sum_of_test':Patienttest.objects.filter(patient=patien_instance,hospital=hospital_instance).filter(status=1).aggregate(Sum('amount'))['amount__sum']
+        }    
+        return render(request,'receptionist/add_payment.html',context=data)
     else:
         return redirect('/')
     
@@ -283,6 +296,27 @@ def record_paymentView(request):
         payment_status =request.POST['payment_status'] 
         username=request.user.username
         hospital_instance=User.objects.get(username=username)   
+        patient_instance=Patient.objects.get(phone=phone)
+        if Payment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(paymentstatus="Pending").exists():
+            messages.info(request,'Previous Payment has not been settle.')
+            return redirect(f'/add_payment/{phone}')
+        else:
+            save_new_payment=Payment(hospital=hospital_instance,patient=patient_instance,category="Lab Test",amount=amount,paymenttype=paymenttype,paymentstatus=payment_status) 
+            save_new_payment.save()
+            existing_test_id=Treatment.objects.filter(hospital=hospital_instance,payment="Pending").values_list('treatmentid', flat=True).get(patient=patient_instance)
+            Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(payment="Pending").update(payment=payment_status)
+            create_lap_report=Lapreport(hospital=hospital_instance,patient=patient_instance,status="Processing",testid=existing_test_id)
+            create_lap_report.save()
+            return redirect(f'/treatment_list')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        phone =request.POST['phone']
+        amount =request.POST['amount']
+        paymenttype =request.POST['paymenttype'] 
+        payment_status =request.POST['payment_status'] 
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username) 
         patient_instance=Patient.objects.get(phone=phone)
         if Payment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(paymentstatus="Pending").exists():
             messages.info(request,'Previous Payment has not been settle.')

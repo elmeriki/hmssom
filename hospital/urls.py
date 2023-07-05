@@ -26,7 +26,7 @@ urlpatterns = [
     
     path('prescribe_treatment/<str:patient_id>/<str:apoint_id>', views.prescribe_treatmentView, name='prescribe_treatmentView'),
     
-    path('patient_test_list/<str:patientid>', views.patient_test_listView, name='patient_test_listView'),
+    path('print_patient_report/<str:patientid>/<str:treatid>', views.print_patient_reportView, name='print_patient_reportView'),
 
     path('laboratory_test', views.labtestView, name='labtestView'),
 

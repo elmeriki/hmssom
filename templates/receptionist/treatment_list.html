@@ -65,11 +65,11 @@
 					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>P ID</th>
-								<th>AS Doctor</th>
+								<th>ID</th>
+								<th>Asigned Doctor</th>
 								<th>Desc</th>
 								<th>Remarks</th>
-								<th>T Name</th>
+								<th>Disease Name</th>
 								<th>Patient Status</th>
                                 <th>Payment Status</th>
 								<th>Date</th>
@@ -84,7 +84,11 @@
 								<td>{{pending_treatment_log.remark}}</td>
 								<td>{{pending_treatment_log.dname}}</td>
 								<td>{{pending_treatment_log.pstate}}</td>
-                                <td>{{pending_treatment_log.payment}}</td>
+								{% if  pending_treatment_log.payment == "Paid" %}
+                                <td class="text-success">{{pending_treatment_log.payment}}</td>
+								{% else %}
+                                <td class="text-danger">{{pending_treatment_log.payment}}</td>
+								{% endif %}
 								<td>{{pending_treatment_log.created_at.date}}</td>
 								<td>
 									<a href="/patient_test_list/{{pending_treatment_log.patient.phone}}"  target="_blank">
@@ -92,9 +96,13 @@
 									</a>
 								</td>
                                 <td>
-									<a href="/add_payment/{{pending_treatment_log.patient.phone}}">
-									Payment
+									{% if  pending_treatment_log.payment == "Paid" %}
+									
+									{% else %}
+									<a href="/add_payment/{{pending_treatment_log.patient.phone}}" class="text-success">
+									Pay Now
 									</a>
+									{% endif %}
 								</td>
 							</tr>
 							{% endfor %}

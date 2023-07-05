@@ -1,0 +1,59 @@
+{% extends "app/menu.html" %}
+{% block title %} Hospital List |   {% endblock %}
+{% load static %}
+{% block content %}
+
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="page-titles">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item btn"><a onClick="javascript:history.go(-1);">BACK</a></li>
+					</ol>
+                </div>
+                <!-- row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="email-right-box ml-0 ml-sm-4 ml-sm-0">
+                                    <div class="toolbar mb-4" role="toolbar">
+                                      {% if messages %}
+                                        {% for message in messages %}
+                                        <p class="text-success">{{message}}</p>
+                                        {% endfor %}
+                                      {% endif %}
+                                    
+                                    </div>
+                                    <div class="compose-content">
+                                        <form action="/create_book_now/{{hospital_id}}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <input type="text" class="form-control bg-transparent" name="cellphone" required="required" placeholder=" Cell Phone Number">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control bg-transparent" name="names" required="required" placeholder="Your Names">
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea id="email-compose-editor" class="textarea_editor form-control bg-transparent" name="message" rows="15" required="required" placeholder="Enter text message "></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="number" class="form-control bg-transparent" required="required" name="checks" placeholder=" 10 + 10 ">
+                                            </div>
+                                            <div class="text-left mt-4 mb-5">
+                                                <button class="btn btn-primary btn-sl-sm mr-2" type="submit"><span class="mr-2"><i class="fa fa-paper-plane"></i></span>Book Now</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+{% endblock %}
+

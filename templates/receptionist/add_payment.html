@@ -1,0 +1,67 @@
+{% extends "receptionist/menu.html" %}
+{% block title %} Payment |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+<div class="container-fluid">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                {% if messages %}
+                {% for foreachmessage in messages %}
+                <h4 class="text-success">{{foreachmessage}}</h4>
+                {% endfor %}
+                {% else %}
+                <h4 class="">New Payment</h4>
+                {% endif %}            
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <form action="/record_payment" method="POST" required>
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="amount">Patient Cell Phone Number</label>
+                                <input type="number" class="form-control" readonly name="phone" value="{{patien_id}}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="category" class="text-danger">Precribe Lab Test</label>
+                                    {% for patient_test_list in patient_test_list %}
+
+                                    <p>{{patient_test_list.category}} Biir{{patient_test_list.amount}}</p>
+                                    {% endfor %}
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="paymenttype">Payment Type</label>
+                                <select class="form-control" name="paymenttype" required>
+                                    <option value="">Payment Type</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Card">Card</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="amount">TOTAL AMOUNT</label>
+                                <input type="number" class="form-control" name="amount" readonly value="{{total_sum_of_test}}" required>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label for="payment_status">Payment status</label>
+                                <select class="form-control" name="payment_status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Paid">Paid</option>
+                                </select>
+                        </div>            
+                        </div>
+                      <button type="submit" class="btn btn-primary">Save</button>
+
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

@@ -30,9 +30,17 @@ urlpatterns = [
     path('todays_appointment_list', views.todays_appointment_listView, name='todays_appointment_listView'),
     path('upcoming_appointment_list', views.upcoming_appointment_listView, name='upcoming_appointment_listView'),
     path('create_patient_appointment', views.create_patient_appointmentView, name='create_patient_appointmentView'),
+   
+   
     path('app_home', views.app_homeView, name='app_homeView'),
     path('app_login', views.app_loginView, name='app_loginView'),
     path('app_register', views.app_registerView, name='app_registerView'),
     path('app_hospital_list/<str:city_names>', views.app_hospital_listView, name='app_hospital_listView'),
+    
+    
+    path('book_now/<str:hospital_id>', views.book_nowView, name='book_nowView'),
+    path('create_book_now/<str:hospital_id>', views.create_book_nowView, name='create_book_nowView'),
+    path('app_hospital_detail/<str:hospital_id>', views.app_hospital_detailView, name='app_hospital_detailView'),
+    path('app_query_search', views.app_query_searchView, name='app_query_searchView'),
 
 ]

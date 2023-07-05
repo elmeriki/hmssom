@@ -66,24 +66,28 @@
 						<thead>
 							<tr>
 								<th>Patient ID</th>
-								<th>Patient Name</th>
-								<th>Test Status</th>
-                                <th>Print Test Result</th>
+								<th>Asigned Doctor</th>
+								<th>Prescription</th>
+								<th>Disease Name</th>
+								<th>Patient Status</th>
 								<th>Date</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								{% for completed_treatment_log in completed_treatment_log %}
-								{% ifchanged %}
 								<td>{{completed_treatment_log.patient.phone}}</td>
-								<td>{{completed_treatment_log.patient.name}}</td>
-								<td class="text-success">Completed</td>
-								<td><a href="/lab_report/{{completed_treatment_log.patient.phone}}/{{completed_treatment_log.testid}}">Print Report</a></td>
+								<td>Dr.{{completed_treatment_log.dr.name}}</td>
+								<td>{{completed_treatment_log.remark}}</td>
+								<td>{{completed_treatment_log.dname}}</td>
+								<td class="text-success">{{completed_treatment_log.pstate}}</td>
 								<td>{{completed_treatment_log.created_at.date}}</td>
+								<td>
+									<a href="/print_patient_report/{{completed_treatment_log.patient.phone}}/{{completed_treatment_log.id}}" >
+									Print Report
+									</a>
+								</td>
 							</tr>
-							{% endifchanged %}
-
 							{% endfor %}
 						</tbody>
 					</table>

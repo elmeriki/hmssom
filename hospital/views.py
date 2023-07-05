@@ -1806,6 +1806,16 @@ def treatment_listView(request):
             'pending_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=0)
         }
         return render(request,'hospital/treatment_list.html',context=data) 
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        data={
+            'pending_treatment_log':Treatment.objects.filter(hospital=hospital_instance,tstatus=0)
+        }
+        return render(request,'receptionist/treatment_list.html',context=data) 
     else:
         return redirect('/')
     
@@ -1842,25 +1852,28 @@ def completed_treatment_listView(request):
         return redirect('/')
     
 @login_required(login_url='/')  
-def patient_test_listView(request,patientid):
-    if request.user.is_authenticated and request.user.is_hospital:
-        patient_instance=Patient.objects.get(phone=patientid)
-        username=request.user.username
-        hospital_instance=User.objects.get(username=username)
-        data={
-            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)
-        }
-        return render(request,'hospital/treatment_list.html',context=data) 
-    if request.user.is_authenticated and request.user.is_lab:
+def print_patient_reportView(request,patientid,treatid):
+    if request.user.is_authenticated and request.user.is_rep:
         patient_instance=Patient.objects.get(phone=patientid)
         username=request.user.username
         customer_instance=User.objects.get(username=username)
         doctor_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
         data={
-            'patient_test_list':Patienttest.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)
+            'patient_treatment_report':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(id=treatid)
         }
-        return render(request,'laboratory/treatment_list.html',context=data) 
+        return render(request,'receptionist/doctors_report.html',context=data) 
+    
+    if request.user.is_authenticated and request.user.is_dr:
+        patient_instance=Patient.objects.get(phone=patientid)
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        data={
+            'patient_treatment_report':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(id=treatid)
+        }
+        return render(request,'doctor/doctors_report.html',context=data) 
     else:
         return redirect('/')
 
@@ -2039,9 +2052,19 @@ def my_doctors_com_treatmentView(request):
            'completed_treatment_log':Treatment.objects.filter(dr=doctor_instance,tstatus=1).filter(hospital=hospital_instance)
         }
         return render(request,'doctor/completed_treatment_list.html',context=data) 
+
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        user_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=user_instance)
+        hospital_user_name=doctor_instance.hospital.username
+        hospital_instance=User.objects.get(username=hospital_user_name)
+        data={
+           'completed_treatment_log':Treatment.objects.filter(tstatus=1,hospital=hospital_instance)
+        }
+        return render(request,'receptionist/completed_treatment_list.html',context=data) 
     else:
         return redirect('/')
-    
     
 @login_required(login_url='/')  
 def my_doctors_pend_treatmentView(request):

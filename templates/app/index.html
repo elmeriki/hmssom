@@ -10,13 +10,16 @@
                 <p class="mb-0 fs-18">Hospital Admin Dashboard Template</p>
             </div>
             
+        <form action="/app_query_search" method="POST">
+            {% csrf_token %}
             <div class="input-group search-area ml-auto d-inline-flex">
-                <input type="text" class="form-control" placeholder="Start searching now">
+                <input type="text" class="form-control" name="query" placeholder="Start searching now">
                 <div class="input-group-append">
-                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                    <button type="submit" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
                 </div>
             </div>
-            {% comment %} <a href="#" class="settings-icon  ml-3"><i class="flaticon-381-settings-2 mr-0"></i></a> {% endcomment %}
+        </form>
+            {% comment %} <a href="#" class="settings-icon  ml-2"><i class="flaticon-381-settings-2 mr-0"></i></a> {% endcomment %}
         </div>
         <div class="row">	
             {% for region_list in region_list %}

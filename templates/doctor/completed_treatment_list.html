@@ -83,7 +83,7 @@
 								<td class="text-success">{{completed_treatment_log.pstate}}</td>
 								<td>{{completed_treatment_log.created_at.date}}</td>
 								<td>
-									<a href="/patient_test_list/{{completed_treatment_log.patient.phone}}"  target="_blank">
+									<a href="/print_patient_report/{{completed_treatment_log.patient.phone}}/{{completed_treatment_log.id}}" >
 									Print Report
 									</a>
 								</td>

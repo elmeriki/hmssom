@@ -5,15 +5,12 @@
 {% if hospital_list_base_on_city %}
 <div class="content-body">
 			<div class="container-fluid">
-				<form action="/app_query_search" method="POST">
-					{% csrf_token %}
-				<div class="input-group search-area ml-auto d-inline-flex">
-					<input type="text" name="query" class="form-control" placeholder="Search using hospital name  here">
+					<div class="input-group search-area ml-auto d-inline-flex">
+						<input type="text" class="form-control" placeholder="Search here">
 						<div class="input-group-append">
-							<button type="submit" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+							<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
 						</div>
 					</div>
-				</form>
 					<div class="page-titles">
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item btn"><a onClick="javascript:history.go(-1);">BACK</a></li>
