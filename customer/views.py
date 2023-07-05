@@ -257,7 +257,8 @@ def add_appointmentView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)        
         data= {
-        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0)
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0),
+        'appointment_list':Appointmentfees.objects.all()
         }
         return render(request,'customer/add_appointment.html',context=data)
     
@@ -267,9 +268,10 @@ def add_appointmentView(request):
         recep_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=recep_instance.hospital.username)       
         data= {
-        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0)
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0),
+        'appointment_list':Appointmentfees.objects.all(),
         }
-        return render(request,'customer/add_appointment.html',context=data)
+        return render(request,'receptionist/add_appointment.html',context=data)
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 

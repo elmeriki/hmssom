@@ -27,16 +27,9 @@ urlpatterns = [
     path('edit_appointment/<str:appointmentid>', views.edit_appointmentView, name='edit_appointmentView'),
     path('update_appointment/<str:appointmentid>', views.update_appointmentView, name='update_pappointmentView'),
     path('delete_appointment/<str:appointmentid>', views.delete_appointmentView, name='delete_appointmentView'),
-
-    
     path('todays_appointment_list', views.todays_appointment_listView, name='todays_appointment_listView'),
-
     path('upcoming_appointment_list', views.upcoming_appointment_listView, name='upcoming_appointment_listView'),
-
-
     path('create_patient_appointment', views.create_patient_appointmentView, name='create_patient_appointmentView'),
-    
-    
     path('app_home', views.app_homeView, name='app_homeView'),
     path('app_login', views.app_loginView, name='app_loginView'),
     path('app_register', views.app_registerView, name='app_registerView'),

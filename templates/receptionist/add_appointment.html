@@ -1,4 +1,4 @@
-{% extends "hospital/main_menu.html" %}
+{% extends "receptionist/menu.html" %}
 {% block title %} Hospital Department |   {% endblock %}
 {% load static %}
 {% block content %}
@@ -39,6 +39,7 @@
                                     <div class="form-group col-md-6">
                                         <input type="date" class="form-control" name="apointmentdate" required>
                                     </div>
+
                                     <div class="form-group col-md-6">
                                         <select class="form-control" name="charges" required>
                                             <option value="">Appointment Charges</option>
@@ -47,13 +48,12 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-
+                                                                        
                                     <div class="form-group col-md-6">
                                         <input type="text" class="form-control" readonly name="status" value="Pending" placeholder="Appointment Status"
                                             required>
                                     </div>
-                                                                        
-        
+
                                     <div class="form-group col-md-6">
                                         <select class="form-control" name="paymenttype" required>
                                             <option value="">Payment Type</option>

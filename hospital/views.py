@@ -58,7 +58,7 @@ def departmentView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
-        hospital_department =Department.objects.filter(hospital=hospital_instance)
+        hospital_department=Department.objects.filter(hospital=hospital_instance)
         data = {
         'hospital_department':hospital_department
         }
@@ -69,11 +69,10 @@ def departmentView(request):
         customer_instance=User.objects.get(username=username)
         recep_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=recep_instance.hospital.username)
-        hospital_department =Department.objects.filter(hospital=hospital_instance)
+        hospital_department=Department.objects.filter(hospital=hospital_instance)
         data = {
         'hospital_department':hospital_department,
         'reception_instance_to_display_profile_picture':recep_instance
-
         }
         return render(request,'receptionist/department.html',context=data)
     
@@ -96,6 +95,21 @@ def save_add_departmentView(request):
         departmentdesc = request.POST['departmentdesc']
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
+        create_Department =Department(hospital=hospital_instance,name=department_name,desc=departmentdesc)
+        if create_Department:
+            create_Department.save()
+            messages.info(request,'Department Created successfully')
+            return redirect('/add_department')
+        else:
+            return redirect('/department')
+        
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        department_name = request.POST['departmentname']
+        departmentdesc = request.POST['departmentdesc']
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
         create_Department =Department(hospital=hospital_instance,name=department_name,desc=departmentdesc)
         if create_Department:
             create_Department.save()
@@ -447,6 +461,22 @@ def edit_patientView(request,patientid):
         }
         return render(request,'hospital/edit_patient.html',context=data)
     
+    if request.user.is_authenticated and request.user.is_rep:
+        get_patient_instance = Patient.objects.get(id=patientid)
+        data = {
+        'title':get_patient_instance.title,
+        'patientname':get_patient_instance.name,
+        'nok':get_patient_instance.nok,
+        'non':get_patient_instance.non,
+        'phone':get_patient_instance.phone,
+        'paymenttype':get_patient_instance.paymenttype,
+        'status':get_patient_instance.status,
+        'patientid':get_patient_instance.id,
+        'patientid':patientid
+
+        }
+        return render(request,'receptionist/edit_patient.html',context=data)
+    
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -468,7 +498,23 @@ def update_patientView(request,patientid):
         Patient.objects.filter(pk=patientid).update(status=status)
         messages.info(request,'Update has been done successfully')
         return redirect(f'/edit_patient/{patientid}')
-
+    if request.user.is_authenticated and request.user.is_rep:
+        title = request.POST['title']
+        patientname = request.POST['patientname']
+        nok = request.POST['nok']
+        non = request.POST['non']
+        phone = request.POST['phone']        
+        paymenttype = request.POST['paymenttype']
+        status = request.POST['status']        
+        Patient.objects.filter(pk=patientid).update(title=title)
+        Patient.objects.filter(pk=patientid).update(name=patientname)
+        Patient.objects.filter(pk=patientid).update(nok=nok)
+        Patient.objects.filter(pk=patientid).update(non=non)
+        Patient.objects.filter(pk=patientid).update(phone=phone)
+        Patient.objects.filter(pk=patientid).update(paymenttype=paymenttype)
+        Patient.objects.filter(pk=patientid).update(status=status)
+        messages.info(request,'Update has been done successfully')
+        return redirect(f'/edit_patient/{patientid}')
 
 @login_required(login_url='/')  
 def delete_patientView(request, patientid):
@@ -476,7 +522,10 @@ def delete_patientView(request, patientid):
         delete_patient = Patient.objects.get(id=patientid)
         delete_patient.delete()
         return redirect('/patient_list')
-    
+    if request.user.is_authenticated and request.user.is_rep:
+        delete_patient = Patient.objects.get(id=patientid)
+        delete_patient.delete()
+        return redirect('/patient_list')
 
 @login_required(login_url='/')  
 def patient_paymentsView(request):
@@ -902,6 +951,28 @@ def create_childbirthView(request):
                                              
         messages.info(request,'Child birth record created successfully')
         return redirect('/add_childbirth')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        title = request.POST['title']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        dob = request.POST['dob'] 
+        gender = request.POST['gender']  
+        weight = request.POST['weight']
+        race = request.POST['race']
+        remark = request.POST['remark']
+             
+        id = random_id(length=9,character_set=string.digits)
+    
+        save_childbirth_details=Childbirth(hospital=hospital_instance, id=id, title=title,firstname=firstname, lastname=lastname,
+                                            dob=dob, gender=gender,weight=weight, race=race, remark=remark)
+        save_childbirth_details.save()
+                                             
+        messages.info(request,'Child birth record created successfully')
+        return redirect('/add_childbirth')
     
        
 @login_required(login_url='/')  
@@ -909,7 +980,9 @@ def create_childbirthView(request):
 def add_childbirthView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_childbirth.html')
-
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_childbirth.html')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -922,7 +995,16 @@ def childbirth_listView(request):
             'list_all_childbirth':list_all_childbirth
         }
         return render(request,'hospital/childbirth_list.html',context=childbirth_data)
-    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        list_all_childbirth=Childbirth.objects.filter(hospital=hospital_instance)
+        childbirth_data = {
+            'list_all_childbirth':list_all_childbirth
+        }
+        return render(request,'receptionist/childbirth_list.html',context=childbirth_data)
     
 @login_required(login_url='/')  
 def edit_childbirthView(request,childbirth_id):
@@ -1009,7 +1091,8 @@ def create_deadthrecordView(request):
 def add_deadthrecordView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_deathrecord.html')
-
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_deathrecord.html')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -1022,8 +1105,17 @@ def deadthrecord_listView(request):
             'list_all_deadthrecord':list_all_deadthrecord
         }
         return render(request,'hospital/deathrecord_list.html',context=deadthrecord_data)
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        list_all_deadthrecord=Deadthrecord.objects.filter(hospital=hospital_instance)
+        deadthrecord_data = {
+            'list_all_deadthrecord':list_all_deadthrecord
+        }
+        return render(request,'receptionist/deathrecord_list.html',context=deadthrecord_data)
     
-
 @login_required(login_url='/')  
 def edit_deathrecordView(request,deathrecord_id):
     if request.user.is_authenticated and request.user.is_hospital:
@@ -1111,6 +1203,9 @@ def create_donorView(request):
 def add_donorView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_donor.html')
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_donor.html')
 
 
 @login_required(login_url='/')  
@@ -1124,6 +1219,17 @@ def donor_listView(request):
             'all_donor_list':all_donor_list
         }
         return render(request,'hospital/donor_list.html',context=donor_data)
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        all_donor_list=Donor.objects.filter(hospital=hospital_instance)
+        donor_data = {
+            'all_donor_list':all_donor_list
+        }
+        return render(request,'receptionist/donor_list.html',context=donor_data)
     
 @login_required(login_url='/')  
 def edit_donorView(request,donorid):
@@ -1279,7 +1385,8 @@ def create_bloodView(request):
 def add_bloodView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_blood.html')
-
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/add_blood.html')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -1292,6 +1399,17 @@ def blood_listView(request):
             'all_blood_list':all_blood_list
         }
         return render(request,'hospital/blood_list.html',context=blood_data)
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        all_blood_list=Blood.objects.filter(hospital=hospital_instance)
+        blood_data = {
+            'all_blood_list':all_blood_list
+        }
+        return render(request,'receptionist/blood_list.html',context=blood_data)
     
 @login_required(login_url='/')  
 def edit_bloodView(request,blood_id):
@@ -1549,6 +1667,7 @@ def recepdashboardView(request):
         'count_number_of_patient':Patient.objects.filter(hospital=hospital_instance).count(),
         'count_number_of_doctors':Doctor.objects.filter(hospital=hospital_instance).count(),
         'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
+        'count_number_of_treatment':Treatment.objects.filter(hospital=hospital_instance,tstatus__gt=0).count(),
         'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
         'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10],
         'reception_instance_to_display_profile_picture':recep_instance

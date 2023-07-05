@@ -73,9 +73,17 @@ def add_paymentcategoryView(request):
         return render(request,'receptionist/add_paymentcategory.html')
     else:
         return redirect('/')
-
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
+def add_appointment_feesView(request):
+    if request.user.is_authenticated and request.user.is_hospital:  
+              
+        return render(request,'finance/add_appointment_fees.html')
+    else:
+        return redirect('/')
+
+@login_required(login_url='/')  
 def paymentcategoryView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         username=request.user.username
@@ -91,6 +99,28 @@ def paymentcategoryView(request):
             'payment_category':Paymentcategory.objects.filter(hospital=hospital_instance)
         }    
         return render(request,'receptionist/paymentcategory.html',context=data)
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def appointment_categoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)    
+        data = {
+            'payment_category':Appointmentfees.objects.filter(hospital=hospital_instance)
+        }    
+        return render(request,'finance/appointment_payment_list.html',context=data)
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def delete_appointment_payment_categoryView(request,id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)    
+        Appointmentfees.objects.filter(id=id,hospital=hospital_instance).delete()
+        return redirect('/appointment_category')
     else:
         return redirect('/')
     
@@ -221,6 +251,24 @@ def create_new_payment_categoryView(request):
             return redirect('/add_paymentcategory')
         else:
             return redirect('/add_paymentcategory')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_new_appointment_categoryView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        category_name =request.POST['category']  
+        amount =request.POST['amount']  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        create_new_appointment_category=Appointmentfees(hospital=hospital_instance,category=category_name,amount=amount)
+        if create_new_appointment_category:
+            create_new_appointment_category.save()
+            # messages.success(request,'Appointment Fees has been created successfuly.')
+            return redirect('/appointment_category')
+        else:
+            return redirect('/appointment_category')
     else:
         return redirect('/')
     
