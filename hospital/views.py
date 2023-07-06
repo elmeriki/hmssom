@@ -2196,7 +2196,7 @@ def unsuspend_hospitalView(request,hospital_id):
 def paid_hospital_listView(request):
     if request.user.is_authenticated and request.user.is_superuser: 
         data = {
-        'paid_hospital_list':User.objects.filter(is_hospital=True,is_activation=True).filter(is_paid=True),
+        'paid_hospital_list':Fees.objects.filter(status=1)
         }       
         return render(request,'superadmin/payment_list.html',context=data)
     else:
