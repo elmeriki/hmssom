@@ -148,6 +148,8 @@ urlpatterns = [
     
     path('patient_details/<str:patient_id>', views.patient_detailsView, name='patient_detailsView'),
     
+    path('search_patient_detail', views.search_patient_detailView, name='search_patient_detailView'),
+    
     path('my_doctors_appointment', views.my_doctors_appointmentView, name='my_doctors_appointmentView'),
     path('my_doctors_com_appointment', views.my_doctors_com_appointmentView, name='my_doctors_com_appointmentView'),
     path('my_doctors_com_treatment', views.my_doctors_com_treatmentView, name='my_doctors_com_treatmentView'),
@@ -164,6 +166,15 @@ urlpatterns = [
     path('unpaid_hospital_list', views.unpaid_hospital_listView, name='unpaid_hospital_listView'),
     
     path('superadmin_payment', views.superadmin_paymentView, name='superadmin_paymentView'),
+    path('app_notification_list', views.app_notification_listView, name='app_notification_listView'),
+    path('app_notification_detail/<str:messageid>', views.app_notification_detailView, name='app_notification_detailView'),
+
+    path('monthly_expenses_report', views.monthly_expenses_reportView, name='monthly_expenses_reportView'),
+    path('appointment_report', views.appointment_reportView, name='appointment_reportView'),
+    path('laboratory_report', views.laboratory_reportView, name='laboratory_reportView'),
+    path('generate_appointment_report', views.generate_appointment_reportView, name='generate_appointment_reportView'),
+    path('generate_laboratory_report', views.generate_laboratory_reportView, name='generate_laboratory_reportView'),
+    path('generate_monthly_expenses_report', views.generate_monthly_expenses_reportView, name='generate_monthly_expenses_reportView'),
 
 ]
 

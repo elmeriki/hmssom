@@ -1,0 +1,117 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Appointment Report | {% endblock %}
+{% load static %}
+{% block content %}
+{% if selected_appointment_report %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/appointment_report">BACK</a></li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card mt-3">
+                    <div class="card-header"> Report <strong>{{current_date}}</strong> <span class="float-right">
+                            <strong>Status:</strong> Completed</span> </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center">No</th>
+                                        <th>Assigned Doctor</th>
+                                        <th>Appointment Reason</th>
+                                        <th class="right">Unit Cost</th>
+                                        <th class="center">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for selected_appointment_report in selected_appointment_report %}
+                                    <tr>
+                                        <td class="center">{{forloop.counter}}</td>
+                                        <td class="left strong">Dr.{{selected_appointment_report.dr.name}}</td>
+                                        <td class="left">Consultation</td>
+                                        <td class="right">Biir{{selected_appointment_report.amount}}</td>
+                                        <td class="center">{{selected_appointment_report.created_at.date}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-5"> </div>
+                            <div class="col-lg-4 col-sm-5 ml-auto">
+                                <table class="table table-clear">
+                                    <tbody>
+                                        <tr>
+                                            <td class="left"><strong>Discount</strong></td>
+                                            <td class="right">None</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>VAT </strong></td>
+                                            <td class="right">N/A</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>Total</strong></td>
+                                            <td class="right"><strong>Biir {{total_appointment_cash}}</strong><br>
+                                                </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Generate Appointment Report</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/generate_appointment_report" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">                               
+                                    <div class="form-group col-md-6">
+                                        <label for="phone">From</label>
+                                        <input type="date" class="form-control" name="from_date" name="title" placeholder="Title"
+                                            required>
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <label for="phone">To</label>
+                                        <input type="date" class="form-control" name="to_date" placeholder="Title"
+                                            required>
+                                    </div>  
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Proceed</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

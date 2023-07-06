@@ -1,0 +1,141 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} App messages |   {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="page-titles">
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="email-left-box px-0 mb-3">
+                            <div class="mail-list mt-4">
+                                <a href="#" class="list-group-item active"><i
+                                        class="fa fa-inbox font-18 align-middle mr-2"></i> Inbox <span
+                                        class="badge badge-primary badge-sm float-right">{{app_message_count}}</span> </a>
+                              
+                                        
+                                
+                                <a href="/app_notification_list" class="list-group-item"><i
+                                        class="fa fa-trash font-18 align-middle mr-2"></i>Trash</a>
+                            </div>
+                        </div>
+                        <div class="email-right-box ml-0 ml-sm-4 ml-sm-0">
+                            <div role="toolbar" class="toolbar ml-1 ml-sm-0">
+                                {% comment %} <div class="btn-group mb-1">
+                                    <div class="custom-control custom-checkbox pl-2">
+                                        <input type="checkbox" class="custom-control-input" id="checkbox1">
+                                        <label class="custom-control-label" for="checkbox1"></label>
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="btn-group mb-1">
+                                    <a href="/app_notification_list">
+                                    <button class="btn btn-primary light px-3" type="button"><i class="ti-reload"></i>
+                                    </button>
+                                    </a>
+                                </div>
+                                {% comment %} <div class="btn-group mb-1">
+                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-primary px-3 light dropdown-toggle" type="button">More <span
+                                            class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu"> <a href="javascript: void(0);" class="dropdown-item">Mark as Unread</a> <a href="javascript: void(0);" class="dropdown-item">Add to Tasks</a>
+                                        <a href="javascript: void(0);" class="dropdown-item">Add Star</a> <a href="javascript: void(0);" class="dropdown-item">Mute</a>
+                                    </div>
+                                </div> {% endcomment %}
+                            </div>
+                            {% if app_notification_messages %}
+                            <div class="email-list mt-3">
+                                {% for app_notification_messages in app_notification_messages %}
+                                <div class="message">
+                                    <div>
+                                        <div class="d-flex message-single">
+                                            <div class="pl-1 align-self-center">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="checkbox2">
+                                                    <label class="custom-control-label" for="checkbox2"></label>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2">
+                                                <button class="border-0 bg-transparent align-middle p-0"><i
+                                                        class="fa fa-star" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                        <a href="/app_notification_detail/{{app_notification_messages.id}}" class="col-mail col-mail-2">
+                                            {% if app_notification_messages.status == "0" %}
+                                            <div class="subject text-danger">{{app_notification_messages.message}}</div>
+                                            {% else %}
+                                            <div class="subject text-dark">{{app_notification_messages.message}}</div>
+
+                                            {%endif %}
+                                            <div class="date">{{app_notification_messages.created_at | timesince }} ago</div>
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            {% elif app_notification_message_detail %}
+                            <div class="read-content">
+                                <div class="media pt-3">
+                                    <img class="mr-2 rounded" width="50" alt="image" src="{% static 'assets/images/user.png' %}">
+                                    <div class="media-body mr-2">
+                                        <h5 class="text-primary mb-0 mt-1">{{app_notification_message_detail.names}}</h5>
+                                        <p class="mb-0">{{app_notification_message_detail.created_at}}</p>
+                                    </div>
+                                    <a href="/app_notification_list" class="btn btn-primary px-3 light"><i class="fa fa-reply"></i> </a>
+                                    <a href="javascript:void()" class="btn btn-primary px-3 light ml-2"><i class="fa fa-long-arrow-right"></i> </a>
+                                    <a href="javascript:void()" class="btn btn-primary px-3 light ml-2"><i class="fa fa-trash"></i></a>
+                                </div>
+                                <hr>
+                                <div class="media mb-2 mt-3">
+                                    {% comment %} <div class="media-body"><span class="pull-right">07:23 AM</span>
+                                        <h5 class="my-1 text-primary">A collection of textile samples lay spread</h5>
+                                        <p class="read-content-email">
+                                            To: Me, info@example.com</p>
+                                    </div> {% endcomment %}
+                                </div>
+                                <div class="read-content-body">
+                                    <h5 class="mb-4">Hi, </h5>
+                                    <p class="mb-2">
+                                         {{app_notification_message_detail.message}} 
+                                    </p>
+                                    <br><br>
+                                    <h5 class="pt-3">Kind Regards</h5>
+                                    <p>{{app_notification_message_detail.names}}</p>
+                                    <hr>
+                                </div>
+
+                            </div>
+     
+                        </div>
+
+                            {% endif %}
+                            <!-- panel -->
+                            <div class="row mt-4">
+                                <div class="col-12 pl-3">
+                                    <nav>
+                                        <ul class="pagination pagination-gutter pagination-primary pagination-sm no-bg">
+                                            <li class="page-item page-indicator"><a class="page-link" href="javascript:void()"><i class="la la-angle-left"></i></a></li>
+                                            <li class="page-item "><a class="page-link" href="javascript:void()">1</a></li>
+                                            <li class="page-item active"><a class="page-link" href="javascript:void()">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="javascript:void()">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="javascript:void()">4</a></li>
+                                            <li class="page-item page-indicator"><a class="page-link" href="javascript:void()"><i class="la la-angle-right"></i></a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+

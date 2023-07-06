@@ -48,10 +48,11 @@ def hospital_dashboardView(request):
         'count_number_of_appointment':Appointment.objects.filter(hospital=hospital_instance,status=0).count(),
         'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
         'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10],
+        'app_message_count':Messages.objects.filter(hospital=hospital_instance,status=0).count(),
+        'app_message':Messages.objects.filter(hospital=hospital_instance,status=0)
         }
         return render(request,'hospital/dashboard.html',context=data)
     
-
 #====================================DEPARTMENT==================================
 @login_required(login_url='/')  
 def departmentView(request):
@@ -1616,6 +1617,53 @@ def patient_detailsView(request,patient_id):
         return render(request,'receptionist/patient_details.html',context=data)
     
     
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def search_patient_detailView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.POST['cellphone']:
+        cell_phone = request.POST['cellphone']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        if not Patient.objects.filter(phone=cell_phone,hospital=hospital_instance).exists():
+            return redirect('/hospital_dashboard')
+        else:
+            patient_instance=Patient.objects.get(phone=cell_phone)
+            data = {
+            'patient_id':patient_instance.id,
+            'title':patient_instance.title,
+            'name':patient_instance.name,
+            'nok':patient_instance.nok,
+            'non':patient_instance.non,
+            'phone':patient_instance.phone,
+            'created_at':patient_instance.created_at,
+            'patient_appointment':Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)[:1],
+            'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
+            }
+            return render(request,'hospital/patient_details.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep and request.POST['cellphone']:
+        cell_phone = request.POST['cellphone']
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)
+        if not Patient.objects.filter(phone=cell_phone,hospital=hospital_instance).exists():
+            return redirect('/recepdashboard')
+        else:
+            patient_instance=Patient.objects.get(phone=cell_phone)
+            data = {
+            'patient_id':patient_instance.id,
+            'title':patient_instance.title,
+            'name':patient_instance.name,
+            'nok':patient_instance.nok,
+            'non':patient_instance.non,
+            'phone':patient_instance.phone,
+            'created_at':patient_instance.created_at,
+            'patient_appointment':Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)[:1],
+            'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
+            }
+            return render(request,'receptionist/patient_details.html',context=data)
+    
     
 @login_required(login_url='/')  
 def doctorsdashboardView(request):
@@ -1670,7 +1718,9 @@ def recepdashboardView(request):
         'count_number_of_treatment':Treatment.objects.filter(hospital=hospital_instance,tstatus__gt=0).count(),
         'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
         'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10],
-        'reception_instance_to_display_profile_picture':recep_instance
+        'reception_instance_to_display_profile_picture':recep_instance,
+        'app_message_count':Messages.objects.filter(hospital=hospital_instance,status=0).count(),
+        'app_message':Messages.objects.filter(hospital=hospital_instance,status=0)
         }
         return render(request,'receptionist/index.html',context=data)
     else:
@@ -2167,5 +2217,127 @@ def unpaid_hospital_listView(request):
 def superadmin_paymentView(request):
     if request.user.is_authenticated and request.user.is_superuser:      
         return render(request,'superadmin/payment.html')
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def app_notification_listView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+            'app_notification_messages':Messages.objects.filter(hospital=hospital_instance),
+            'app_message_count':Messages.objects.filter(hospital=hospital_instance).count(),
+            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+        }      
+        return render(request,'hospital/app_message_list.html',context=data)
+
+    if request.user.is_authenticated and request.user.is_rep:
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=doctor_instance.hospital.username)
+        data = {
+            'app_notification_messages':Messages.objects.filter(hospital=hospital_instance),
+            'app_message_count':Messages.objects.filter(hospital=hospital_instance).count(),
+            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+        }      
+        return render(request,'receptionist/app_message_list.html',context=data)
+    
+    
+@login_required(login_url='/')  
+def app_notification_detailView(request,messageid):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        Messages.objects.filter(id=messageid).update(status=1)
+        data = {
+            'app_notification_message_detail':Messages.objects.get(id=messageid),
+            'app_message_count':Messages.objects.filter(hospital=hospital_instance,status=0).count(),
+            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+        }      
+        return render(request,'hospital/app_message_list.html',context=data)
+
+    if request.user.is_authenticated and request.user.is_rep:      
+        return render(request,'receptionist/app_message_list.html')
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def appointment_reportView(request):
+    if request.user.is_authenticated and request.user.is_hospital:      
+        return render(request,'hospital/appointment_report.html')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def monthly_expenses_reportView(request):
+    if request.user.is_authenticated and request.user.is_hospital:      
+        return render(request,'hospital/monthly_report.html')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def laboratory_reportView(request):
+    if request.user.is_authenticated and request.user.is_hospital:      
+        return render(request,'hospital/laboratory_report.html')
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+def generate_appointment_reportView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST" and request.POST['from_date'] and request.POST['to_date']:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        from_date = request.POST['from_date'] 
+        to_date = request.POST['to_date']  
+        selected_appointment_report=Appointment.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date))
+        current_date = datetime.date.today()
+        data ={
+        'selected_appointment_report':selected_appointment_report,
+        'total_appointment_cash':Appointment.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date)).aggregate(Sum('amount'))['amount__sum'],
+        'current_date':current_date
+        }
+        return render(request,'hospital/appointment_report.html',context=data)
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def generate_laboratory_reportView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST" and request.POST['from_date'] and request.POST['to_date']:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        from_date = request.POST['from_date'] 
+        to_date = request.POST['to_date']  
+        selected_lab_report=Labtest.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date))
+        current_date = datetime.date.today()
+        data ={
+        'selected_lab_report':selected_lab_report,
+        'total_loboratory_cash':Labtest.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date)).aggregate(Sum('amount'))['amount__sum'],
+        'current_date':current_date
+        }
+        return render(request,'hospital/laboratory_report.html',context=data)
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def generate_monthly_expenses_reportView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST" and request.POST['from_date'] and request.POST['to_date']:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        from_date = request.POST['from_date'] 
+        to_date = request.POST['to_date']  
+        selected_expenses_report=Expense.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date))
+        current_date = datetime.date.today()
+        data ={
+        'selected_expenses_report':selected_expenses_report,
+        'total_expenses_cash':Expense.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date)).aggregate(Sum('amount'))['amount__sum'],
+        'current_date':current_date
+        }
+        return render(request,'hospital/monthly_report.html',context=data)
     else:
         return redirect('/')
