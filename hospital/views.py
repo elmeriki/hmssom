@@ -2214,12 +2214,53 @@ def unpaid_hospital_listView(request):
     
 
 @login_required(login_url='/')  
-def superadmin_paymentView(request):
-    if request.user.is_authenticated and request.user.is_superuser:      
-        return render(request,'superadmin/payment.html')
+def superadmin_paymentView(request,hospital_id):
+    if request.user.is_authenticated and request.user.is_superuser:
+        data={
+        'hospital_id':hospital_id
+        }      
+        return render(request,'superadmin/payment.html',context=data)
     else:
         return redirect('/')
-    
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def processsuperadmin_paymentView(request,hospital_id):
+    if request.user.is_authenticated and request.user.is_superuser and request.method=="POST":
+        pakage=request.POST['pakage']
+        amount=request.POST['amount']
+        if pakage == "Monthly":
+            hospital_instance=User.objects.get(id=hospital_id)
+            from datetime import datetime, timedelta
+            dt = datetime.now()
+            td = timedelta(days=28)
+            my_date = dt + td
+            pakageregisterdate=date.today()
+            pakageexpiredate = my_date.date()
+            record_licence_fees=Fees(hospital=hospital_instance,pakage=pakage,amount=amount,paiddate=pakageregisterdate,expireddate=pakageexpiredate)
+            record_licence_fees.save()
+            hospital_instance.is_paid=True
+            hospital_instance.save()  
+            Fees.objects.filter(hospital=hospital_instance,status=0).update(status=1)          
+            messages.info(request,'Software Licence has been paid successfully')
+            return redirect('/paid_hospital_list')
+        if pakage == "Yearly":
+            hospital_instance=User.objects.get(id=hospital_id)
+            from datetime import datetime, timedelta
+            dt = datetime.now()
+            td = timedelta(days=365)
+            my_date = dt + td
+            pakageregisterdate=date.today()
+            pakageexpiredate = my_date.date()
+            record_licence_fees=Fees(hospital=hospital_instance,pakage=pakage,amount=amount,paiddate=pakageregisterdate,expireddate=pakageexpiredate)
+            record_licence_fees.save()
+            hospital_instance.is_paid=True
+            hospital_instance.save()
+            Fees.objects.filter(hospital=hospital_instance,status=0).update(status=1)
+            messages.info(request,'Software Licence has been paid successfully')
+            return redirect('/paid_hospital_list')
+    else:
+        return redirect('/')
     
 @login_required(login_url='/')  
 def app_notification_listView(request):

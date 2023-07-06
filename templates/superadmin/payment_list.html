@@ -9,6 +9,18 @@
     <!-- row -->
     <div class="container-fluid">
         <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                {{message}}
+                <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                </button>
+            </div>
+            {% endfor %}
+            {% else %}
+
+            {% endif %}
 
             <div class="input-group search-area ml-auto d-inline-flex mr-3">
                 <input type="text" class="form-control" placeholder="Search here">
@@ -65,7 +77,18 @@
     <!-- row -->
     <div class="container-fluid">
         <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <strong>Hi!</strong> {{message}}
+                <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                </button>
+            </div>
+            {% endfor %}
+            {% else %}
 
+            {% endif %}
             <div class="input-group search-area ml-auto d-inline-flex mr-3">
                 <input type="text" class="form-control" placeholder="Search here">
                 <div class="input-group-append">
@@ -105,7 +128,7 @@
 								<!--<td><span class="font-w500">Unvailable</span></td>-->
 								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-danger mr-1"></i>Suspended</div></td>
 								{% endif %}
-                                <td><a href="/superadmin_payment" class="text-danger">Pay Now</a></td>
+                                <td><a href="/superadmin_payment/{{unpaid_hospital_list.id}}" class="text-danger">Pay Now</a></td>
                             </tr>
 
                             {% endfor %}

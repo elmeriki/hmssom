@@ -165,9 +165,10 @@ urlpatterns = [
     path('paid_hospital_list', views.paid_hospital_listView, name='paid_hospital_listView'),
     path('unpaid_hospital_list', views.unpaid_hospital_listView, name='unpaid_hospital_listView'),
     
-    path('superadmin_payment', views.superadmin_paymentView, name='superadmin_paymentView'),
+    path('superadmin_payment/<str:hospital_id>', views.superadmin_paymentView, name='superadmin_paymentView'),
     path('app_notification_list', views.app_notification_listView, name='app_notification_listView'),
     path('app_notification_detail/<str:messageid>', views.app_notification_detailView, name='app_notification_detailView'),
+    path('processsuperadmin_payment/<str:hospital_id>', views.processsuperadmin_paymentView, name='processsuperadmin_paymentView'),
 
     path('monthly_expenses_report', views.monthly_expenses_reportView, name='monthly_expenses_reportView'),
     path('appointment_report', views.appointment_reportView, name='appointment_reportView'),

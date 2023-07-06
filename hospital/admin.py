@@ -9,3 +9,5 @@ admin.site.register(Notices)
 admin.site.register(Treatment)
 admin.site.register(Lapreport)
 admin.site.register(Labresult)
+admin.site.register(Fees)
+

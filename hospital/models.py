@@ -441,4 +441,15 @@ class Labresult(models.Model):
     def __str__(self):
         return self.hospital.first_name
     
-    
+class Fees(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_system_fees")
+    pakage=models.CharField(max_length=200,blank=True,null=True,default="Pending")
+    amount=models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    status=models.CharField(max_length=200,blank=True,null=True,default=0)
+    paiddate=models.DateField(blank=True,null=True) 
+    expireddate=models.DateField(blank=True,null=True) 
+    class Meta:
+        verbose_name_plural ="Fees"
+        
+    def __str__(self):
+        return self.hospital.first_name
