@@ -14,3 +14,15 @@ class Region(models.Model):
         
     def __str__(self):
         return self.name
+    
+class Curency(models.Model):
+    symbol =models.CharField(max_length=200,null=True,blank=True)
+    desc =models.CharField(max_length=200,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural = "Curency List"
+        
+    def __str__(self):
+        return self.symbol

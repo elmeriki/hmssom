@@ -15,7 +15,7 @@
             </div>
             <div class="card-body">
                 <div class="basic-form">
-                    <form action="/create_hospital_account" method="POST">
+                    <form action="/create_hospital_account" enctype="multipart/form-data" method="POST">
                         {% csrf_token %}
    
                         <div class="form-row">
@@ -46,7 +46,15 @@
                         </div>
                         
                         <div class="form-row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
+                                <select id="inputState" name="currency" class="form-control">
+                                    <option selected>Choose Curency...</option>
+                                    {% for list_currency in list_currency %}
+                                    <option value="{{list_currency.symbol}}">{{list_currency.symbol}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
                                 <select id="inputState" name="country" class="form-control">
                                     <option selected>Choose Province...</option>
                                     {% for list_of_regions in list_of_regions %}
@@ -54,7 +62,9 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            
+                            <div class="form-group col-md-12">
+                                <input type="file" name="logo"  accept="image/png, image/jpeg" class="form-control">
+                            </div>
                         <button type="submit" class="btn btn-primary">Register</button>
 
                     

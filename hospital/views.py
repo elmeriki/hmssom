@@ -49,7 +49,9 @@ def hospital_dashboardView(request):
         'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
         'patient_list':Patient.objects.filter(hospital=hospital_instance)[:10],
         'app_message_count':Messages.objects.filter(hospital=hospital_instance,status=0).count(),
-        'app_message':Messages.objects.filter(hospital=hospital_instance,status=0)
+        'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+        'licence_date_instance':Fees.objects.filter(hospital=hospital_instance,status=1),
+        
         }
         return render(request,'hospital/dashboard.html',context=data)
     
@@ -2270,7 +2272,7 @@ def app_notification_listView(request):
         data = {
             'app_notification_messages':Messages.objects.filter(hospital=hospital_instance),
             'app_message_count':Messages.objects.filter(hospital=hospital_instance).count(),
-            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+            'app_message':Messages.objects.filter(hospital=hospital_instance,status=9).order_by('created_at'),
         }      
         return render(request,'hospital/app_message_list.html',context=data)
 
@@ -2282,7 +2284,7 @@ def app_notification_listView(request):
         data = {
             'app_notification_messages':Messages.objects.filter(hospital=hospital_instance),
             'app_message_count':Messages.objects.filter(hospital=hospital_instance).count(),
-            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0).order_by('created_at'),
         }      
         return render(request,'receptionist/app_message_list.html',context=data)
     
@@ -2296,7 +2298,7 @@ def app_notification_detailView(request,messageid):
         data = {
             'app_notification_message_detail':Messages.objects.get(id=messageid),
             'app_message_count':Messages.objects.filter(hospital=hospital_instance,status=0).count(),
-            'app_message':Messages.objects.filter(hospital=hospital_instance,status=0),
+            'app_message':Messages.objects.filter(hospital=hospital_instance).order_by('-created_at')
         }      
         return render(request,'hospital/app_message_list.html',context=data)
 

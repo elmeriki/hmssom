@@ -8,7 +8,9 @@
         <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
             <div class="mr-auto d-none d-lg-block">
                 <h3 class="text-black font-w600">Welcome to {{request.user.first_name}}</h3>
-                <p class="mb-0 fs-18 text-danger"><marquee> 50 Days Remaining to Renew Licence </marquee></p>
+                {% for licence_date_instance in licence_date_instance%}
+                <p class="mb-0 fs-18 text-danger"><marquee> YOUR LICENCE IS VALID UNTILL {{licence_date_instance.expireddate}} </marquee></p>
+                {% endfor %}
             </div>
             <form action="/search_patient_detail" method="POST">
             {% csrf_token %}

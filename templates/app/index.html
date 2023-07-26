@@ -25,11 +25,13 @@
             {% for region_list in region_list %}
             <div class="col-xl-3 col-xxl-6 col-sm-6">
                 {% if region_list.color == "Red" %}
-                <div class="card gradient-bx text-white bg-success rounded">
-                    {% elif region_list.color == "Blue" %}	
-                <div class="card gradient-bx text-white bg-secondary rounded">
+                <div class="card gradient-bx text-white bg-danger rounded">
                     {% elif region_list.color == "Green" %}	
+                <div class="card gradient-bx text-white bg-success rounded">
+                    {% elif region_list.color == "Black" %}	
                 <div class="card gradient-bx text-white bg-dark rounded">
+                    {% elif region_list.color == "Yellow" %}	
+                <div class="card gradient-bx text-white bg-primary rounded">
                     {% else %}
                 <div class="card gradient-bx text-white bg-danger rounded">	
                 {% endif %}

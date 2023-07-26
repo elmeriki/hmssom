@@ -64,7 +64,8 @@ def hospital_loginView(request):
 
 def register_loginView(request):
     data = {
-     'list_of_regions':Region.objects.filter(status=0)
+     'list_of_regions':Region.objects.filter(status=0),
+     'list_currency':Curency.objects.all()
     }
     return render(request,'hospital/register.html',context=data)
 
@@ -166,6 +167,13 @@ def create_hospital_accountView(request):
         package = request.POST['package']
         remarks = request.POST['remarks']
         region = request.POST['country']
+        currency = request.POST['currency']
+        if len(request.FILES) != 0:
+            logo=request.FILES['logo']
+            logofilesize=logo.size
+            if logofilesize > 2621440:
+                messages.info(request,"Your Logo is Biger Than 2MB")
+                return redirect('/register_hospital')
         
         if User.objects.filter(email=email).exists():
             messages.info(request,'Email has been used already.')
@@ -177,7 +185,7 @@ def create_hospital_accountView(request):
          
         hospotalid = random_id(length=8,character_set=string.digits)
         autopassword_generator = random_id(length=7)
-        create_new_hospital_account = User.objects.create_user(username=email,first_name=hospital_name,last_name=hospital_name,password=autopassword_generator,is_hospital=True,email=email,address=address,number=number,city=region,customerid=hospotalid,is_activation=True)
+        create_new_hospital_account = User.objects.create_user(username=email,first_name=hospital_name,last_name=hospital_name,password=autopassword_generator,is_hospital=True,email=email,address=address,number=number,city=region,customerid=hospotalid,is_activation=False,currency=currency,logo=logo)
         if create_new_hospital_account:
             create_new_hospital_account.save()
             save_hospital_details=Hospital(hospital=create_new_hospital_account,hospitalid=hospotalid,package=package,desc=remarks)

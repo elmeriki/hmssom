@@ -30,7 +30,7 @@
                                 <th>Phone</th>
                                 <th>City</th>
                                 <th>Date</th>
-                                <th>Status</th>
+                                {% comment %} <th>Status</th> {% endcomment %}
                             </tr>
                         </thead>
                         <tbody>
@@ -41,14 +41,14 @@
                                 <td>{{active_hospital_list.number}}</td>
                                 <td>{{active_hospital_list.city}}</td>
                                 <td>{{active_hospital_list.date_joined.date}}</td>
-                                {% if active_hospital_list.astatus == "1" %}
+                                {% comment %} {% if active_hospital_list.astatus == "1" %}
 								<!--<td><span class="font-w500">Available</span></td>-->
 								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i>Paid</div></td>
 
 								{% else %}
 								<!--<td><span class="font-w500">Unvailable</span></td>-->
 								<td><div class="d-flex align-items-center"><i class="fa fa-circle text-success mr-1"></i>Paid</div></td>
-								{% endif %}
+								{% endif %} {% endcomment %}
 
 
                                 <td>

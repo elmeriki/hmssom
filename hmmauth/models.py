@@ -17,6 +17,8 @@ class User(AbstractUser):
     country =models.CharField(max_length=200,blank=True,null=True,default="None")
     city =  models.CharField(max_length=200,blank=True,null=True,default="None")
     number =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    currency =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    logo =  models.ImageField(null=True, upload_to="hospital_logo/",)
     hospital_id =models.CharField(max_length=200,blank=True,null=True,default="None")
     def __str__(self):
         return self.username

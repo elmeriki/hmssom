@@ -23,7 +23,7 @@
                                     <li>
                                         <div class="timeline-panel">
                                             <div class="media mr-2">
-                                                <img alt="image" width="30" src="{% static 'assets/images/user.png' %}">
+                                                <a href="/app_notification_detail/{{app_message.id}}"><img alt="image" width="30" src="{% static 'assets/images/user.png' %}"></a>
                                             </div>
                                             
                                             <div class="media-body">
@@ -40,7 +40,7 @@
                             {% else %}
 
                             {% endif %}
-                            <a class="all-notification" href="/app_notification_list">See all app notifications <i class="ti-arrow-right"></i></a>
+                            <a class="all-notification" href="/app_notification_list">See all messages <i class="ti-arrow-right"></i></a>
                         </div>
                     </li>
                     {% comment %} <li class="nav-item dropdown notification_dropdown">
@@ -101,7 +101,7 @@
                     </li>
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:;" role="button" data-toggle="dropdown">
-                            <img src="{% static 'assets/images/user.png' %}" width="20" alt=""/>
+                            <img src="{{request.user.logo.url}}" width="20" alt=""/>
                             <div class="header-info">
                                 <span>Hello,<strong> {{user.first_name}}</strong></span>
                             </div>

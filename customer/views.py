@@ -493,17 +493,18 @@ def create_book_nowView(request,hospital_id):
         message = request.POST['message']
         checks = int(request.POST['checks'])
         hospital_instance=User.objects.get(id=hospital_id)
-        if Messages.objects.filter(hospital=hospital_instance,status=0).filter(phone=cellphone).exists:
+        
+        if  Messages.objects.filter(hospital=hospital_instance,phone=cellphone).filter(status=0).exists():
             messages.success(request,'Your previous booking is pending')
             return redirect(f'/book_now/{hospital_id}') 
             
-        if not checks == 20:
+        if not checks == 2:
             messages.success(request,'Incorrect security checks')
             return redirect(f'/book_now/{hospital_id}')
         else:
             create_new_booking=Messages(hospital=hospital_instance,names=names,phone=cellphone,message=message)
             create_new_booking.save()  
-            messages.success(request,'You request has been successfully submited')
+            messages.success(request,'You request has been sent successfully.')
             return redirect(f'/book_now/{hospital_id}')
     else:
         return redirect(f'/app_home')

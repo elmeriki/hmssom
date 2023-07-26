@@ -38,7 +38,7 @@
 												<label class="custom-control-label" for="customCheckBox1"></label>
 											</div>
 										</div>
-										<img class="mr-3 img-fluid rounded" width="90" src="{% static 'assets/images/doctors/6.jpg' %}" alt="DexignZone">
+										<img class="mr-3 img-fluid rounded" width="90" src="{{hospital_list_base_on_city.logo.url}}" alt="DexignZone">
 										<div class="media-body d-lg-flex d-block row align-items-center">
 											<div class="col-xl-4 col-xxl-5 col-lg-6 review-bx">
 												<h3 class="fs-20 font-w600 mb-1"><a class="text-black" href="javascript:void(0);">{{hospital_list_base_on_city.first_name}}</a></h3>
@@ -79,12 +79,17 @@
 {% else %}
 <br><br><br><br><br><br><br><br>
 
-
+<div class="page-titles">
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item btn"><a onClick="javascript:history.go(-1);">BACK</a></li>
+	</ol>
+</div>
+<br><br>
 <div class="container">
 	<div class="col-xl-12 col-xxl-12">
-				<div class="alert alert-danger alert-dismissible fade show">
+				<div class="alert alert-success alert-dismissible fade show">
 					<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-					<strong> We Could Find any Hospital !</strong> 
+					<strong> We could find any hospital!</strong> 
 					<button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
 					</button>
 		</div>
