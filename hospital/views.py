@@ -363,6 +363,20 @@ def add_patientView(request):
     
     if request.user.is_authenticated and request.user.is_rep:
         return render(request,'receptionist/add_patient.html')
+    
+@login_required(login_url='/')  
+def add_patient_historyView(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        data ={
+         'patient_id':patient_id
+        }
+        return render(request,'hospital/add_patient_history.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep:
+        data ={
+         'patient_id':patient_id
+        }
+        return render(request,'receptionist/add_patient_history.html',context=data)
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -862,6 +876,47 @@ def add_bedcategoryView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_bedcategory.html')
 
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def bed_admissionView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = {
+            'bed_list':Bedcategory.objects.filter(hospital=hospital_instance,status="Available"),
+            'doctor_list':Doctor.objects.filter(hospital=hospital_instance),
+            'hospital_instance':hospital_instance
+        }
+        return render(request,'hospital/bed_admission.html',context=data)
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_admissionView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        bed_id=request.POST['bed']
+        patientid=request.POST['patientid']
+        doctor_email=request.POST['doctor']
+        diagnosis=request.POST['diagnosis']
+        admission_date=request.POST['admission_date']
+        phistory=request.POST['phistory']
+        otherillness=request.POST['otherillness']
+        category=request.POST['category']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        doctor_instance=Doctor.objects.get(email=doctor_email)
+        bed_instance=Bedcategory.objects.get(id=bed_id)
+        patient_instance=Patient.objects.get(phone=patientid)
+        if Admission.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=0):
+            messages.info(request,'Previous admission has to be close before you can book another')
+            return redirect('/bed_admission')
+        else:
+            create_patient_admission=Admission(hospital=hospital_instance,patient=patient_instance,dr=doctor_instance,bed=bed_instance,diagnosis=diagnosis,phistory=phistory,otherillness=otherillness,category=category,admitted_date=admission_date)
+            if create_patient_admission:
+                create_patient_admission.save()
+                Bedcategory.objects.filter(id=bed_id).update(status="Unavailable")
+                return redirect('/bed_admission')
+    else:
+        return redirect('/bed_admission')
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -871,14 +926,32 @@ def create_bedcategoryView(request):
         hospital_instance=User.objects.get(username=username)
         categoryname = request.POST['categoryname']
         bednumber = request.POST['bednumber']
-        status = request.POST['status']       
+        status = request.POST['status'] 
+        amount = request.POST['amount']            
         id = random_id(length=9,character_set=string.digits)
-    
-        save_bedcategory_details=Bedcategory(hospital=hospital_instance, id=id, categoryname=categoryname,bednumber=bednumber,status=status)
+        save_bedcategory_details=Bedcategory(hospital=hospital_instance, id=id, categoryname=categoryname,bednumber=bednumber,status=status,price=amount)
         save_bedcategory_details.save()
         messages.info(request,'Bed Category created successfully')
         return redirect('/add_bedcategory')
-      
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def save_patient_historyView(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        patient_instance=Patient.objects.get(id=patient_id)
+        patient_history = request.POST['patient_history']
+        save_patient_history=Phistory(patient=patient_instance,title=patient_history)
+        save_patient_history.save()
+        messages.info(request,'Patient History added successfully')
+        return redirect(f'/add_patient_history/{patient_id}')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        patient_instance=Patient.objects.get(id=patient_id)
+        patient_history = request.POST['patient_history']
+        save_patient_history=Phistory(patient=patient_instance,title=patient_history)
+        save_patient_history.save()
+        messages.info(request,'Patient History added successfully')
+        return redirect(f'/add_patient_history/{patient_id}')
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -888,9 +961,24 @@ def bedcategory_listView(request):
         hospital_instance=User.objects.get(username=username)
         list_all_bedcategories=Bedcategory.objects.filter(hospital=hospital_instance)
         bedcategory_data = {
-            'list_all_bedcategories':list_all_bedcategories
+            'list_all_bedcategories':list_all_bedcategories,
+            'hospital_instance':hospital_instance
         }
         return render(request,'hospital/bedcategory_list.html',context=bedcategory_data)
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def all_admissionView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        list_all_admission=Admission.objects.filter(hospital=hospital_instance)
+        bedcategory_data = {
+            'list_all_admission':list_all_admission,
+            'hospital_instance':hospital_instance
+        }
+        return render(request,'hospital/all_admission.html',context=bedcategory_data)
+    
     
 
 @login_required(login_url='/')  
@@ -998,6 +1086,7 @@ def childbirth_listView(request):
             'list_all_childbirth':list_all_childbirth
         }
         return render(request,'hospital/childbirth_list.html',context=childbirth_data)
+    
     if request.user.is_authenticated and request.user.is_rep:
         username=request.user.username
         customer_instance=User.objects.get(username=username)
@@ -1191,16 +1280,26 @@ def create_donorView(request):
         age = request.POST['age']
         gender = request.POST['gender']  
         phone = request.POST['phone']
-        email = request.POST['email']       
+        email = request.POST['email'] 
+        quantity = int(request.POST['quantity'] )      
         id = random_id(length=9,character_set=string.digits)
     
         save_donor_details=Donor(hospital=hospital_instance, id=id, title=title, firstname=firstname, lastname=lastname, bloodgroup=bloodgroup, weight=weight, age=age, gender=gender,phone=phone, email=email)
         save_donor_details.save()
-                                             
-        messages.info(request,'Donor created successfully')
+        if Blood.objects.filter(hospital=hospital_instance,bloodgroup=bloodgroup).exists():
+            existing_blood_group_quantity=int(Blood.objects.values_list('quantity', flat=True).get(bloodgroup=bloodgroup))
+            update_blood_quantity=existing_blood_group_quantity + quantity
+            Blood.objects.filter(hospital=hospital_instance,bloodgroup=bloodgroup).update(quantity=update_blood_quantity)                             
+            messages.info(request,'Blood has been addded successfully to the blood the blood bank')
+            return redirect('/add_donor')
+        else:
+            save_new_blood=Blood(hospital=hospital_instance,bloodgroup=bloodgroup,quantity=quantity)
+            save_new_blood.save()
+            messages.info(request,'Blood has been addded successfully to the blood the blood bank')
+            return redirect('/add_donor')
+    else:
         return redirect('/add_donor')
     
-       
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def add_donorView(request):
@@ -1382,14 +1481,66 @@ def create_bloodView(request):
         messages.info(request,'Blood created successfully')
         return redirect('/add_blood')
     
-       
+#===========================================BLOOD FEES========================================
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
+def create_blood_feesView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        bloodgroup = request.POST['bloodgroup']
+        price = request.POST['price']
+        id = random_id(length=9,character_set=string.digits)
+        if Bloodfees.objects.filter(hospital=hospital_instance,bloodgroup=bloodgroup).exists():
+            messages.info(request,'Blood Group Fees captured already')
+            return redirect('/blood_fees')
+        else:
+            save_blood_group_fees=Bloodfees(hospital=hospital_instance, id=id, bloodgroup=bloodgroup, amount=price)
+            save_blood_group_fees.save()           
+            messages.info(request,'Blood Fees Save successfully')
+            return redirect('/blood_fees')
+
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def blood_feesView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        return render(request,'hospital/blood_fees.html')
+
+       
+@login_required(login_url='/')  
 def add_bloodView(request):
     if request.user.is_authenticated and request.user.is_hospital:
         return render(request,'hospital/add_blood.html')
     if request.user.is_authenticated and request.user.is_rep:
         return render(request,'receptionist/add_blood.html')
+    
+    
+@login_required(login_url='/')  
+def blood_salesView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        blood_fees =Bloodfees.objects.filter(hospital=hospital_instance)
+        data = {
+            'hospital_instance':hospital_instance,
+            'blood_fees':blood_fees
+        }
+        return render(request,'hospital/blood_sales.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep:
+        return render(request,'receptionist/blood_sales.html')
+    
+@login_required(login_url='/')  
+def all_blood_bank_fees_View(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        blood_bank_purchase=Bloodpurchase.objects.filter(hospital=hospital_instance)
+        data = {
+            'hospital_instance':hospital_instance,
+            'blood_bank_purchase':blood_bank_purchase
+        }
+        return render(request,'hospital/blood_bank_purchase.html',context=data)
+
 
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -1413,6 +1564,20 @@ def blood_listView(request):
             'all_blood_list':all_blood_list
         }
         return render(request,'receptionist/blood_list.html',context=blood_data)
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def blood_list_feesView(request):
+    if request.user.is_authenticated and request.user.is_hospital:
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        all_blood_list_fees=Bloodfees.objects.filter(hospital=hospital_instance)
+        blood_data = {
+            'all_blood_list_fees':all_blood_list_fees,
+            'hospital_instance':hospital_instance
+        }
+        return render(request,'hospital/blood_list_fees.html',context=blood_data)
+    
     
 @login_required(login_url='/')  
 def edit_bloodView(request,blood_id):
@@ -1440,15 +1605,48 @@ def update_bloodView(request,blood_id):
         Blood.objects.filter(pk=blood_id).update(status=status)
         messages.info(request,'Update has been done successfully')
         return redirect(f'/edit_blood/{blood_id}')
-
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def create_blood_salesView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        patientid = request.POST['patientid']
+        bloodgroup = request.POST['bloodgroup']
+        quantity = request.POST['quantity']
+        paymenttype = request.POST['paymenttype']  
+        
+        if not Patient.objects.filter(phone=patientid).exists():
+            messages.info(request,'Patient ID not found in the system')
+            return redirect('/blood_sales')
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance=Patient.objects.get(phone=patientid)
+        blood_group_price=int(Bloodfees.objects.filter(bloodgroup=bloodgroup).values_list('amount', flat=True).get(hospital=hospital_instance))
+        avaliable_quantity_bank=int(Blood.objects.filter(bloodgroup=bloodgroup).values_list('quantity', flat=True).get(hospital=hospital_instance))
+        total_purchase_price=blood_group_price * int(quantity)
+        
+        if int(quantity) > avaliable_quantity_bank:
+            messages.info(request,'The requsted quantity is more than the avaliable quantity')
+            return redirect('/blood_sales')
+        else:
+            save_blood_fees=Bloodpurchase(hospital=hospital_instance,patient=patient_instance,bloodgroup=bloodgroup,amount=total_purchase_price,status=paymenttype)
+            save_blood_fees.save()
+            messages.info(request,'Blood has been successfully purchase')
+            return redirect('/blood_sales')
 
 @login_required(login_url='/')  
 def delete_bloodView(request, blood_id):
     if request.user.is_authenticated and request.user.is_hospital:
-        delete_blood = Blood.objects.get(id=blood_id)
+        delete_blood=Blood.objects.get(id=blood_id)
         delete_blood.delete()
         return redirect('/blood_list')
     
+@login_required(login_url='/')  
+def delete_blood_feesView(request,id):
+    if request.user.is_authenticated and request.user.is_hospital:
+        delete_blood=Bloodfees.objects.get(id=id)
+        delete_blood.delete()
+        return redirect('/blood_list_fees')
 
 #===========================================NOTICES========================================
 @login_required(login_url='/')  
@@ -1586,6 +1784,7 @@ def patient_detailsView(request,patient_id):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         patient_instance=Patient.objects.get(id=patient_id)
+        patient_history=Phistory.objects.filter(patient=patient_instance)
         data = {
         'patient_id':patient_instance.id,
         'title':patient_instance.title,
@@ -1595,7 +1794,8 @@ def patient_detailsView(request,patient_id):
         'phone':patient_instance.phone,
         'created_at':patient_instance.created_at,
         'patient_appointment':Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)[:1],
-        'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
+        'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5],
+        'patient_history':patient_history
         }
         return render(request,'hospital/patient_details.html',context=data)
     
@@ -1605,6 +1805,7 @@ def patient_detailsView(request,patient_id):
         recep_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=recep_instance.hospital.username)
         patient_instance=Patient.objects.get(id=patient_id)
+        patient_history=Phistory.objects.filter(patient=patient_instance)
         data = {
         'patient_id':patient_instance.id,
         'title':patient_instance.title,
@@ -1614,7 +1815,8 @@ def patient_detailsView(request,patient_id):
         'phone':patient_instance.phone,
         'created_at':patient_instance.created_at,
         'patient_appointment':Appointment.objects.filter(hospital=hospital_instance,patient=patient_instance).filter(status=1)[:1],
-        'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5]
+        'patient_treatment_log':Treatment.objects.filter(hospital=hospital_instance,patient=patient_instance)[:5],
+        'patient_history':patient_history
         }
         return render(request,'receptionist/patient_details.html',context=data)
     
@@ -2341,7 +2543,8 @@ def generate_appointment_reportView(request):
         data ={
         'selected_appointment_report':selected_appointment_report,
         'total_appointment_cash':Appointment.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date)).aggregate(Sum('amount'))['amount__sum'],
-        'current_date':current_date
+        'current_date':current_date,
+        'hospital_instance':hospital_instance
         }
         return render(request,'hospital/appointment_report.html',context=data)
     else:
@@ -2360,7 +2563,8 @@ def generate_laboratory_reportView(request):
         data ={
         'selected_lab_report':selected_lab_report,
         'total_loboratory_cash':Labtest.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date)).aggregate(Sum('amount'))['amount__sum'],
-        'current_date':current_date
+        'current_date':current_date,
+        'hospital_instance':hospital_instance
         }
         return render(request,'hospital/laboratory_report.html',context=data)
     else:
@@ -2379,7 +2583,8 @@ def generate_monthly_expenses_reportView(request):
         data ={
         'selected_expenses_report':selected_expenses_report,
         'total_expenses_cash':Expense.objects.filter(hospital=hospital_instance,created_at__range=(from_date,to_date)).aggregate(Sum('amount'))['amount__sum'],
-        'current_date':current_date
+        'current_date':current_date,
+        'hospital_instance':hospital_instance
         }
         return render(request,'hospital/monthly_report.html',context=data)
     else:

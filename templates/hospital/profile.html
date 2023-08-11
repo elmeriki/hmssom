@@ -81,32 +81,27 @@
                         <div class="profile-tab">
                             <div class="custom-tab-1">
                                 <ul class="nav nav-tabs">
-                                    <li class="nav-item"><a href="#my-posts" data-toggle="tab" class="nav-link active show">Posts</a>
+                                    <li class="nav-item"><a href="#my-posts" data-toggle="tab" class="nav-link active show">The App</a>
                                     </li>
-                                    <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link">About us</a>
+                                    <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link">The Hospital</a>
                                     </li>
-                                    <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Setting</a>
+                                    <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Settings</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="my-posts" class="tab-pane fade active show">
                                         <div class="my-post-content pt-3">
-                                            <div class="post-input">
-                                                <textarea name="textarea" id="textarea" cols="30" rows="5" class="form-control bg-transparent" placeholder="Please type what you want...."></textarea> 
-                                                <a href="javascript:void()" class="btn btn-primary light px-3"><i class="fa fa-link"></i> </a>
-                                                <a href="javascript:void()" class="btn btn-primary light mr-1 px-3"><i class="fa fa-camera"></i> </a><a href="javascript:void()" class="btn btn-primary">Post</a>
-                                            </div>
+                                        
                                             <div class="profile-uoloaded-post border-bottom-1 pb-5">
                                                 <img src="images/profile/8.jpg" alt="" class="img-fluid">
                                                 <a class="post-title" href="javascript:void()">
-                                                    <h4>Collection of textile samples lay spread</h4>
+                                                    <h4>Seamless care for your hospitals</h4>
                                                 </a>
-                                                <p>A wonderful serenity has take possession of my entire soul like these sweet morning of spare which enjoy whole heart.A wonderful serenity has take possession of my entire soul like these sweet morning
-                                                    of spare which enjoy whole heart.</p>
+                                                <p>It Tech Solutions Company will provide you the best & highly accurate analysis that will let you make reliable decisions related to your business.</p>
                                                 <button class="btn btn-primary mr-2"><span class="mr-2"><i
-                                                            class="fa fa-heart"></i></span>Like</button>
-                                                <button class="btn btn-secondary"><span class="mr-2"><i
-                                                            class="fa fa-reply"></i></span>Reply</button>
+                                                            class="fa fa-heart"></i></span>Changes Password</button>
+                                                {% comment %} <button class="btn btn-secondary"><span class="mr-2"><i
+                                                            class="fa fa-reply"></i></span>Reply</button> {% endcomment %}
                                             </div>
                             
                                        
@@ -115,7 +110,7 @@
                                     <div id="about-me" class="tab-pane fade">
                                         <div class="profile-about-me">
                                             <div class="pt-4 border-bottom-1 pb-3">
-                                                <h4 class="text-primary">About Our Hospital</h4>
+                                                {% comment %} <h4 class="text-primary">About Our Hospital</h4> {% endcomment %}
                                                 <p class="mb-2">{{about_the_hospital_text}}</p>
                                             </div>
                                         </div>
@@ -172,26 +167,20 @@
                                         <div class="pt-3">
                                             <div class="settings-form">
                                                 <br>
-                                                <form>
+                                                <form action="/password_update" method="POST">
+                                                    {% csrf_token %}
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-6">
-                                                            <input type="email" placeholder="{{request.user.email}}" disabled class="form-control">
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <input type="password" placeholder="Password" class="form-control">
+                                                        <div class="form-group col-md-12">
+                                                            <input type="email" placeholder="Enter username" name="email" required="required" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <input type="text" placeholder="{{request.user.city}}" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="text" placeholder="{{request.user.address}}" class="form-control">
+                                                        <input type="text" placeholder="New Password" name="new_password" required="required" class="form-control">
                                                     </div>
                                                     </div>
                                                   
                                                     </div>
-                                                    <button class="btn btn-primary" type="submit">Update
-                                                        </button>
+                                                    <button class="btn btn-primary" type="submit">Update Password</button>
                                                 </form>
                                             </div>
                                         </div>

@@ -25,15 +25,6 @@
 					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>
-									<div class="checkbox text-right align-self-center">
-										<div class="custom-control custom-checkbox ">
-											<input type="checkbox" class="custom-control-input" id="checkAll"
-												required="">
-											<label class="custom-control-label" for="checkAll"></label>
-										</div>
-									</div>
-								</th>
 								<th>Category</th>
 								<th>Amount</th>
 								<th>Description</th>
@@ -43,17 +34,8 @@
 						<tbody>
 							<tr>
 								{% for expenses_list in expenses_list %}
-								<td>
-									<div class="checkbox text-right align-self-center">
-										<div class="custom-control custom-checkbox ">
-											<input type="checkbox" class="custom-control-input" id="customCheckBox"
-												required="">
-											<label class="custom-control-label" for="customCheckBox"></label>
-										</div>
-									</div>
-								</td>
 								<td>{{expenses_list.category.name}}</td>
-								<td>{{expenses_list.amount}}</td>
+								<td>{{hospital_instance.currency}} {{expenses_list.amount}}</td>
 								<td>{{expenses_list.decs}}</td>
 								<td>{{expenses_list.created_at | timesince}} ago</td>
 								<td>

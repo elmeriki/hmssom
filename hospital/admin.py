@@ -10,4 +10,5 @@ admin.site.register(Treatment)
 admin.site.register(Lapreport)
 admin.site.register(Labresult)
 admin.site.register(Fees)
-
+admin.site.register(Admission)
+admin.site.register(Bedcategory)

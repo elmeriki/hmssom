@@ -95,7 +95,7 @@ def create_regionView(request):
     if request.user.is_authenticated and request.user.is_superuser and request.method=="POST":
         name = request.POST['name']
         color = request.POST['color']
-        create_new_region=Region(name=name,decolorsc=color)
+        create_new_region=Region(name=name,color=color)
         create_new_region.save()
         return redirect('/region_list')
     else:

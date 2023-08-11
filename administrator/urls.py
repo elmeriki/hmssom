@@ -10,6 +10,6 @@ urlpatterns = [
     path('region_list', views.region_listView, name='region_listView'),
     path('add_region', views.add_regionView, name='add_regionView'),
     path('create_region', views.create_regionView, name='create_regionView'),
-    path('delete_region', views.delete_regionView, name='delete_regionView'),
+    path('delete_region/<str:id>', views.delete_regionView, name='delete_regionView'),
 
 ]

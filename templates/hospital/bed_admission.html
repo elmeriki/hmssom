@@ -1,0 +1,83 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Patient Addminission</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/create_admission" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="form-row">     
+                                <div class="form-group col-md-6">
+                                    <select class="form-control" name="bed" required>
+                                        <option value="">Select Bed</option>
+                                        {% for bed_list in bed_list %}
+                                        <option value="{{bed_list.id}}">{{bed_list.bednumber}} {{bed_list.categoryname}}  {{hospital_instance.currency}} {{bed_list.price}} Per Night </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" class="form-control" name="patientid" placeholder="Enter Patient Cell Phone" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <select class="form-control" name="doctor" required>
+                                        <option value="">Asigned Doctor</option>
+                                        {% for doctor_list in doctor_list %}
+                                        {% if doctor_list.user.is_dr %}
+                                        <option value="{{doctor_list.email}}">{{doctor_list.name}}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" class="form-control" name="diagnosis" placeholder="Diagnosis" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Admisision Date </label>
+                                    <input type="date" class="form-control" name="admission_date" placeholder="Admisision Date" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Patient History </label>
+                                    <input type="text" class="form-control" name="phistory" placeholder="Patient History" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Other Illness </label>
+                                    <input type="text" class="form-control" name="otherillness" placeholder="Other Illness" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Category </label>
+                                    <select class="form-control" name="category" required>
+                                        <option value="">Select Status</option>
+                                        <option value="Planned">Planned</option>
+                                        <option value="Urgent">Urgent</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

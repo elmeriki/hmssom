@@ -10,13 +10,15 @@
 			<div class="mr-auto d-none d-lg-block">
 				<a href="/add_patient" class="btn btn-primary btn-rounded">+ Add New</a>
 			</div>
-
-			<div class="input-group search-area ml-auto d-inline-flex mr-3">
-				<input type="text" class="form-control" placeholder="Search here">
-				<div class="input-group-append">
-					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+            <form action="/search_patient_detail" method="POST">
+				{% csrf_token %}
+				<div class="input-group search-area ml-auto d-inline-flex">
+					<input type="text" class="form-control" name="cellphone" Required="Required" autocomplete="OFF" placeholder="Search here">
+					<div class="input-group-append">
+						<button type="submit" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+					</div>
 				</div>
-			</div>
+				</form>
 			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
 		</div>
 		<div class="row">

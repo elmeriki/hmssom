@@ -61,7 +61,8 @@ def payment_listView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)  
         data = {
-         'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10]
+         'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10],
+         'hospital_instance':hospital_instance
         }       
         return render(request,'finance/payment_list.html',context=data)
     if request.user.is_authenticated and request.user.is_rep: 
@@ -70,7 +71,8 @@ def payment_listView(request):
         recep_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=recep_instance.hospital.username)   
         data = {
-         'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10]
+         'payment_list':Payment.objects.filter(hospital=hospital_instance)[:10],
+         'hospital_instance':hospital_instance
         }       
         return render(request,'receptionist/payment_list.html',context=data)
     else:
@@ -121,7 +123,8 @@ def appointment_categoryView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)    
         data = {
-            'payment_category':Appointmentfees.objects.filter(hospital=hospital_instance)
+            'payment_category':Appointmentfees.objects.filter(hospital=hospital_instance),
+            'hospital_instance':hospital_instance
         }    
         return render(request,'finance/appointment_payment_list.html',context=data)
     else:
@@ -166,7 +169,8 @@ def expense_listView(request):
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         data = { 
-        'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15]
+        'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15],
+        'hospital_instance':hospital_instance
         }       
         return render(request,'finance/expense_list.html',context=data)
     if request.user.is_authenticated and request.user.is_rep: 
@@ -175,11 +179,28 @@ def expense_listView(request):
         recep_instance=Doctor.objects.get(user=customer_instance)
         hospital_instance=User.objects.get(username=recep_instance.hospital.username) 
         data = { 
-        'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15]
+        'expenses_list':Expense.objects.filter(hospital=hospital_instance)[:15],
+        'hospital_instance':hospital_instance
         }       
         return render(request,'finance/expense_list.html',context=data)
     else:
         return redirect('/')
+    
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def admision_feesView(request):
+    if request.user.is_authenticated and request.user.is_hospital: 
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        data = { 
+        'admission_fees':Admissionfees.objects.filter(hospital=hospital_instance),
+        'hospital_instance':hospital_instance
+        }       
+        return render(request,'finance/admision_fees.html',context=data)
+    else:
+        return redirect('/')
+
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
@@ -207,6 +228,42 @@ def expensecategoryView(request):
         'expenses_categories':Expensescategory.objects.filter(hospital=hospital_instance)
         }      
         return render(request,'receptionist/expensecategory.html',context=data)
+    else:
+        return redirect('/')
+    
+    
+@login_required(login_url='/')  
+def admission_feesView(request,patient_id,price):
+    if request.user.is_authenticated and request.user.is_hospital:  
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance =Patient.objects.get(phone=patient_id)
+        data = {
+        'price':price,
+        'patient_instance':patient_instance,
+        'hospital_instance':hospital_instance
+        }
+        return render(request,'finance/admision_fees.html',context=data)
+    else:
+        return redirect('/')
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def save_admission_feesView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        patientid =request.POST['patientid']
+        price =int(request.POST['price'])
+        days =int(request.POST['days'])
+        payment_status =request.POST['payment_status']
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance =Patient.objects.get(phone=patientid)
+        total_cost =price * days
+        save_admision_fees=Admissionfees(hospital=hospital_instance,patient=patient_instance,days=days,amount=total_cost,paymenttype=payment_status)
+        if save_admision_fees:
+            save_admision_fees.save()
+            Admission.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status="1")
+        return redirect('/all_admission')
     else:
         return redirect('/')
     

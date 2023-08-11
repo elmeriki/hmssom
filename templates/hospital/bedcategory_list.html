@@ -27,6 +27,7 @@
 								<th>Bed Category ID</th>
                                 <th>Rooms</th>
 								<th>Bed Number</th>
+								<th>Price Per Night</th>
 								<th>Status</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
@@ -39,14 +40,9 @@
 							<tr>
 								<td>{{eachlist_all_bedcategories.id}}</td>
 								<td>{{eachlist_all_bedcategories.categoryname}}</td>
-                                <td>{{eachlist_all_bedcategories.bednumber}}</td>							
-                          
-								{% if eachall_bedcategory_list.status == 1 %}
-								<td><span class="font-w500">Available</span></td>
-								{% else %}
-								<td><span class="font-w500">Unavailable</span></td>
-								{% endif %}
-                                
+                                <td>{{eachlist_all_bedcategories.bednumber}}</td>	
+								<td>{{hospital_instance.currency}} {{eachlist_all_bedcategories.price}}</td>													
+								<td><span class="font-w500">{{eachlist_all_bedcategories.status}}</span></td>
 								<td>
                                     <a href="/edit_bedcategory/{{eachlist_all_bedcategories.id}}" onclick="if(!confirm('Are you sure you want to edit this Bed Category?')){return false;}">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"

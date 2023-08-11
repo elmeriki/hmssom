@@ -165,35 +165,23 @@
 					<div class="col-xl-3 col-xxl-12 col-md-6">
 						<div class="card">	
 							<div class="card-header border-0 pb-0">
-								<h4 class="fs-20 font-w600">Patient Statistic</h4>
+								<h4 class="fs-20 font-w600">Previous Hisory</h4>
 							</div>
 							<div class="card-body text-center">
-								<span class="donut" data-peity='{ "fill": ["rgb(209, 209, 209)", "rgba(180, 92, 195, 1)","rgba(255, 214, 0, 1)"]}'>2,5,3</span>
+								<a href="/add_patient_history/{{patient_id}}" class="text-danger">Add New</a>
 								<div class="mt-4">
-									<p class="mb-2 d-flex text-dark font-w500  fs-14">Immunities (24%)
-										<span class="pull-right ml-auto">25</span>
+									{% if patient_history %}
+									{% for patient_history in patient_history %}
+									<p class="mb-2 d-flex text-dark font-w500  fs-14"> {{patient_history.title}}
+										<span class="pull-right ml-auto">{{ forloop.counter }}</span>
 									</p>
-									<div class="progress mb-3" style="height:8px">
-										<div class="progress-bar bg-secondary progress-animated" style="width:85%; height:8px;" role="progressbar">
-											<span class="sr-only">60% Complete</span>
-										</div>
-									</div>
-									<p class="mb-2 d-flex text-dark font-w500  fs-14">Heart Beat (41%)
-										<span class="pull-right ml-auto">12</span>
+									{% endfor %}
+									{% else %}
+									<p class="mb-2 d-flex text-dark font-w500  fs-14">No Patient History Found
 									</p>
-									<div class="progress mb-3" style="height:8px">
-										<div class="progress-bar bg-warning progress-animated" style="width:90%; height:8px;" role="progressbar">
-											<span class="sr-only">60% Complete</span>
-										</div>
-									</div>
-									<p class="mb-2 d-flex  text-dark font-w500 fs-14">Weigth (15%)
-										<span class="pull-right ml-auto">15</span>
-									</p>
-									<div class="progress" style="height:8px">
-										<div class="progress-bar bg-light progress-animated" style="width:65%; height:8px;" role="progressbar">
-											<span class="sr-only">60% Complete</span>
-										</div>
-									</div>
+
+									{% endif %}
+
 								</div>
 							</div>
 						</div>

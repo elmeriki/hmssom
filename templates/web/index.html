@@ -79,9 +79,9 @@
                             <a href="javascript:void(0)">Home</a>
                         </li>
 
-                        <li><a href="#" class="sub-menu-item">Business</a></li>
-                        <li><a href="#" class="sub-menu-item">Services</a></li>
-                        <li><a href="#" class="sub-menu-item">Pakages</a></li>
+                        {% comment %} <li><a href="#" class="sub-menu-item">Business</a></li>
+                        <li><a href="#" class="sub-menu-item">Services</a></li> {% endcomment %}
+                        <li><a href="/contact" class="sub-menu-item">Contact us</a></li> 
                         <li><a href="/sys" class="sub-menu-item">Login</a></li>
                         <li><a href="/register_hospital" class="sub-menu-item">Register</a></li>
                     </ul><!--end navigation menu-->
@@ -498,112 +498,7 @@
         <!-- End About -->
 
         <!-- Footer Start -->
-        <footer class="bg-footer">    
-            <div class="container-fluid px-0">
-                <div class="py-5">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <div class="section-title">
-                                    <div class="d-flex">
-                                        <i class="uil uil-mobile-android display-4 text-white title-dark"></i>
-                                        <div class="flex-1 ms-md-4 ms-3">
-                                            <h4 class="fw-medium text-light title-dark mb-1">Download our app now !</h4>
-                                            <p class="text-white-50 mb-0">Install our HMSSOM app now and get access to all the Hospital and clinics in your city!</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="col-md-4 mt-4 mt-sm-0">
-                                <div class="text-md-end ms-5 ms-sm-0">
-                                    <a href="javascript:void(0)" class="btn btn-primary m-1"><i class="uil uil-apple"></i> App Store</a>
-                                    <a href="javascript:void(0)" class="btn btn-soft-primary m-1"><i class="uil uil-google-play"></i> Play Store</a>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end container-->
-                </div><!--end div-->
-            </div><!--end container-->
-
-    
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="footer-py-100 footer-border-top">
-                            <div class="row">
-                                <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                                    <a href="#" class="logo-footer">
-                                        <img src="{% static 'assets/web/images/logo-white.png' %}" height="28" alt="">
-                                    </a>
-                                    <p class="text-foot mt-4">W we are committed to delivering exceptional healthcare services with the help of our advanced Hospital Management System. Our state-of-the-art software solution is designed to streamline and optimize various aspects of hospital operations, ensuring efficiency, accuracy, and improved patient care.</p>
-                                    <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
-                                        <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-behance" title="Behance"></i></a></li>
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-linkedin" title="Linkedin"></i></a></li>
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
-                            <li class="list-inline-item"><a href="#" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>                                
-                            <li class="list-inline-item"><a href="#"  class="rounded"><i class="uil uil-file align-middle" title="customization"></i></a></li>
-                                    </ul><!--end icon-->
-                                </div><!--end col-->
-
-                                <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                    <h5 class="text-light footer-head">Company</h5>
-                                    <ul class="list-unstyled footer-list mt-4">
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>About</a></li>
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>Pakages</a></li>
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>Mission</a></li>
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>Contact Us</a></li>
-                                    </ul>
-                                </div><!--end col-->
-                                
-                                <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                    <h5 class="text-light footer-head">Links</h5>
-                                    <ul class="list-unstyled footer-list mt-4">
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>Term</a></li>
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>Security</a></li>
-                                        <li><a href="#" class="text-foot"><i class="uil uil-angle-right-b me-1"></i>Privacy</a></li>
-                                    </ul>
-                                </div><!--end col-->
-            
-                                <div class="col-lg-4 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                    <h5 class="text-light footer-head">Revolutionize Now</h5>
-
-                                    <ul class="list-unstyled footer-list mt-4 mb-2">
-                                        <li class="list-inline-item mx-1"><a href="/sys" class="btn btn-soft-primary">Login</a></li>
-                                        <li class="list-inline-item mx-1"><a href="/register_hospital" class="btn btn-primary">Signup</a></li>
-                                    </ul>
-                                    <small class="text-foot d-block">How does it work? <a href="#" class="text-foot fw-medium">Learn More</a></small>
-                                    <br>
-                                    <img src="{% static 'assets/web/images/logo-white.png' %}" width="100px" alt="">
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-
-            <div class="footer-py-30 footer-border-top">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-sm-8">
-                            <div class="text-sm-start text-center">
-                                <p class="mb-0 text-foot">© <script>document.write(new Date().getFullYear())</script> Hmssom. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="#" target="_blank" class="text-reset">IT Solutions</a>.</p>
-                            </div>
-                        </div><!--end col-->
-    
-                        <div class="col-sm-4 mt-4 mt-sm-0">
-                            <div class="text-sm-end text-center">
-                                <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-pills btn-icon btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
-                            </div>                            
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div><!--end container-->
-            </div>
-        </footer><!--end footer-->
+            {% include 'web/footer.html' %}
         <!-- Footer End -->
 
         <!-- Offcanvas Start -->

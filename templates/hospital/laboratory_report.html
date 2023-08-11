@@ -35,7 +35,7 @@
                                         <td class="center">{{forloop.counter}}</td>
                                         <td class="left strong">Dr.{{selected_lab_report.dr.name}}</td>
                                         <td class="left">Laboratory Test</td>
-                                        <td class="right">Biir{{selected_lab_report.amount}}</td>
+                                        <td class="right">{{hospital_instance.currency}} {{selected_lab_report.amount}}</td>
                                         <td class="center">{{selected_lab_report.created_at.date}}</td>
                                     </tr>
                                     {% endfor %}
@@ -57,7 +57,7 @@
                                         </tr>
                                         <tr>
                                             <td class="left"><strong>Total</strong></td>
-                                            <td class="right"><strong>Biir {{total_appointment_cash}}</strong><br>
+                                            <td class="right"><strong>{{hospital_instance.currency}} {{total_appointment_cash}}</strong><br>
                                                 </td>
                                         </tr>
                                     </tbody>

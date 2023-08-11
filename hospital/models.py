@@ -99,6 +99,19 @@ class Patient(models.Model):
     def __str__(self):
         return self.hospital.first_name
     
+class Phistory(models.Model):
+    patient=models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_previous_history")
+    title=models.CharField(max_length=200,blank=True,null=True,default="None")
+    status=models.CharField(max_length=200,blank=True,null=True,default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Patient History"
+        
+    def __str__(self):
+        return self.patient.name
+    
+    
 class Treatment(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_patient_treatment_log")
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_treatment_name")
@@ -138,6 +151,7 @@ class Bedcategory(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_bed_category")
     categoryname =  models.CharField(max_length=200,blank=True,null=True,default="None")
     bednumber =  models.CharField(max_length=200,blank=True,null=True,default="None")
+    price = models.CharField(max_length=200,default=0,null=True,blank=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -308,6 +322,7 @@ class Donor(models.Model):
     gender =  models.CharField(max_length=200,blank=True,null=True,default="None")
     phone =  models.CharField(max_length=200,blank=True,null=True,default="None")
     email =  models.EmailField(max_length=200,blank=True,null=True,default="None")
+    quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
     lastdonationdate = models.DateField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -325,7 +340,35 @@ class Blood(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
-        verbose_name_plural ="Blood"
+        verbose_name_plural ="Blood Bank"
+        
+    def __str__(self):
+        return self.hospital.first_name
+    
+class Bloodfees(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_blood_prices")
+    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="")
+    amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    status = models.CharField(max_length=200,default=0,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Blood Bank Price"
+        
+    def __str__(self):
+        return self.hospital.first_name
+    
+class Bloodpurchase(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_blood_purchase")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_blood_purchase")
+    bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="")
+    amount= models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    status = models.CharField(max_length=200,default=0,null=True,blank=True)
+    quantity = models.CharField(max_length=200,default=0,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural ="Blood Purchase"
         
     def __str__(self):
         return self.hospital.first_name
@@ -450,6 +493,37 @@ class Fees(models.Model):
     expireddate=models.DateField(blank=True,null=True) 
     class Meta:
         verbose_name_plural ="Fees"
+        
+    def __str__(self):
+        return self.hospital.first_name
+    
+class Admission(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_adminited_hospital")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="admited_patient")
+    dr=models.ForeignKey(Doctor,on_delete=models.CASCADE,blank=True,null=True,related_name="asigned_doctor_to_patient")
+    bed=models.ForeignKey(Bedcategory,on_delete=models.CASCADE,blank=True,null=True,related_name="administed_bed")
+    diagnosis =models.CharField(max_length=200,default=0,null=True,blank=True)
+    phistory =  models.TextField(null=True,blank=True,default="None")
+    otherillness =  models.TextField(null=True,blank=True,default="None")
+    category =  models.TextField(null=True,blank=True,default="None")
+    admitted_date=models.DateField(blank=True,null=True) 
+    status=models.CharField(max_length=200,blank=True,null=True,default=0)
+    discharge_date=models.DateField(blank=True,null=True) 
+    class Meta:
+        verbose_name_plural ="Admission Log"
+    def __str__(self):
+        return self.hospital.first_name
+    
+class Admissionfees(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_admision_fees")
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,blank=True,null=True,related_name="patient_admission_fees")
+    days=models.CharField(max_length=200,blank=True,null=True,default="0")
+    amount=models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    paymenttype=models.CharField(max_length=200,blank=True,null=True,default="None")
+    status=models.CharField(max_length=200,blank=True,null=True,default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural ="Admissionfees"
         
     def __str__(self):
         return self.hospital.first_name

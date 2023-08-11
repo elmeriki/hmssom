@@ -1,0 +1,65 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Blood Sales</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/create_blood_sales" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">                               
+                                    <div class="form-group col-md-6">
+                                        <label for="firstname">Patient ID</label>
+                                        <input type="number" class="form-control" name="patientid" placeholder="Enter Patient ID"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="bloodgroup">Blood Group</label>
+                                        <select class="form-control" name="bloodgroup" required>
+                                            <option value="">Select Blood Group</option>
+                                            {% for blood_fees in blood_fees %}
+                                            <option value="{{blood_fees.bloodgroup}}">{{blood_fees.bloodgroup}} {{hospital_instance.currency}} {{blood_fees.amount}} Per Bag</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="quantity">Quanity</label>
+                                        <input type="number" class="form-control" name="quantity"
+                                            placeholder="Enter quantity needed" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="bloodgroup">Payment Type</label>
+                                        <select class="form-control" name="paymenttype" required>
+                                            <option value="">Select Blood Group</option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Cash">Bank</option>
+                                        </select>
+                                    </div>                                      
+                     
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

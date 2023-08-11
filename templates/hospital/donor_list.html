@@ -24,7 +24,7 @@
 					<table id="example5" class="table shadow-hover  table-bordered mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>Donor ID</th>
+								{% comment %} <th>Donor ID</th> {% endcomment %}
                                 <th>Title</th>
 								<th>Firstname</th>
 								<th>Lastname</th>
@@ -34,13 +34,14 @@
                                 <th>Gender</th>                            
                                 <th>Phone</th>
 								<th>Email</th>
-								<th>Last Donation Date</th>
+                                <th>Qty</th>
+								<th>Date</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for eachall_donor_list in all_donor_list %}
 							<tr>
-								<td>{{eachall_donor_list.id}}</td>
+								{% comment %} <td>{{eachall_donor_list.id}}</td> {% endcomment %}
                                 <td>{{eachall_donor_list.title}}</td>
 								<td>{{eachall_donor_list.firstname}}</td>
                                 <td>{{eachall_donor_list.lastname}}</td>
@@ -50,6 +51,7 @@
                                 <td>{{eachall_donor_list.gender}}</td>
                                 <td>{{eachall_donor_list.phone}}</td>                          
                                 <td>{{eachall_donor_list.email}}</td>
+                                <td>{{eachall_donor_list.quantity}}</td>
                                 <td><span class="font-w500">{{eachall_donor_list.lastdonationdate | date }}</span></td>
 
                                 <td>

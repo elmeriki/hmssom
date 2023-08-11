@@ -77,6 +77,8 @@ urlpatterns = [
     path('document_list', views.document_listView, name='document_listView'),
     path('add_document', views.add_documentView, name='add_documentView'),
 
+    path('add_patient_history/<str:patient_id>', views.add_patient_historyView, name='add_patient_historyView'),
+    path('save_patient_history/<str:patient_id>', views.save_patient_historyView, name='save_patient_historyView'),
 
 
     path('add_humanresource', views.add_humanresourceView, name='add_humanresourceView'),
@@ -95,6 +97,10 @@ urlpatterns = [
     path('update_bedcategory/<str:bedcategoryid>', views.update_bedcategoryView, name='update_bedcategoryView'),
     path('delete_bedcategory/<str:bedcategoryid>', views.delete_bedcategoryView, name='delete_bedcategoryView'),
     
+    path('bed_admission', views.bed_admissionView, name='bed_admissionView'),
+    path('create_admission', views.create_admissionView, name='create_admissionView'),
+    path('all_admission', views.all_admissionView, name='all_admissionView'),
+
 
     path('add_childbirth', views.add_childbirthView, name='add_childbirthView'),
     path('create_childbirth', views.create_childbirthView, name='create_childbirthView'),
@@ -135,6 +141,17 @@ urlpatterns = [
     path('edit_blood/<str:blood_id>', views.edit_bloodView, name='edit_bloodView'),
     path('update_blood/<str:blood_id>', views.update_bloodView, name='update_bloodView'),
     path('delete_blood/<str:blood_id>', views.delete_bloodView, name='delete_bloodView'),
+
+    path('blood_list_fees', views.blood_list_feesView, name='blood_list_feesView'),
+    path('create_blood_fees', views.create_blood_feesView, name='create_blood_feesView'),
+    path('blood_fees', views.blood_feesView, name='blood_feesView'),
+    path('delete_blood_fees/<str:id>', views.delete_blood_feesView, name='delete_blood_feesView'),
+
+    path('blood_sales', views.blood_salesView, name='blood_salesView'),
+    path('create_blood_sales', views.create_blood_salesView, name='create_blood_salesView'),
+
+
+    path('all_blood_bank_fees', views.all_blood_bank_fees_View, name='all_blood_bank_fees_View'),
 
    
     path('add_notice', views.add_noticeView, name='add_noticeView'),

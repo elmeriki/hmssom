@@ -234,6 +234,10 @@
     <div class="dashboard_bar">
         Patient's Details
     </div>
+    {% elif "/add_patient_history" in request.path %}
+    <div class="dashboard_bar">
+      Add Patient's History
+    </div>
     {% else %}
     <div class="dashboard_bar">
         Dashboard

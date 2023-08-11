@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Hospital Management System | Contact us </title> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="we are committed to delivering exceptional healthcare services with the help of our advanced Hospital Management System. Our state-of-the-art software solution is designed to streamline and optimize various aspects of hospital operations, ensuring efficiency, accuracy, and improved patient care." />
+<meta name="keywords" content="Hospital Management System" />
+<meta content="IT Solutions" name="author" />
+<meta content="support@hmssom.com" name="Email" />
+<meta content="https://hmssom.com/" name="Website" />
+<meta content="1.1.0" name="version" />
+<!-- favicon -->
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
+<link href="{% static 'assets/web/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'assets/web/css/tiny-slider.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/web/css/tobii.min.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/web/css/materialdesignicons.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" rel="stylesheet">
+<!-- Main css -->
+<link href="{% static 'assets/web/css/style.css' %}" rel="stylesheet" type="text/css" id="theme-opt" />
+<link href="{% static 'assets/web/css/colors/default.css' %}" rel="stylesheet" id="color-opt">
+
+    </head>
+
+    <body>
+        <!-- Loader -->
+        <!-- <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div> -->
+        <!-- Loader -->
+
+        <!-- Navbar STart -->
+        <header id="topnav" class="defaultscroll sticky">
+            <div class="container">
+                <!-- Logo Start-->
+                <a class="logo" href="index.html">
+                    <span class="logo-light-mode">
+                        <img src="images/logo-dark.png" class="l-dark" height="28" alt="">
+                        <img src="images/logo-light.png" class="l-light" height="28" alt="">
+                    </span>
+                    <img src="images/logo-light.png" height="28" class="logo-dark-mode" alt="">
+                </a>
+                <!-- Logo end-->
+
+                <div class="menu-extras">
+                    <div class="menu-item">
+                        <!-- Mobile menu toggle-->
+                        <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                        <!-- End mobile menu toggle-->
+                    </div>
+                </div>
+
+                <!--Login button Start-->
+                <ul class="buy-button list-inline mb-0">
+                    <li class="list-inline-item search-icon mb-0">
+                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <div class="btn btn-icon btn-pills btn-primary"><i class="uil uil-user"></i></div>
+                        </a>
+                    </li>
+                </ul>
+                <!--Login button End-->
+        
+                
+<header id="topnav" class="defaultscroll sticky">
+    <div class="container">
+        <!-- Logo Start-->
+        <a class="logo" href="/">
+            <span class="logo-light-mode">
+                <img src="{% static 'assets/web/images/logo-dark.png' %}" class="l-dark" height="28" alt="">
+                <img src="{% static 'assets/web/images/logo-white.png' %}" class="l-light" height="28" alt="">
+            </span>
+            <img src="{% static 'assets/web/images/logo-dark.png' %}" height="28" class="logo-dark-mode" alt="">
+        </a>
+        <!-- Logo end-->
+        
+        <div class="menu-extras">
+            <div class="menu-item">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </div>
+        </div>
+
+        <!--Login button Start-->
+        <ul class="buy-button list-inline mb-0">
+            <li class="list-inline-item search-icon mb-0">
+                <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <div class="btn btn-icon btn-pills btn-primary"><i class="uil uil-user"></i></div>
+                </a>
+            </li>
+        </ul>
+        <!--Login button End-->
+
+        <div id="navigation">
+            <!-- Navigation Menu-->   
+            <ul class="navigation-menu nav-right nav-light">
+                <li class="has-submenu parent-menu-item">
+                    <a href="javascript:void(0)">Home</a>
+                </li>
+                {% comment %} <li><a href="#" class="sub-menu-item">Business</a></li>
+                <li><a href="#" class="sub-menu-item">Services</a></li> {% endcomment %}
+                <li><a href="/contact" class="sub-menu-item">Contact us</a></li> 
+                <li><a href="/sys" class="sub-menu-item">Login</a></li>
+                <li><a href="/register_hospital" class="sub-menu-item">Register</a></li>
+            </ul><!--end navigation menu-->
+        </div><!--end navigation-->
+    </div><!--end container-->
+</header><!--end header-->
+
+            </div><!--end container-->
+        </header><!--end header-->
+        <!-- Navbar End -->
+
+        <!-- Hero Start -->
+        <section class="bg-half-170 d-table w-100" style="background: url('/static/assets/images/bg/market.png') bottom;">
+            <div class="bg-overlay bg-gradient-primary opacity-9"></div>
+            <div class="container">
+                <div class="row justify-content-center mt-5">
+                    <div class="col-12">
+                        <div class="section-title text-center">
+                            <h4 class="title text-white title-dark fw-medium mb-4">Contact Us</h4>
+                            <p class="text-white-50 para-desc mx-auto mb-0"> For further assistance, please reach us . 
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container--> 
+        </section><!--end section-->
+        <!-- Hero End -->
+
+        <!-- Start -->
+        <section class="section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="features-absolute bg-white p-4 p-md-5 rounded shadow">
+                            <div class="custom-form">
+                                <form method="post" action="#" >
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="NfAa7tRyx3nCgCFBTFhKkSBxfuVUiaEbpX9cuarssHplA0kbXw9gxoCdEngZih2L">
+                                    <p id="error-msg"></p>
+                                    <div id="simple-msg"></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input name="name" id="name" type="text" class="form-control" autocomplete="OFF" placeholder="Name :">
+                                                <label>Your Name</label>
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <input name="email" id="email" type="email" class="form-control" autocomplete="OFF" placeholder="Email :">
+                                                <label>Email address</label>
+                                            </div>
+                                        </div><!--end col-->
+    
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input name="subject" id="subject" class="form-control" autocomplete="OFF" placeholder="subject :">
+                                                <label>Subject</label>
+                                            </div>
+                                        </div><!--end col-->
+    
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <textarea name="comments" id="comments" style="height: 150px;" autocomplete="OFF" class="form-control" placeholder="Leave a comment here"></textarea>
+                                                <label>Comments</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-grid">
+                                                <button type="submit" id="submit" name="send" class="btn btn-primary">Send Message</button>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form>
+                            </div><!--end custom-form-->
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+
+            <div class="container mt-100 mt-60">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature feature-primary feature-clean text-center rounded px-4">
+                            <div class="icons text-center">
+                                <i class="uil uil-phone d-block mx-auto rounded h3 mb-0"></i>
+                            </div>
+
+                            <div class="card-body p-0 mt-4">
+                                <h5 class="">Phone</h5>
+                                <p class="text-muted">Call us for any query</p>
+                                <a href="tel:+27 81 770 4379" class="link">+27 81 770 4379</a>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-4 col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                        <div class="feature feature-primary feature-clean text-center rounded px-4">
+                            <div class="icons text-center">
+                                <i class="uil uil-envelope d-block mx-auto rounded h3 mb-0"></i>
+                            </div>
+
+                            <div class="card-body p-0 mt-4">
+                                <h5 class="">Email</h5>
+                                <p class="text-muted">Send an email for any query</p>
+                                <a href="mailto:info@hmssom.com" class="link">info@hmssom.com</a>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-4 col-md-6 mt-4 mt-lg-0 pt-2 pt-lg-0">
+                        <div class="feature feature-primary feature-clean text-center rounded px-4">
+                            <div class="icons text-center">
+                                <i class="uil uil-whatsapp d-block mx-auto rounded h3 mb-0"></i>
+                            </div>
+
+                            <div class="card-body p-0 mt-4">
+                                <h5 class="">Whatsapp</h5>
+                                <p class="text-muted">Send us whatsapp @ </p>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal" class="video-play-icon h6 link">+27 81 770 4379</a>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
+        <!-- End -->
+
+
+        <!-- Footer Start -->
+              
+       <!-- Footer Start -->
+       {% include 'web/footer.html' %}
+    <!-- Footer End -->
+
+
+        <!-- Offcanvas Start -->
+        <div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header p-4 border-bottom">
+                <h6 id="offcanvasRightLabel" class="mb-0">
+                    FGKoins
+                </h6>
+                <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas" aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+            </div>
+            <div class="offcanvas-body p-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0" style="z-index: 1">
+                            <div class="card-body p-0">
+                                <form action="/customer_login" method="POST" class="login-form">
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="NfAa7tRyx3nCgCFBTFhKkSBxfuVUiaEbpX9cuarssHplA0kbXw9gxoCdEngZih2L">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a href="/"> 
+                                                <img src="/static/assets/images/icon-gradient.png" class="avatar avatar-large d-block mx-auto my-5" alt="">
+                                            </a>
+                                        </div><!--end col-->
+                                        
+                                        <div class="col-lg-12 mt-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user" class="fea icon-sm icons"></i>
+                                                    <input type="email" class="form-control ps-5" placeholder="Email" name="username" required="">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Password <span class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="key" class="fea icon-sm icons"></i>
+                                                    <input type="password" class="form-control ps-5" placeholder="Password" name="password" required="">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-lg-12">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                        <label class="form-check-label" for="flexCheckDefault">Remember me</label>
+                                                    </div>
+                                                </div>
+                                                <small class="forgot-pass mb-0"><a href="reset-password.html" class="text-dark">Forgot recovery ?</a></small>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-lg-12 mb-0">
+                                            <div class="d-grid">
+                                                <button class="btn btn-primary" type="submit">Login</button>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-12 text-center mt-3">
+                                            <small><small class="text-dark me-2">Don't have an account ?</small> <a href="/app" class="text-dark">Sign Up</a></small>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        <!-- Footer End -->
+        
+        
+    
+        
+
+    <!-- Offcanvas End -->
+        <!-- javascript -->
+        <script src="{% static 'assets/web/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'assets/web/js/apexcharts.min.js' %}"></script>
+        <script src="{% static 'assets/web/js/areachart.init.js' %}"></script>
+        <script src="{% static 'assets/web/js/tiny-slider.js' %}"></script>
+        <script src="{% static 'assets/web/js/tobii.min.js ' %}"></script>
+        <script src="{% static 'assets/web/js/feather.min.js' %}"></script>
+        <!-- Main Js -->
+        <script src="{% static 'assets/web/js/plugins.init.js' %}"></script>
+        <script src="{% static 'assets/web/js/app.js' %}"></script>
+    </body>
+
+</html>

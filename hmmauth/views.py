@@ -53,7 +53,45 @@ def superadminView(request):
 def welcomeView(request):
     return render(request,'web/index.html',context={})
 
+def contactView(request):
+    return render(request,'web/contact.html',context={})
 
+def password_recoveryView(request):
+    return render(request,'hospital/password_recovery.html',context={})
+
+def password_recovery_View(request):
+    if request.method=="POST":
+        email = request.POST['email']
+        if not User.objects.filter(username=email).exists():
+           messages.info(request,"Email Address is not recognised") 
+           return redirect('/password_recovery')
+       
+        hospital_instance=User.objects.get(username=email)
+        if not Passcode.objects.filter(hospital=hospital_instance).exists():
+           messages.info(request,"Password recovery could not be completed") 
+           return redirect('/password_recovery')
+         
+        if User.objects.filter(username=email).exists():
+            passcord_recovery_instance=Passcode.objects.get(hospital=hospital_instance)
+            subject='HMSS Password Recovery'
+            from_email='HMS Software <no_reply@savemoregroup.com>'
+            sento=email
+            messagbody = '#'
+            html_content =f'''<p><strong>Dear {hospital_instance.first_name} </strong> <br><br>  If you did not ask to recovery your password you may want to review your recent account access for any unusual activity.<br> 
+            We're here to help if you need it. Visit the Help Center for more info or contact us.
+            <br> <strong>Login Credentials:</strong><br> 
+            Username:{email} <br> Password:{passcord_recovery_instance.password} <br><br> 
+        
+            It Tech Solutions Company will provide you the best & highly accurate analysis that will let you make reliable decisions related to your Hospital.            
+            <br><hr> Best Regards <br> HMSS Software </p>'''
+            msg=EmailMultiAlternatives(subject, messagbody, from_email,[sento])
+            msg.attach_alternative(html_content, "text/html")
+            Emailthread(msg).start()
+            messages.info(request,'Password recovery has been completed. Please check your email for confirmation.')
+            return redirect('/password_recovery')
+    else:
+        return redirect('/')
+    
 def sysView(request):
     return render(request,'hospital/login.html',context={})
 
@@ -79,13 +117,20 @@ def hospital_login_View(request):
     if request.method =="POST" and request.POST['username'] and request.POST['password']:
         username = request.POST['username']
         password =request.POST['password']
+        
+        userlog = auth.authenticate(username=username,password=password)
+        # checking if it is an existing user in the database
+        
+        if userlog is not None:
+            auth.login(request, userlog)
+            if request.user.is_authenticated and not request.user.is_activation:
+                messages.info(request,"Account is not active or suspended")
+                return redirect('/sys')
                 
         if not User.objects.filter(username=username).exists():
             messages.info(request,'Incorrect login credentials.')
             return redirect('/sys')  
         
-        userlog = auth.authenticate(username=username,password=password)
-        # checking if it is an existing user in the database
         
         # customise error messages handler
         if userlog is not None:
@@ -100,11 +145,6 @@ def hospital_login_View(request):
             messages.info(request,"Incorrect login credentials")
             return redirect('/sys')
                 
-        if userlog is not None:
-            auth.login(request, userlog)
-            if request.user.is_authenticated and not request.user.is_activation:
-                messages.info(request,"Account is not yet activated")
-                return redirect('/sys')
             
         if userlog is not None:
             auth.login(request, userlog)
@@ -168,6 +208,7 @@ def create_hospital_accountView(request):
         remarks = request.POST['remarks']
         region = request.POST['country']
         currency = request.POST['currency']
+        autopassword_generator = request.POST['password']
         if len(request.FILES) != 0:
             logo=request.FILES['logo']
             logofilesize=logo.size
@@ -184,23 +225,24 @@ def create_hospital_accountView(request):
             return redirect('/register_hospital') 
          
         hospotalid = random_id(length=8,character_set=string.digits)
-        autopassword_generator = random_id(length=7)
         create_new_hospital_account = User.objects.create_user(username=email,first_name=hospital_name,last_name=hospital_name,password=autopassword_generator,is_hospital=True,email=email,address=address,number=number,city=region,customerid=hospotalid,is_activation=False,currency=currency,logo=logo)
         if create_new_hospital_account:
             create_new_hospital_account.save()
             save_hospital_details=Hospital(hospital=create_new_hospital_account,hospitalid=hospotalid,package=package,desc=remarks)
             save_hospital_details.save()
+            save_pass_code =Passcode(hospital=create_new_hospital_account,password=autopassword_generator)
+            save_pass_code.save()
             subject = 'Welcome to HMSS'
             from_email='HMS Software <no_reply@savemoregroup.com>'
             sento = email
             messagbody = '#'
             html_content =f'''<p><strong>Dear {hospital_name} </strong> <br><br>  This email serves to confirm that your Hospital Management account has been created successfully, 
-            Login and starting placing orders at the confort of your sofas.
+            Contact system administrator for payment and account activations.
             <br> <strong>Login Credentials:</strong><br> 
             
             Username:{email} <br> Password: {autopassword_generator} <br><br> 
             
-            Successful treatment starts with an accurate diagnosis, and our experts take the time to get it right. A team of specialists will listen to your needs and evaluate your condition from every angle to make the very best plan for you.            
+            It Tech Solutions Company will provide you the best & highly accurate analysis that will let you make reliable decisions related to your Hospital.            
             <br><hr> Best Regards <br> HMSS Software </p>'''
             msg=EmailMultiAlternatives(subject, messagbody, from_email,[sento])
             msg.attach_alternative(html_content, "text/html")
@@ -211,3 +253,13 @@ def create_hospital_accountView(request):
     else:
         return redirect('/register_hospital')  
     
+def password_updateView(request):
+    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+        email_address = request.POST['email']
+        new_password = request.POST['new_password'] 
+        hospital_instance=User.objects.get(username=email_address)
+        hospital_instance.set_password(new_password)
+        hospital_instance.save()
+        auth.logout(request)
+        messages.info(request,"Password changed Successfully")
+        return redirect('/sys') 

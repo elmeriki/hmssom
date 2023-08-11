@@ -12,8 +12,11 @@ urlpatterns = [
     path('expensecategory', views.expensecategoryView, name='expensecategoryView'),
     path('add_expensecategory', views.add_expensecategoryView, name='add_expensecategoryView'),
 
-    path('create_new_category', views.create_new_categoryView, name='create_new_categoryView'),
+    path('admission_fees/<str:patient_id>/<str:price>', views.admission_feesView, name='admission_feesView'),
+    path('save_admission_fees', views.save_admission_feesView, name='save_admission_feesView'),
 
+    path('admision_fees', views.admision_feesView, name='admision_feesView'),
+    path('create_new_category', views.create_new_categoryView, name='create_new_categoryView'),
     path('create_new_expenses', views.create_new_expensesView, name='create_new_expensesView'),
 
     path('create_new_payment_category', views.create_new_payment_categoryView, name='create_new_payment_categoryView'),

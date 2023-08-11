@@ -34,7 +34,7 @@
                                         <td class="center">{{forloop.counter}}</td>
                                         <td class="left strong">{{selected_expenses_report.category.name}}</td>
                                         <td class="left">{{selected_expenses_report.decs}}</td>
-                                        <td class="right">Biir{{selected_expenses_report.amount}}</td>
+                                        <td class="right">{{hospital_instance.currency}} {{selected_expenses_report.amount}}</td>
                                         <td class="center">{{selected_expenses_report.created_at.date}}</td>
                                     </tr>
                                     {% endfor %}
@@ -56,7 +56,7 @@
                                         </tr>
                                         <tr>
                                             <td class="left"><strong>Total</strong></td>
-                                            <td class="right"><strong>Biir {{total_expenses_cash}}</strong><br>
+                                            <td class="right"><strong>{{hospital_instance.currency}}  {{total_expenses_cash}}</strong><br>
                                                 </td>
                                         </tr>
                                     </tbody>
