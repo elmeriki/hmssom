@@ -17,16 +17,12 @@
                                 <a href="/compose_email" class="btn btn-primary btn-block">Compose</a>
                             </div>
                             <div class="mail-list mt-4">
-                                <a href="#" class="list-group-item active"><i
+                                <a href="/email_inbox" class="list-group-item active"><i
                                         class="fa fa-inbox font-18 align-middle mr-2"></i> Inbox <span
                                         class="badge badge-primary badge-sm float-right">{{sent_email_count}}</span> </a>
                                 <a href="/email_inbox" class="list-group-item"><i
-                                        class="fa fa-paper-plane font-18 align-middle mr-2"></i>Sent</a> 
-                                <a href="javascript:void()" class="list-group-item"><i
-                                class="fa fa-star font-18 align-middle mr-2"></i>Important <span
-                                class="badge badge-danger text-white badge-sm float-right">47</span>
+                                    class="fa fa-paper-plane font-18 align-middle mr-2"></i>Read</a> 
                                 </a>
-                         
                             </div>
     
 
@@ -65,13 +61,15 @@
                                             </div>
                                             <div class="ml-2">
                                                 <button class="border-0 bg-transparent align-middle p-0"><i
-                                                        class="fa fa-star" aria-hidden="true"></i></button>
+                                                class="fa fa-star" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
-                                        <a href="email-read.html" class="col-mail col-mail-2">
-                                            <div class="subject">Ingredia Nutrisha, A collection of textile samples lay spread out on the table - Samsa was a travelling salesman - and above it there hung a picture</div>
-                                            <div class="date">11:49 am</div>
+                                        {% for sent_email in sent_email %}
+                                        <a href="#" class="col-mail col-mail-2">
+                                            <div class="subject">{{sent_email.title}}</div>
+                                            <div class="date">{{sent_email.created_at}}</div>
                                         </a>
+                                        {% endfor %}
                                     </div>
                                 </div>
 

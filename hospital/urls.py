@@ -194,6 +194,11 @@ urlpatterns = [
     path('generate_laboratory_report', views.generate_laboratory_reportView, name='generate_laboratory_reportView'),
     path('generate_monthly_expenses_report', views.generate_monthly_expenses_reportView, name='generate_monthly_expenses_reportView'),
 
+    path('generate_admission_report', views.generate_admission_reportView, name='generate_admission_reportView'),
+    path('admission_report', views.admission_reportView, name='admission_reportView'),
+    path('blood_bank_report', views.blood_bank_reportView, name='blood_bank_reportView'),
+    path('generate_blood_bank_report', views.generate_blood_bank_reportView, name='generate_blood_bank_reportView'),
+
 ]
 
 

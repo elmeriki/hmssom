@@ -24,17 +24,21 @@
 					<table id="example5" class="table shadow-hover  table-bordered mb-4 dataTablesCard fs-14">
 						<thead>
 							<tr>
-								<th>Blood Group</th>
-                                <th>Price</th>
-								<th>Status</th>
+								<th>Patient ID</th>
+                                <th>Qauntity Purchase</th>
+                                <th>Blood Group</th>
+                                <th>Amount</th>
+								
 							</tr>
 						</thead>
 						<tbody>
-							{% for all_blood_list_fees in all_blood_list_fees %}
+							{% for blood_bank_purchase in blood_bank_purchase %}
 							<tr>
-								<td>{{all_blood_list_fees.bloodgroup}}</td>
-                                <td>{{hospital_instance.currency}} {{all_blood_list_fees.amount}}</td>
-								<td>
+								<td>{{blood_bank_purchase.patient.phone}}</td>
+                                <td>{{blood_bank_purchase.quantity}}</td>
+                                <td>{{blood_bank_purchase.bloodgroup}}</td>
+                                <td>{{hospital_instance.currency}} {{blood_bank_purchase.amount}}</td>
+								{% comment %} <td>
 									<a  href="/delete_blood_fees/{{all_blood_list_fees.id}}" onclick="if(!confirm('Are you sure you want to delete this record ?')){return false;}">
 										<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
 											xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +50,7 @@
 												stroke-linejoin="round" />
 										</svg>
 									</a>
-								</td> 
+								</td>  {% endcomment %}
 							</tr>				
                             {% endfor %}
 						</tbody>

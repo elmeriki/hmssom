@@ -360,7 +360,7 @@ class Bloodfees(models.Model):
     
 class Bloodpurchase(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name="hospital_blood_purchase")
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_blood_purchase")
+    patient=models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True,related_name="patient_blood_purchase")
     bloodgroup =  models.CharField(max_length=200,blank=True,null=True,default="")
     amount= models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     status = models.CharField(max_length=200,default=0,null=True,blank=True)
@@ -390,7 +390,7 @@ class Paymentcategory(models.Model):
 class Appointmentfees(models.Model):
     hospital = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True,related_name='hospital_appointment_fees')
     category = models.CharField(max_length=200,default=0,null=True,blank=True)
-    amount=  models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    amount=models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:

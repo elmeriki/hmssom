@@ -1,0 +1,119 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Laboratory Report | {% endblock %}
+{% load static %}
+{% block content %}
+{% if selected_admission_report %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admission_report">BACK</a></li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card mt-3">
+                    <div class="card-header"> Report <strong>{{current_date}}</strong> <span class="float-right">
+                            <strong>Status:</strong> Completed</span> </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center">No</th>
+                                        <th>Patient ID</th>
+                                        <th>Number Of Days</th>
+                                        <th>Amount</th>
+                                        <th class="right">Payment Type</th>
+                                        <th class="center">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for selected_admission_report in selected_admission_report %}
+                                    <tr>
+                                        <td class="center">{{forloop.counter}}</td>
+                                        <td class="left strong">{{selected_admission_report.patient.phone}}</td>
+                                        <td class="left">{{selected_admission_report.days}}</td>
+                                        <td class="right">{{hospital_instance.currency}} {{selected_admission_report.amount}}</td>
+                                        <td class="left">{{selected_admission_report.paymenttype}}</td>
+                                        <td class="center">{{selected_admission_report.created_at.date}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-5"> </div>
+                            <div class="col-lg-4 col-sm-5 ml-auto">
+                                <table class="table table-clear">
+                                    <tbody>
+                                        <tr>
+                                            <td class="left"><strong>Discount</strong></td>
+                                            <td class="right">None</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>VAT </strong></td>
+                                            <td class="right">N/A</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>Total</strong></td>
+                                            <td class="right"><strong>{{hospital_instance.currency}} {{total_admission_cash}}</strong><br>
+                                                </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Generate Admission Report</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/generate_admission_report" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">                               
+                                    <div class="form-group col-md-6">
+                                        <label for="phone">From</label>
+                                        <input type="date" class="form-control" name="from_date" name="title" placeholder="Title"
+                                            required>
+                                    </div> 
+                                    <div class="form-group col-md-6">
+                                        <label for="phone">To</label>
+                                        <input type="date" class="form-control" name="to_date" placeholder="Title"
+                                            required>
+                                    </div>  
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Proceed</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

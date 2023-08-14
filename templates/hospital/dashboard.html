@@ -138,9 +138,9 @@
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="media-body">
-                                <p class="mb-1">Hospital Earning</p>
+                                <p class="mb-1">30 Days Hospital Earning</p>
                                 <div class="d-flex flex-wrap">
-                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">$56k</h2>
+                                    <h2 class="fs-40 font-w600 text-white mb-0 mr-3">{{hospital_instance.currency}}{{total}}</h2>
                                     <div>	
                                         <svg width="28" height="19" viewBox="0 0 28 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M8.56244 9.25C6.35869 11.6256 2.26214 16.0091 0.999939 17.5H26.4374V1L16.8124 13.375L8.56244 9.25Z" fill="url(#paint0_linear3)"/>
@@ -171,18 +171,18 @@
                         <h3 class="fs-20 mb-0 text-black">Revenue</h3>
                         <div class="dropdown d-inline-block">
                             <div class="btn-link text-primary dropdown-toggle mb-0 fs-14 text-primary" data-toggle="dropdown">
-                                <span class="font-w500">2020</span>
+                                <span class="font-w500">2023</span>
                             </div>
-                            <div class="dropdown-menu dropdown-menu-left">
+                            {% comment %} <div class="dropdown-menu dropdown-menu-left">
                                 <a class="dropdown-item" href="javascript:void(0);">2019</a>
                                 <a class="dropdown-item" href="javascript:void(0);">2018</a>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                     <div class="card-body">
                         <div>
-                            <span class="text-info fs-26 font-w600 mr-3">$41,512k</span>
-                            <span class="text-secondary fs-18 font-w400">$25,612k</span>
+                            <span class="text-info fs-26 font-w600 mr-3">{{hospital_instance.currency}}{{total}}</span>
+                            <span class="text-dark fs-18 font-w400">30 days report</span>
                         </div>
                         <div id="line-chart"></div>
                     </div>

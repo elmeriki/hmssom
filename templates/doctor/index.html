@@ -7,17 +7,19 @@
     <div class="container-fluid">
         <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
             <div class="mr-auto d-none d-lg-block">
-                <h3 class="text-black font-w600">Welcome to {{request.user.first_name}}</h3>
+                <h3 class="text-black font-w600">Hi {{request.user.first_name}}</h3>
                 <p class="mb-0 fs-18">Revolutionize Healthcare Management</p>
             </div>
             
-            <div class="input-group search-area ml-auto d-inline-flex">
-                <input type="text" class="form-control" placeholder="Search here">
-                <div class="input-group-append">
-                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+            <form action="/search_patient_detail" method="POST">
+                {% csrf_token %}
+                <div class="input-group search-area ml-auto d-inline-flex">
+                    <input type="text" class="form-control" name="cellphone" Required="Required" autocomplete="OFF" placeholder="Search here">
+                    <div class="input-group-append">
+                        <button type="submit" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                    </div>
                 </div>
-            </div>
-            <a href="javascript:void(0);" class="settings-icon  ml-3"><i class="flaticon-381-settings-2 mr-0"></i></a>
+            </form>
         </div>
         <div class="row">	
             <div class="col-xl-3 col-xxl-6 col-sm-6">
@@ -171,7 +173,7 @@
                                                 <label class="custom-control-label" for="customCheckBox1"></label>
                                             </div>
                                         </div>
-                                        <img class="mr-3 img-fluid rounded" width="90" src="{% static 'assets/images/user.png' %}" alt="DexignZone">
+                                        <a href="#"><img class="mr-3 img-fluid rounded" width="90" src="{% static 'assets/images/user.png' %}" alt="DexignZone"></a>
                                         <div class="media-body d-lg-flex d-block row align-items-center">
                                             <div class="col-xl-4 col-xxl-5 col-lg-6 review-bx">
                                                 {% if doctors_appointment.status == "0" %}
@@ -218,7 +220,7 @@
                 <div class="card border-0 pb-0">
                     <div class="card-header flex-wrap border-0 pb-0">
                         <h3 class="fs-20 mb-0 text-black">Completed Treatment</h3>
-                        <a href="/patient_list" class="text-primary font-w500">More >></a>
+                        <a href="#" class="text-primary font-w500">More >></a>
                     </div>
                     <div class="card-body"> 
                         <div id="DZ_W_Todo2" class="widget-media dz-scroll ps ps--active-y height320">
@@ -230,7 +232,7 @@
                                             <img class="rounded-circle" alt="image" width="50" src="{% static 'assets/images/user.png' %}">
                                         </div>
                                         <div class="media-body">
-                                            <h5 class="mb-1"><a class="text-black" href="patient-details.html">{{completed_treatment_log.patient.name}}</a></h5>
+                                            <h5 class="mb-1"><a class="text-black" href="#">{{completed_treatment_log.patient.name}}</a></h5>
                                             <span class="fs-14">{{completed_treatment_log.created_at | timesince}}</span>
                                         </div>
                                         <a href="/my_doctors_com_treatment" class="text-warning mt-2">View</a>
