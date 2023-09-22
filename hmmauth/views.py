@@ -56,6 +56,9 @@ def welcomeView(request):
 def contactView(request):
     return render(request,'web/contact.html',context={})
 
+def pakagesView(request):
+    return render(request,'web/pakages.html',context={})
+
 def password_recoveryView(request):
     return render(request,'hospital/password_recovery.html',context={})
 
@@ -263,3 +266,21 @@ def password_updateView(request):
         auth.logout(request)
         messages.info(request,"Password changed Successfully")
         return redirect('/sys') 
+    if request.user.is_authenticated and request.user.is_dr and request.method=="POST":
+        email_address = request.POST['email']
+        new_password = request.POST['new_password'] 
+        hospital_instance=User.objects.get(username=email_address)
+        hospital_instance.set_password(new_password)
+        hospital_instance.save()
+        auth.logout(request)
+        messages.info(request,"Password changed Successfully")
+        return redirect('/sys')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        email_address = request.POST['email']
+        new_password = request.POST['new_password'] 
+        hospital_instance=User.objects.get(username=email_address)
+        hospital_instance.set_password(new_password)
+        hospital_instance.save()
+        auth.logout(request)
+        messages.info(request,"Password changed Successfully")
+        return redirect('/sys')

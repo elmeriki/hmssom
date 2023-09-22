@@ -4,17 +4,11 @@ from hospital import views
 urlpatterns = [
     path('hospital_dashboard', views.hospital_dashboardView, name='hospital_dashboardView'),
     path('hospital_profile', views.hospital_profileView, name='hospital_profileView'),
-    
     path('labdashboard', views.labdashboardView, name='labdashboardView'),
-    
     path('recepdashboard', views.recepdashboardView, name='recepdashboardView'),
-    
     path('phamardashboard', views.phamardashboardView, name='phamardashboardView'),
-
     path('doctor_profile', views.doctor_profileView, name='doctor_profileView'),
-    
     path('lab_profile', views.lab_profileView, name='lab_profileView'),
-
     path('doctorsdashboard', views.doctorsdashboardView, name='doctorsdashboardView'),
     path('doctortreatment/<str:patientid>/<str:apoint_id>', views.doctortreatmentView, name='doctortreatmentView'),
     path('add_patient_test/<str:patientid>/<str:apoint_id>', views.add_patient_testView, name='add_patient_testView'),
@@ -198,6 +192,15 @@ urlpatterns = [
     path('admission_report', views.admission_reportView, name='admission_reportView'),
     path('blood_bank_report', views.blood_bank_reportView, name='blood_bank_reportView'),
     path('generate_blood_bank_report', views.generate_blood_bank_reportView, name='generate_blood_bank_reportView'),
+    
+    
+    path('add_assets', views.add_assetsView, name='add_assetsView'),
+    path('create_asset', views.create_assetView, name='create_assetView'),
+    path('list_assets', views.list_assetsView, name='list_assetsView'),
+    path('delete_assets/<str:id>', views.delete_assetsView, name='delete_assetsView'),
+
+    path('income_report', views.income_reportView, name='income_reportView'),
+    path('income_report_', views.income_report_View, name='income_report_View'),
 
 ]
 

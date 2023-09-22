@@ -65,7 +65,7 @@
                     </li> {% endcomment %}
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:;" role="button" data-toggle="dropdown">
-                            <img src="{{doctor_instance_to_display_profile_picture.picture.url}}" width="20" alt=""/>
+                            <img src="{% static 'assets/images/user.png' %}" width="20" alt=""/>
                             <div class="header-info">
                                 <span>Hello,<strong> {{user.first_name}}</strong></span>
                             </div>

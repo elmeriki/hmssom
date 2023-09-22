@@ -273,6 +273,32 @@ def add_appointmentView(request):
         }
         return render(request,'receptionist/add_appointment.html',context=data)
     
+    
+@login_required(login_url='/')  
+@transaction.atomic  #transactional 
+def add_appointment_View(request,patient_id):
+    if request.user.is_authenticated and request.user.is_hospital:     
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)        
+        data= {
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0),
+        'appointment_list':Appointmentfees.objects.all(),
+        'patient_id':patient_id
+        }
+        return render(request,'customer/add_appointment.html',context=data)
+    
+    if request.user.is_authenticated and request.user.is_rep:     
+        username=request.user.username
+        customer_instance=User.objects.get(username=username)
+        recep_instance=Doctor.objects.get(user=customer_instance)
+        hospital_instance=User.objects.get(username=recep_instance.hospital.username)       
+        data= {
+        'doctor_list':Doctor.objects.filter(hospital=hospital_instance,status=0),
+        'appointment_list':Appointmentfees.objects.all(),
+        'patient_id':patient_id
+        }
+        return render(request,'receptionist/add_appointment.html',context=data)
+    
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def create_patient_appointmentView(request):

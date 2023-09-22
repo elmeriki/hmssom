@@ -5,6 +5,7 @@ from hmmauth import views
 urlpatterns = [
     path('', views.welcomeView, name='welcomeView'),
     path('contact', views.contactView, name='contactView'),
+    path('pakages', views.pakagesView, name='pakagesView'),
     path('sys', views.sysView, name='sysView'),
     path('password_recovery', views.password_recoveryView, name='password_recoveryView'),
     path('password_recovery_', views.password_recovery_View, name='password_recovery_View'),

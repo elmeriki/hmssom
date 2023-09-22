@@ -1,0 +1,259 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+{% if appoint_report %}
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+			{% comment %} <div class="mr-auto d-none d-lg-block">
+				<a href="/add_payment" class="btn btn-primary btn-rounded">+ Add New</a>
+			</div> {% endcomment %}
+
+			<div class="input-group search-area ml-auto d-inline-flex mr-3">
+				<input type="text" class="form-control" placeholder="Search here">
+				<div class="input-group-append">
+					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="table-responsive">
+					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+						<thead>
+							<tr>
+								<th>Patient ID</th>
+								<th>Assigned Dr</th>
+								<th>Description</th>
+								<th>Amount Paid</th>
+								<th>Payment Type</th>
+                                <th>Payment Status</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{% for appoint_report in appoint_report %}
+								<td>{{appoint_report.patient.phone}}</td>
+                                <td><span class="font-w500">Dr.{{appoint_report.treatedby_dr.name}}</span></td>
+								<td>{{appoint_report.visitdsc}}</td>
+								<td>{{hospital_instance.currency}}{{appoint_report.amount}}</td>
+								<td>{{appoint_report.paymenttype}}</td>
+								<td>{{appoint_report.paymentstatus}}</td>
+								<td>{{appoint_report.created_at.date}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+                        <p>Grand Total {{hospital_instance.currency}}{{total_sum_of_admission_fees}}</p>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% elif blood_bank_report %}
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+			{% comment %} <div class="mr-auto d-none d-lg-block">
+				<a href="/add_payment" class="btn btn-primary btn-rounded">+ Add New</a>
+			</div> {% endcomment %}
+
+			<div class="input-group search-area ml-auto d-inline-flex mr-3">
+				<input type="text" class="form-control" placeholder="Search here">
+				<div class="input-group-append">
+					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="table-responsive">
+					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+						<thead>
+							<tr>
+								<th>Patient ID</th>
+								<th>Blood Group</th>
+								<th>Amount Paid</th>
+								<th>Quantity</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{% for blood_bank_report in blood_bank_report %}
+								<td>{{blood_bank_report.patient.phone}}</td>
+								<td>{{blood_bank_report.bloodgroup}}</td>
+								<td>{{hospital_instance.currency}}{{blood_bank_report.amount}}</td>
+								<td>{{blood_bank_report.quantity}}</td>
+								<td>{{blood_bank_report.created_at.date}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+                        <p>Grand Total {{hospital_instance.currency}}{{total_sum_of_blood_bank}}</p>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% elif admission_report %}
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+			{% comment %} <div class="mr-auto d-none d-lg-block">
+				<a href="/add_payment" class="btn btn-primary btn-rounded">+ Add New</a>
+			</div> {% endcomment %}
+
+			<div class="input-group search-area ml-auto d-inline-flex mr-3">
+				<input type="text" class="form-control" placeholder="Search here">
+				<div class="input-group-append">
+					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="table-responsive">
+					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+						<thead>
+							<tr>
+								<th>Patient ID</th>
+								<th>Number of Days</th>
+								<th>Amount Paid</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{% for admission_report in admission_report %}
+								<td>{{admission_report.patient.phone}}</td>
+								<td>{{admission_report.days}}</td>
+								<td>{{hospital_instance.currency}}{{admission_report.amount}}</td>
+								<td>{{admission_report.created_at.date}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+                        <p>Grand Total {{hospital_instance.currency}}{{total_sum_of_admission_fees}}</p>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% elif laboratory_report %}
+<div class="content-body">
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+			{% comment %} <div class="mr-auto d-none d-lg-block">
+				<a href="/add_payment" class="btn btn-primary btn-rounded">+ Add New</a>
+			</div> {% endcomment %}
+
+			<div class="input-group search-area ml-auto d-inline-flex mr-3">
+				<input type="text" class="form-control" placeholder="Search here">
+				<div class="input-group-append">
+					<button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+				</div>
+			</div>
+			<a href="javascript:void(0);" class="settings-icon"><i class="flaticon-381-settings-2 mr-0"></i></a>
+		</div>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="table-responsive">
+					<table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+						<thead>
+							<tr>
+								<th>Patient ID</th>
+                                <th>Assigned Dr</th>
+								<th>Test Name</th>
+								<th>Amount Paid</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{% for laboratory_report in laboratory_report %}
+								<td>{{laboratory_report.patient.phone}}</td>
+                                <td><span class="font-w500">Dr.{{laboratory_report.dr.name}}</span></td>
+                                <td>{{laboratory_report.testname}}</td>
+								<td>{{hospital_instance.currency}}{{laboratory_report.amount}}</td>
+								<td>{{laboratory_report.created_at.date}}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+                        <p>Grand Total {{hospital_instance.currency}}{{total_sum_of_laboratory_fees}}</p>
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% else %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Income Report</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/income_report_" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="bloodgroup">Income Category</label>
+                                    <select class="form-control" name="category" required>
+                                        <option value="">Select Category</option>
+                                        <option value="Consultation">Consultation Income</option>
+                                        <option value="Blood">Blood Bank Income</option>
+                                        <option value="Admission">Admission Income</option>
+                                        <option value="Lab">Laboratory Income</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="quantity">From</label>
+                                    <input type="date" class="form-control" name="start_date" placeholder="Quantity"
+                                        required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="quantity">To</label>
+                                    <input type="date" class="form-control" name="end_date" placeholder="Quantity"
+                                        required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

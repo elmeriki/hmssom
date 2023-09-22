@@ -1,0 +1,50 @@
+{% extends "hospital/main_menu.html" %}
+{% block title %} Hospital Department | {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if messages %}
+                    {% for foreachmessage in messages %}
+                    <h4 class="text-success">{{foreachmessage}}</h4>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="">Add New Assets</h4>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form action="/create_asset" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="quantity">Asset Name</label>
+                                    <input type="text" class="form-control" name="title" placeholder="Type asset name"
+                                    required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="quantity">Asset Amount</label>
+                                    <input type="number" class="form-control" name="amount" autocomplete="OFF" placeholder="Enter asset unit Price"
+                                    required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="quantity">Asset Quantity</label>
+                                    <input type="number" class="form-control" name="quantity" autocomplete="OFF" placeholder="Enter assets Quantity"
+                                    required>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -92,7 +92,6 @@ class Patient(models.Model):
     status=models.CharField(max_length=200,blank=True,null=True,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
     class Meta:
         verbose_name_plural ="Patient"
         
@@ -521,9 +520,23 @@ class Admissionfees(models.Model):
     amount=models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
     paymenttype=models.CharField(max_length=200,blank=True,null=True,default="None")
     status=models.CharField(max_length=200,blank=True,null=True,default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at=models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural ="Admissionfees"
+        
+    def __str__(self):
+        return self.hospital.first_name
+    
+class Assets(models.Model):
+    hospital = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="hospital_assets")
+    title=models.CharField(max_length=200,blank=True,null=True,default="0")
+    amount=models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    total=models.DecimalField(max_digits=11,decimal_places=0,default=0,blank=True,null=True)
+    quantity=models.CharField(max_length=200,blank=True,null=True,default="None")
+    status=models.CharField(max_length=200,blank=True,null=True,default=0)
+    created_at=models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural ="Assets"
         
     def __str__(self):
         return self.hospital.first_name

@@ -235,31 +235,57 @@ def expensecategoryView(request):
 @login_required(login_url='/')  
 def admission_feesView(request,patient_id,price):
     if request.user.is_authenticated and request.user.is_hospital:  
+        from datetime import datetime, timedelta
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         patient_instance =Patient.objects.get(phone=patient_id)
         data = {
         'price':price,
+        'patient_id':patient_id,
         'patient_instance':patient_instance,
-        'hospital_instance':hospital_instance
+        'hospital_instance':hospital_instance,
         }
         return render(request,'finance/admision_fees.html',context=data)
+    if request.user.is_authenticated and request.user.is_rep:  
+        from datetime import datetime, timedelta
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance =Patient.objects.get(phone=patient_id)
+        data = {
+        'price':price,
+        'patient_id':patient_id,
+        'patient_instance':patient_instance,
+        'hospital_instance':hospital_instance,
+        }
+        return render(request,'receptionist/admision_fees.html',context=data)
     else:
         return redirect('/')
     
 @login_required(login_url='/')  
 @transaction.atomic  #transactional 
 def save_admission_feesView(request):
-    if request.user.is_authenticated and request.user.is_hospital and request.method=="POST":
+    if request.user.is_authenticated and request.user.is_hospital or request.user.is_rep and request.method=="POST":
         patientid =request.POST['patientid']
         price =int(request.POST['price'])
         days =int(request.POST['days'])
-        payment_status =request.POST['payment_status']
         username=request.user.username
         hospital_instance=User.objects.get(username=username)
         patient_instance =Patient.objects.get(phone=patientid)
         total_cost =price * days
-        save_admision_fees=Admissionfees(hospital=hospital_instance,patient=patient_instance,days=days,amount=total_cost,paymenttype=payment_status)
+        save_admision_fees=Admissionfees(hospital=hospital_instance,patient=patient_instance,days=days,amount=total_cost,paymenttype=1)
+        if save_admision_fees:
+            save_admision_fees.save()
+            Admission.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status="1")
+        return redirect('/all_admission')
+    if request.user.is_authenticated and request.user.is_rep and request.method=="POST":
+        patientid =request.POST['patientid']
+        price =int(request.POST['price'])
+        days =int(request.POST['days'])
+        username=request.user.username
+        hospital_instance=User.objects.get(username=username)
+        patient_instance =Patient.objects.get(phone=patientid)
+        total_cost =price * days
+        save_admision_fees=Admissionfees(hospital=hospital_instance,patient=patient_instance,days=days,amount=total_cost,paymenttype=1)
         if save_admision_fees:
             save_admision_fees.save()
             Admission.objects.filter(hospital=hospital_instance,patient=patient_instance).update(status="1")
