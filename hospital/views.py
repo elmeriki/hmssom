@@ -865,7 +865,7 @@ def send_bulk_emailView(request):
                 fetch_all_staff_email=Doctor.objects.filter(hospital=hospital_instance)
                 for each_staff_info in fetch_all_staff_email:
                     subject=title
-                    from_email=f'{each_staff_info.hospital.first_name} <no_reply@savemoregroup.com>'
+                    from_email=f'{each_staff_info.hospital.first_name} <no_reply@hmssom.com>'
                     sento = each_staff_info.email
                     messagbody = '#'
                     html_content =f'''<p><strong>Dear {each_staff_info.name} </strong> <br><br>  
@@ -891,7 +891,7 @@ def send_bulk_emailView(request):
                 fetch_all_staff_email=Humanresource.objects.filter(hospital=hospital_instance)
                 for each_staff_info in fetch_all_staff_email:
                     subject=title
-                    from_email=f'{each_staff_info.hospital.first_name} <no_reply@savemoregroup.com>'
+                    from_email=f'{each_staff_info.hospital.first_name} <no_reply@hmssom.com>'
                     sento = each_staff_info.email
                     messagbody = '#'
                     html_content =f'''<p><strong>Dear {each_staff_info.name} </strong> <br><br>  

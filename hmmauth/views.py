@@ -77,7 +77,7 @@ def password_recovery_View(request):
         if User.objects.filter(username=email).exists():
             passcord_recovery_instance=Passcode.objects.get(hospital=hospital_instance)
             subject='HMSS Password Recovery'
-            from_email='HMS Software <no_reply@savemoregroup.com>'
+            from_email='HMS Software <no_reply@hmssom.com>'
             sento=email
             messagbody = '#'
             html_content =f'''<p><strong>Dear {hospital_instance.first_name} </strong> <br><br>  If you did not ask to recovery your password you may want to review your recent account access for any unusual activity.<br> 
@@ -236,7 +236,7 @@ def create_hospital_accountView(request):
             save_pass_code =Passcode(hospital=create_new_hospital_account,password=autopassword_generator)
             save_pass_code.save()
             subject = 'Welcome to HMSS'
-            from_email='HMS Software <no_reply@savemoregroup.com>'
+            from_email='HMS Software <no_reply@hmssom.com>'
             sento = email
             messagbody = '#'
             html_content =f'''<p><strong>Dear {hospital_name} </strong> <br><br>  This email serves to confirm that your Hospital Management account has been created successfully, 
